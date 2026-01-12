@@ -1,0 +1,161 @@
+﻿FASTIGHETSANALYS - EXPORT
+Exportdatum,2026-01-07 12:40:59
+Kommun,Gävle
+Antal områden,4
+DeSO-koder,"2180C1290, 2180C1300, 2180C1270, 2180C1340"
+
+INKOMST
+Metric,Område,Kommun,Riket
+Medianinkomst (kr),273891,310000,325000
+Medelinkomst (kr),307330,,
+Percentil 20 (kr),205418,,
+Percentil 80 (kr),383447,,
+
+BEFOLKNING
+Metric,Område,Kommun
+Total befolkning,6543,103838
+Tillväxttakt (%),"-0.09%",
+
+ÅLDERSFÖRDELNING
+Åldersgrupp,Antal,Procent (%),Kommun Procent (%)
+0-4 år,309,4.7,4.8
+5-9 år,308,4.7,5.6
+10-14 år,320,4.9,5.8
+15-19 år,323,4.9,5.9
+20-24 år,532,8.1,5.9
+25-29 år,604,9.2,6.0
+30-34 år,547,8.4,7.3
+35-39 år,423,6.5,6.7
+40-44 år,369,5.6,5.9
+45-49 år,362,5.5,5.8
+50-54 år,394,6.0,6.4
+55-59 år,449,6.9,6.5
+60-64 år,328,5.0,6.0
+65-69 år,311,4.8,5.2
+70-74 år,289,4.4,4.8
+75-79 år,313,4.8,5.0
+80+ år,399,6.1,6.3
+
+UTBILDNING
+Nivå,Område (%),Kommun (%),Riket (%)
+Förgymnasial,15.3,20,18
+Gymnasial,41.8,45,43
+Eftergymnasial,43.0,35,39
+
+HÄRKOMST
+Kategori,Antal,Procent (%),Kommun Procent (%)
+Svensk bakgrund,5166,62.8,77.5
+Utländsk bakgrund,3054,37.2,22.5
+
+HUSHÅLLSSTORLEK
+Metric,Område,Kommun
+Totalt antal hushåll,3324,50993
+Snitt storlek (personer/hushåll),1.74,1.89
+
+Fördelning,Antal,Procent (%),Kommun Procent (%)
+1 person,1794,54.0,44.9
+2 personer,911,27.4,29.3
+3+ personer,619,18.6,25.8
+
+HUSTYP
+Typ,Antal personer,Procent (%),Kommun Procent (%)
+Småhus,1073,14.0,55.6
+Flerbostadshus,6614,86.0,44.4
+
+UPPLÅTELSEFORM
+Typ,Antal personer,Procent (%),Kommun Procent (%)
+Äganderätt,1384,23.1,30.4
+Bostadsrätt,1946,32.4,22.7
+Hyresrätt,2668,44.5,46.9
+
+FLYTTMÖNSTER
+Metric,Värde
+Nettoinflyttning,0
+
+EKONOMISK STANDARD
+Metric,Område,Kommun
+Medianvärde (tkr),349,296
+Medelvärde (tkr),380,333
+Antal personer,5736,101965
+
+Kvartil,Område (%),Kommun (%)
+Kvartil 1,23.8,29.0
+Kvartil 2,24.2,26.0
+Kvartil 3,25.9,25.0
+Kvartil 4,26.1,20.0
+
+FÖRVÄRVSINKOMST
+Metric,Område,Kommun
+Medianvärde (tkr),310,336
+Medelvärde (tkr),314,362
+Antal personer,5522,79622
+
+Kvartil,Område (%),Kommun (%)
+Kvartil 1,23.5,25.0
+Kvartil 2,25.9,27.0
+Kvartil 3,25.9,26.0
+Kvartil 4,24.7,22.0
+
+PRISANALYS (Booli)
+
+GENOMSNITTSPRISER
+Kategori,Antal sålda,Medelpris (kr),Medel kr/m²,Tidigaste försäljning,Senaste försäljning
+Nyproduktion,57,3592895,40006,2022-02-03,2024-08-15
+Succession,500,1797135,27567,2022-08-26,2025-12-30
+
+SENASTE FÖRSÄLJNINGAR (Max 50 st)
+Adress,Pris (kr),Kr/m²,Rum,Boarea (m²),Månadsavgift (kr),Såld datum,Kategori,BRF,Byggår,Våning
+"Norra Köpmangatan 18C",1450000,24247,2.0,59.80,3859,2025-12-30,Succession,BRF Kvarta,N/A,N/A
+"Ruddammsgatan 44",1680000,26250,2.0,64.00,4679,2025-12-23,Succession,BRF Masten,N/A,N/A
+"Hantverkargatan 30",1870000,23259,2.0,80.40,3724,2025-12-23,Succession,BRF Kandidaten i Gävle,N/A,N/A
+"Norra Skeppargatan 4",980000,21973,1.0,44.60,2688,2025-12-22,Succession,BRF Aten,N/A,N/A
+"Norra Skeppargatan 4",2500000,29940,3.0,83.50,4752,2025-12-20,Succession,BRF Aten,N/A,N/A
+"Hantverkargatan 30",975000,26495,1.0,36.80,1963,2025-12-18,Succession,BRF Kandidaten i Gävle,N/A,N/A
+"Södra Skeppsbron 24",2790000,41029,2.0,68.00,5310,2025-12-11,Succession,BRF Skeppstornet,N/A,N/A
+"Byggmästargatan 5A",3400000,35602,3.0,95.50,4043,2025-12-10,Succession,BRF Kanaljen i Gävle,N/A,N/A
+"Valbogatan 14A",1000000,27027,1.0,37.00,2494,2025-12-08,Succession,BRF Vibrogården,N/A,N/A
+"Kaplansgatan 24",2680000,35263,3.0,76.00,5315,2025-12-08,Succession,HSB BRF Bogården i Gävle,N/A,N/A
+"Byggmästargatan 18B",2950000,27570,3.0,107.00,5501,2025-12-04,Succession,BF Vibro,N/A,N/A
+"Norra Kungsgatan 27",2370000,33380,3.0,71.00,4161,2025-11-28,Succession,BRF Esplanaden i Gävle,N/A,N/A
+"Byggmästargatan 6C",1795000,40795,1.5,44.00,2113,2025-11-27,Succession,BRF Dammen,N/A,N/A
+"Kaplansgatan 23B",1550000,38750,2.0,40.00,2669,2025-11-20,Succession,HSB BRF Belgien i Gävle,N/A,N/A
+"Hantverkargatan 19B",1150000,29487,2.0,39.00,3094,2025-11-14,Succession,HSB BRF Skyttegården I Gävle,N/A,N/A
+"Engelbrektsgatan 5A",1495000,24917,2.0,60.00,3846,2025-11-13,Succession,BRF Sturen 4 i Gävle,N/A,N/A
+"Norra Kungsgatan 35A",1290000,30000,2.0,43.00,3809,2025-11-13,Succession,BRF Kungsgården,N/A,N/A
+"Ruddammsgatan 50",1820000,33517,2.0,54.30,2734,2025-11-12,Succession,BRF Olof Knagge i Gävle,N/A,N/A
+"Valbogatan 12B",1730000,24714,3.0,70.00,4531,2025-11-10,Succession,BRF Vibrogården,N/A,N/A
+"Norra Kopparslagargatan 13B",2110000,28514,3.0,74.00,5036,2025-11-10,Succession,-,N/A,N/A
+"Drottninggatan 25",3400000,21384,4.0,159.00,8301,2025-11-10,Succession,BRF Gävle Norr 24:4,N/A,N/A
+"Norra Skeppargatan 28B",3700000,12628,10.0,293.00,21425,2025-11-03,Succession,Riksbyggen BRF Gävlehus Nr 33,N/A,N/A
+"Staketgatan 36A",1170000,15600,3.0,75.00,4618,2025-10-31,Succession,BRF Kvarta,N/A,N/A
+"Hantverkargatan 11B",1400000,34146,2.0,41.00,2601,2025-10-31,Succession,HSB BRF Belgien i Gävle,N/A,N/A
+"Kaplansgatan 26",1965000,25686,3.0,76.50,5382,2025-10-30,Succession,HSB BRF Bogården i Gävle,N/A,N/A
+"Norra Slottsgatan 22C",2295000,28333,3.0,81.00,4641,2025-10-30,Succession,HSB BRF Norra Slotts,N/A,N/A
+"Ruddammsgatan 50",1600000,30189,1.5,53.00,2664,2025-10-30,Succession,BRF Olof Knagge i Gävle,N/A,N/A
+"Staketgatan 3",1995000,33529,2.0,59.50,3496,2025-10-29,Succession,Riksbyggen BRF Gävlehus nr 23,N/A,N/A
+"Norra Skeppargatan 29A",1900000,25333,2.0,75.00,5406,2025-10-28,Succession,HSB BRF Skyttegården I Gävle,N/A,N/A
+"Norra Slottsgatan 16",3600000,22799,4.0,157.90,6997,2025-10-24,Succession,BRF Kandidaten i Gävle,N/A,N/A
+"Södra Skeppsbron 24",1660000,35319,2.0,47.00,3670,2025-10-24,Succession,BRF Skeppstornet,N/A,N/A
+"Hantverkargatan 22B",2000000,24845,3.0,80.50,5653,2025-10-23,Succession,HSB BRF Bogården i Gävle,N/A,N/A
+"Södra Skeppsbron 4",1395000,30326,2.0,46.00,4762,2025-10-23,Succession,Riksbyggen BRF Dalapalatset,N/A,N/A
+"Brändströmsgatan 20B",1075000,27564,2.0,39.00,3352,2025-10-21,Succession,Riksbyggen BRF Kastanjen i Gävle,N/A,N/A
+"Kansligränd 12A",1750000,27387,2.0,63.90,4399,2025-10-17,Succession,BRF Nicolai,N/A,N/A
+"Hantverkargatan 19A",1350000,24771,2.0,54.50,4159,2025-10-16,Succession,HSB BRF Skyttegården I Gävle,N/A,N/A
+"Norra Slottsgatan 23B",3000000,27907,4.0,107.50,5297,2025-10-16,Succession,Riksbyggen BRF Gävlehus nr 35,N/A,N/A
+"Hantverkargatan 20B",1995000,26078,2.0,76.50,5480,2025-10-16,Succession,HSB BRF Bogården i Gävle,N/A,N/A
+"Valbogatan 31B",1600000,25157,2.0,63.60,5056,2025-10-16,Succession,BRF Valbogården u.p.a. i Gävle,N/A,N/A
+"Norra Slottsgatan 17",1525000,22967,2.5,66.40,3130,2025-10-13,Succession,BRF Vitterheten i Gävle,N/A,N/A
+"Staketgatan 29",870000,34118,1.0,25.50,2347,2025-10-13,Succession,HSB BRF Studenten i Gävle,N/A,N/A
+"Fältskärsleden 5C",1900000,21591,3.0,88.00,7367,2025-10-13,Succession,-,N/A,N/A
+"Hantverkargatan 27B",2600000,28889,4.0,90.00,5011,2025-10-10,Succession,HSB BRF Norra Slotts,N/A,N/A
+"Staketgatan 9",2250000,37815,2.0,59.50,3750,2025-10-09,Succession,BRF Tornspiran i Gävle,N/A,N/A
+"Staketgatan 21A",1900000,29008,2.0,65.50,4753,2025-10-04,Succession,-,N/A,N/A
+"Norra Slottsgatan 24C",1650000,27049,2.0,61.00,3820,2025-10-03,Succession,HSB BRF Norra Slotts,N/A,N/A
+"Staketgatan 36B",1340000,19143,3.0,70.00,4390,2025-09-29,Succession,BRF Kvarta,N/A,N/A
+"Hantverkargatan 14B",1680000,29217,2.0,57.50,4016,2025-09-29,Succession,HSB BRF Tyskland,N/A,N/A
+"Norrtullsgatan 4B",1200000,22430,2.0,53.50,4706,2025-09-29,Succession,BRF Norrgården i Gävle,N/A,N/A
+"Norra Skeppargatan 3A",1395000,43594,1.0,32.00,1535,2025-09-29,Succession,BRF Stadsdiket,N/A,N/A
+
+---
+Genererat av Fastighetsanalysprogram
+Datakälla: SCB (Statistiska Centralbyrån)

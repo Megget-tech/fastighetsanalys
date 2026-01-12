@@ -1,0 +1,581 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v5",
+    "title": "Registerbeteckning_Direkt"
+  },
+  "host": "api.lantmateriet.se",
+  "basePath": "/distribution/produkter/registerbeteckning/v5",
+  "schemes": [
+    "https"
+  ],
+  "security": [
+    {
+      "default": []
+    },
+    {
+      "basic_auth": []
+    }
+  ],
+  "paths": {
+    "/beteckning/referens": {
+      "get": {
+        "summary": "Autocompletefunktion för att hämta beteckningsreferens",
+        "description": "För användning av autocompletefunktioner. Hämtar en registerbeteckningsreferens när söktexten fyllts i.",
+        "parameters": [
+          {
+            "name": "beteckning",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "objektstatus",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "maxHits",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/tillhor/{id}": {
+      "get": {
+        "summary": "Hämta med id för tillhörande objekt",
+        "description": "Hämta en registerbeteckning med en registerenhets eller gemensamhetsanläggnings objektidentitet",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "srid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/beteckning/beteckning": {
+      "get": {
+        "summary": "Autocompletefunktion för att hitta registerbeteckningar",
+        "description": "För användning av autocompletefunktioner. Hämtar stegvis beteckningar allteftersom söktexten fylls i.",
+        "parameters": [
+          {
+            "name": "beteckning",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "objektstatus",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "maxHits",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/referens/fritext": {
+      "get": {
+        "summary": "Hitta med fritext",
+        "description": "Hämta referenser till registerbeteckningar genom en textsökning på beteckningen",
+        "parameters": [
+          {
+            "name": "beteckning",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lankod",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "kommunkod",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "objektstatus",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "maxHits",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/punkt": {
+      "get": {
+        "summary": "Hämta registerbeteckning med koordinat",
+        "description": "Hämtar beteckningar för registerenheter vars yta träffas av angiven punkt.",
+        "parameters": [
+          {
+            "name": "punktSrid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "koordinater",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "srid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/referens/geometri": {
+      "post": {
+        "summary": "Hitta registerbeteckningar med en geometri",
+        "description": "Hitta registerbeteckningar med en geometri",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Payload",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "objektstatus",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/{id}": {
+      "get": {
+        "summary": "Hämta med ID",
+        "description": "Hämta med ID",
+        "consumes": [
+          ""
+        ],
+        "produces": [
+          ""
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Registerbeteckningens identitet",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "srid",
+            "in": "query",
+            "description": "Referenssystem för geometrier. Default: 3006",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/namn": {
+      "get": {
+        "summary": "Hämta med beteckning",
+        "description": "Hämta en registerbeteckning med dess fulla namn. Möjlighet att hämta beteckningsserier genom kommaseparerad lista och/eller intervall av block och enhet t.ex: /namn/gävle olsbacka 42:1, 43:1, 45:1-6, 45:9.",
+        "parameters": [
+          {
+            "name": "namn",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "srid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      },
+      "post": {
+        "summary": "Hämta med beteckning/ar",
+        "description": "Hämta en eller flera registerbeteckningar med deras fulla namn. 250 id:n kan skickas in i samma fråga.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Payload",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "srid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/beteckning/status": {
+      "post": {
+        "summary": "Hämtar status på beteckningar och dess tillhörande registerenheter",
+        "description": "Hämtar status på beteckningar och dess tillhörande registerenheter.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Payload",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/": {
+      "post": {
+        "summary": "Hämta med ett eller flera ID:n",
+        "description": "Hämta en eller flera registerbeteckningar med id. 250 id:n kan skickas in i samma fråga.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Payload",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "srid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": [
+              "registerbeteckning_direkt_v5_read"
+            ]
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-basic-auth-scopes": [
+          "registerbeteckning_direkt_v5_read"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Healthcheckingång",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        },
+        "security": [
+          {
+            "default": []
+          },
+          {
+            "basic_auth": []
+          }
+        ],
+        "x-auth-type": "Application \u0026 Application User",
+        "x-throttling-tier": "Unlimited"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "default": {
+      "type": "oauth2",
+      "authorizationUrl": "https://api.lantmateriet.se/authorize",
+      "flow": "implicit",
+      "scopes": {
+        "registerbeteckning_direkt_v5_read": ""
+      },
+      "x-scopes-bindings": {
+        "registerbeteckning_direkt_v5_read": "LMKE/RegisterbetWSuser_Prod_R"
+      }
+    },
+    "basic_auth": {
+      "type": "basic",
+      "x-scopes": {
+        "registerbeteckning_direkt_v5_read": ""
+      },
+      "x-scopes-bindings": {
+        "registerbeteckning_direkt_v5_read": "LMKE/RegisterbetWSuser_Prod_R"
+      }
+    }
+  }
+}
