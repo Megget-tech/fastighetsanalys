@@ -25,7 +25,9 @@ import {
   getVehicleDataFromSCB,
   getVehicleDataForKommun,
   getBuildingAgeDataFromSCB,
-  getBuildingAgeDataForKommun
+  getBuildingAgeDataForKommun,
+  getEconomicStandard5YearChange,
+  getEarnedIncome5YearChange
 } from './scb-api.service';
 import {
   IncomeMetrics,
@@ -682,9 +684,10 @@ export async function getEconomicStandardMetrics(desoCode: string, kommunCode?: 
       console.log(`[SCB] Fetching economic standard for DeSO ${desoCode}`);
 
       try {
-        const [economicStandardData, kommunData] = await Promise.all([
+        const [economicStandardData, kommunData, change5y] = await Promise.all([
           getEconomicStandardFromSCB(desoCode),
-          kommunCode ? getEconomicStandardForKommun(kommunCode) : Promise.resolve(null)
+          kommunCode ? getEconomicStandardForKommun(kommunCode) : Promise.resolve(null),
+          getEconomicStandard5YearChange(desoCode)
         ]);
 
         if (!economicStandardData) {
@@ -694,6 +697,7 @@ export async function getEconomicStandardMetrics(desoCode: string, kommunCode?: 
 
         return {
           ...economicStandardData,
+          change_5y_percent: change5y !== null ? change5y : undefined,
           kommun_avg: kommunData || undefined,
           year: '2023'  // Economic standard data from 2023
         };
@@ -737,9 +741,10 @@ export async function getEarnedIncomeMetrics(desoCode: string, kommunCode?: stri
       console.log(`[SCB] Fetching earned income for DeSO ${desoCode}`);
 
       try {
-        const [earnedIncomeData, kommunData] = await Promise.all([
+        const [earnedIncomeData, kommunData, change5y] = await Promise.all([
           getEarnedIncomeFromSCB(desoCode),
-          kommunCode ? getEarnedIncomeForKommun(kommunCode) : Promise.resolve(null)
+          kommunCode ? getEarnedIncomeForKommun(kommunCode) : Promise.resolve(null),
+          getEarnedIncome5YearChange(desoCode)
         ]);
 
         if (!earnedIncomeData) {
@@ -749,6 +754,7 @@ export async function getEarnedIncomeMetrics(desoCode: string, kommunCode?: stri
 
         return {
           ...earnedIncomeData,
+          change_5y_percent: change5y !== null ? change5y : undefined,
           kommun_avg: kommunData || undefined,
           year: '2023'  // Earned income data from 2023
         };

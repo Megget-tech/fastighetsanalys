@@ -1041,6 +1041,27 @@ function App() {
                         </div>
                       </div>
 
+                      {/* 5-year change */}
+                      {aggregatedMetrics.metrics.economic_standard.change_5y_percent !== undefined && (
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-lg font-bold ${
+                              aggregatedMetrics.metrics.economic_standard.change_5y_percent >= 0
+                                ? 'text-green-600'
+                                : 'text-red-600'
+                            }`}>
+                              {aggregatedMetrics.metrics.economic_standard.change_5y_percent >= 0 ? '🟢' : '🔴'}
+                              {aggregatedMetrics.metrics.economic_standard.change_5y_percent >= 0 ? '+' : ''}
+                              {aggregatedMetrics.metrics.economic_standard.change_5y_percent.toFixed(1)}%
+                            </span>
+                            <span className="text-xs text-gray-600">förändring 2019-2023</span>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Utveckling av disponibel inkomst per konsumtionsenhet under de senaste 5 åren
+                          </p>
+                        </div>
+                      )}
+
                       {/* Quartile distribution */}
                       <div className="space-y-3">
                         <p className="text-sm text-gray-600 font-medium">Fördelning över kvartiler:</p>
@@ -1140,6 +1161,27 @@ function App() {
                           )}
                         </div>
                       </div>
+
+                      {/* 5-year change */}
+                      {aggregatedMetrics.metrics.earned_income.change_5y_percent !== undefined && (
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-lg font-bold ${
+                              aggregatedMetrics.metrics.earned_income.change_5y_percent >= 0
+                                ? 'text-green-600'
+                                : 'text-red-600'
+                            }`}>
+                              {aggregatedMetrics.metrics.earned_income.change_5y_percent >= 0 ? '🟢' : '🔴'}
+                              {aggregatedMetrics.metrics.earned_income.change_5y_percent >= 0 ? '+' : ''}
+                              {aggregatedMetrics.metrics.earned_income.change_5y_percent.toFixed(1)}%
+                            </span>
+                            <span className="text-xs text-gray-600">förändring 2019-2023</span>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Utveckling av förvärvsinkomst (lön, företagsvinst) under de senaste 5 åren
+                          </p>
+                        </div>
+                      )}
 
                       {/* Quartile distribution */}
                       <div className="space-y-3">

@@ -154,6 +154,12 @@ export function exportToCSV(
     rows.push(`Medianvärde (tkr),${metrics.metrics.economic_standard.median_value.toFixed(0)},${metrics.metrics.economic_standard.kommun_avg?.median_value.toFixed(0) || 'N/A'}`);
     rows.push(`Medelvärde (tkr),${metrics.metrics.economic_standard.mean_value.toFixed(0)},${metrics.metrics.economic_standard.kommun_avg?.mean_value.toFixed(0) || 'N/A'}`);
     rows.push(`Antal personer,${metrics.metrics.economic_standard.total_persons},${metrics.metrics.economic_standard.kommun_avg?.total_persons || 'N/A'}`);
+    if (metrics.metrics.economic_standard.change_5y_percent !== undefined) {
+      const changeStr = metrics.metrics.economic_standard.change_5y_percent >= 0
+        ? `+${metrics.metrics.economic_standard.change_5y_percent.toFixed(1)}%`
+        : `${metrics.metrics.economic_standard.change_5y_percent.toFixed(1)}%`;
+      rows.push(`Förändring 2019-2023,${changeStr},`);
+    }
     rows.push('');
     rows.push('Kvartil,Område (%),Kommun (%)');
     rows.push(`Kvartil 1,${metrics.metrics.economic_standard.quartile_1.toFixed(1)},${metrics.metrics.economic_standard.kommun_avg?.quartile_1.toFixed(1) || 'N/A'}`);
@@ -170,6 +176,12 @@ export function exportToCSV(
     rows.push(`Medianvärde (tkr),${metrics.metrics.earned_income.median_value.toFixed(0)},${metrics.metrics.earned_income.kommun_avg?.median_value.toFixed(0) || 'N/A'}`);
     rows.push(`Medelvärde (tkr),${metrics.metrics.earned_income.mean_value.toFixed(0)},${metrics.metrics.earned_income.kommun_avg?.mean_value.toFixed(0) || 'N/A'}`);
     rows.push(`Antal personer,${metrics.metrics.earned_income.total_persons},${metrics.metrics.earned_income.kommun_avg?.total_persons || 'N/A'}`);
+    if (metrics.metrics.earned_income.change_5y_percent !== undefined) {
+      const changeStr = metrics.metrics.earned_income.change_5y_percent >= 0
+        ? `+${metrics.metrics.earned_income.change_5y_percent.toFixed(1)}%`
+        : `${metrics.metrics.earned_income.change_5y_percent.toFixed(1)}%`;
+      rows.push(`Förändring 2019-2023,${changeStr},`);
+    }
     rows.push('');
     rows.push('Kvartil,Område (%),Kommun (%)');
     rows.push(`Kvartil 1,${metrics.metrics.earned_income.quartile_1.toFixed(1)},${metrics.metrics.earned_income.kommun_avg?.quartile_1.toFixed(1) || 'N/A'}`);

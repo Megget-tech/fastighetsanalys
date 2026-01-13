@@ -201,6 +201,7 @@ export interface EconomicStandardMetrics {
   median_value: number;
   mean_value: number;
   total_persons: number;
+  change_5y_percent?: number;  // Förändring senaste 5 år (2019-2023), procent
   kommun_avg?: {
     quartile_1: number;
     quartile_2: number;
@@ -220,6 +221,7 @@ export interface EarnedIncomeMetrics {
   median_value: number;
   mean_value: number;
   total_persons: number;
+  change_5y_percent?: number;  // Förändring senaste 5 år (2019-2023), procent
   kommun_avg?: {
     quartile_1: number;
     quartile_2: number;

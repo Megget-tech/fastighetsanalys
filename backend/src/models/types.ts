@@ -171,6 +171,7 @@ export interface EconomicStandardBase {
   median_value: number;  // Medianvärde, tkr
   mean_value: number;    // Medelvärde, tkr
   total_persons: number; // Antal personer totalt
+  change_5y_percent?: number; // Förändring senaste 5 år (2019-2023), procent
 }
 
 export interface EconomicStandardMetrics extends EconomicStandardBase {
@@ -186,6 +187,7 @@ export interface EarnedIncomeBase {
   median_value: number;  // Medianvärde förvärvsinkomst, tkr
   mean_value: number;    // Medelvärde förvärvsinkomst, tkr
   total_persons: number; // Antal personer totalt
+  change_5y_percent?: number; // Förändring senaste 5 år (2019-2023), procent
 }
 
 export interface EarnedIncomeMetrics extends EarnedIncomeBase {

@@ -1335,6 +1335,159 @@ export async function getEconomicStandardFromSCB(desoCode: string, year: string 
 }
 
 /**
+ * Calculate 5-year change in economic standard (2019-2023)
+ * Returns percentage change based on median value
+ */
+export async function getEconomicStandard5YearChange(desoCode: string): Promise<number | null> {
+  return await queueSCBRequest(`econ-std-5y-${desoCode}`, async () => {
+    const url = `${SCB_API_V1_BASE}/START/HE/HE0110/HE0110I/TabVX3InkDesoN`;
+
+    const query: SCBV1Query = {
+      query: [
+        {
+          code: "Region",
+          selection: {
+            filter: "item",
+            values: [desoCode]
+          }
+        },
+        {
+          code: "ContentsCode",
+          selection: {
+            filter: "item",
+            values: ["000006T9"]  // Medianvärde
+          }
+        },
+        {
+          code: "Tid",
+          selection: {
+            filter: "item",
+            values: ["2019", "2023"]
+          }
+        }
+      ],
+      response: {
+        format: "json"
+      }
+    };
+
+    try {
+      const response = await axios.post<SCBV1Response>(url, query, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        timeout: 30000
+      });
+
+      const data = response.data.data;
+
+      if (!data || data.length < 2) {
+        console.warn(`[SCB API v1] Insufficient data for 5-year change calculation for ${desoCode}`);
+        return null;
+      }
+
+      // data[0] is 2019, data[1] is 2023
+      const value2019 = parseFloat(data[0].values[0]) || 0;
+      const value2023 = parseFloat(data[1].values[0]) || 0;
+
+      if (value2019 === 0) {
+        console.warn(`[SCB API v1] Cannot calculate 5-year change, 2019 value is zero`);
+        return null;
+      }
+
+      const changePercent = ((value2023 - value2019) / value2019) * 100;
+
+      console.log(`[SCB API v1] Economic standard 5-year change for ${desoCode}: ${value2019} → ${value2023} (${changePercent.toFixed(1)}%)`);
+
+      return changePercent;
+    } catch (error: any) {
+      console.error(`[SCB API v1] Error fetching 5-year economic standard change:`, error.message);
+      return null;
+    }
+  });
+}
+
+/**
+ * Calculate 5-year change in earned income (2019-2023)
+ * Returns percentage change based on median value
+ */
+export async function getEarnedIncome5YearChange(desoCode: string): Promise<number | null> {
+  return await queueSCBRequest(`earned-inc-5y-${desoCode}`, async () => {
+    const url = `${SCB_API_V1_BASE}/START/HE/HE0110/HE0110I/Tab1InkDesoN`;
+
+    const query: SCBV1Query = {
+      query: [
+        {
+          code: "Region",
+          selection: {
+            filter: "item",
+            values: [desoCode]
+          }
+        },
+        {
+          code: "InkomstTyp",
+          selection: {
+            filter: "item",
+            values: ["SaFörInk"]  // Sammanräknad förvärvsinkomst
+          }
+        },
+        {
+          code: "ContentsCode",
+          selection: {
+            filter: "item",
+            values: ["000006T1"]  // Medianvärde
+          }
+        },
+        {
+          code: "Tid",
+          selection: {
+            filter: "item",
+            values: ["2019", "2023"]
+          }
+        }
+      ],
+      response: {
+        format: "json"
+      }
+    };
+
+    try {
+      const response = await axios.post<SCBV1Response>(url, query, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        timeout: 30000
+      });
+
+      const data = response.data.data;
+
+      if (!data || data.length < 2) {
+        console.warn(`[SCB API v1] Insufficient data for 5-year earned income change for ${desoCode}`);
+        return null;
+      }
+
+      // data[0] is 2019, data[1] is 2023
+      const value2019 = parseFloat(data[0].values[0]) || 0;
+      const value2023 = parseFloat(data[1].values[0]) || 0;
+
+      if (value2019 === 0) {
+        console.warn(`[SCB API v1] Cannot calculate 5-year change, 2019 value is zero`);
+        return null;
+      }
+
+      const changePercent = ((value2023 - value2019) / value2019) * 100;
+
+      console.log(`[SCB API v1] Earned income 5-year change for ${desoCode}: ${value2019} → ${value2023} (${changePercent.toFixed(1)}%)`);
+
+      return changePercent;
+    } catch (error: any) {
+      console.error(`[SCB API v1] Error fetching 5-year earned income change:`, error.message);
+      return null;
+    }
+  });
+}
+
+/**
  * Hämta förvärvsinkomst för ett DeSO-område från Tab1InkDesoN (gamla API v1)
  * Returnerar fördelning över kvartiler och median/medelvärden
  */
@@ -2296,7 +2449,9 @@ export default {
   getHousingTypeDataFromSCB,
   getTenureFormDataFromSCB,
   getEconomicStandardFromSCB,
+  getEconomicStandard5YearChange,
   getEarnedIncomeFromSCB,
+  getEarnedIncome5YearChange,
   getEconomicStandardForKommun,
   getEarnedIncomeForKommun,
   getVehicleDataFromSCB,
