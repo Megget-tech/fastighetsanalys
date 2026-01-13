@@ -12,7 +12,9 @@ export function exportToCSV(
   metrics: AggregatedMetrics,
   desoCodes: string[],
   kommunName: string,
-  booliData?: BooliData
+  booliData?: BooliData,
+  propertyName?: string,
+  coordinates?: [number, number]
 ): void {
   const rows: string[] = [];
 
@@ -23,6 +25,12 @@ export function exportToCSV(
   rows.push('FASTIGHETSANALYS - EXPORT');
   rows.push(`Exportdatum,${new Date().toLocaleString('sv-SE')}`);
   rows.push(`Kommun,${kommunName}`);
+  if (propertyName) {
+    rows.push(`Fastighet,${propertyName}`);
+  }
+  if (coordinates) {
+    rows.push(`Koordinater (Lon/Lat),"${coordinates[0].toFixed(6)}, ${coordinates[1].toFixed(6)}"`);
+  }
   rows.push(`Antal områden,${metrics.area_count}`);
   rows.push(`DeSO-koder,"${desoCodes.join(', ')}"`);
   rows.push('');
@@ -48,7 +56,7 @@ export function exportToCSV(
   rows.push('Åldersgrupp,Antal,Procent (%),Kommun Procent (%)');
   Object.entries(metrics.metrics.population.age_distribution || {}).forEach(([ageGroup, count]) => {
     const percentage = ((count as number) / metrics.metrics.population.total * 100).toFixed(1);
-    const kommunCount = metrics.metrics.population.kommun_avg?.age_distribution?.[ageGroup] as number | undefined;
+    const kommunCount = metrics.metrics.population.kommun_avg?.age_distribution?.[ageGroup as keyof typeof metrics.metrics.population.age_distribution] as number | undefined;
     const kommunTotal = metrics.metrics.population.kommun_avg?.total || 0;
     const kommunPercentage = kommunCount && kommunTotal > 0
       ? ((kommunCount / kommunTotal) * 100).toFixed(1)
@@ -222,6 +230,57 @@ export function exportToCSV(
   const dateStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
   const kommunSlug = kommunName.toLowerCase().replace(/å/g, 'a').replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/\s+/g, '_');
   const filename = `fastighet_${kommunSlug}_${dateStr}.csv`;
+
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Exports aggregated metrics as JSON for further analysis
+ */
+export function exportToJSON(
+  metrics: AggregatedMetrics,
+  desoCodes: string[],
+  kommunName: string,
+  booliData?: BooliData,
+  propertyName?: string,
+  coordinates?: [number, number]
+): void {
+  // Build comprehensive JSON structure
+  const exportData = {
+    metadata: {
+      export_date: new Date().toISOString(),
+      export_date_local: new Date().toLocaleString('sv-SE'),
+      kommun: kommunName,
+      property_name: propertyName || null,
+      coordinates: coordinates ? {
+        longitude: coordinates[0],
+        latitude: coordinates[1]
+      } : null,
+      area_count: metrics.area_count,
+      deso_codes: desoCodes
+    },
+    metrics: metrics.metrics,
+    booli_data: booliData || null
+  };
+
+  // Convert to JSON with pretty printing
+  const jsonContent = JSON.stringify(exportData, null, 2);
+
+  // Create blob and download
+  const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+
+  // Create filename with kommun name and date
+  const dateStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const kommunSlug = kommunName.toLowerCase().replace(/å/g, 'a').replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/\s+/g, '_');
+  const filename = `fastighet_${kommunSlug}_${dateStr}.json`;
 
   link.setAttribute('href', url);
   link.setAttribute('download', filename);

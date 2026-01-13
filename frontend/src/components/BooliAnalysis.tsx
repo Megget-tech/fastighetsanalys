@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getBooliSales, getBooliTrends, getBooliSummary } from '../services/api';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface BooliSale {
   id: number;

@@ -5,16 +5,7 @@ import { MapView } from './components/Map/MapView';
 import { PropertySearch } from './components/PropertySearch';
 import { BooliUpload } from './components/BooliUpload';
 import { BooliAnalysis } from './components/BooliAnalysis';
-import { exportToCSV } from './utils/csvExport';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer
-} from 'recharts';
+import { exportToCSV, exportToJSON } from './utils/csvExport';
 
 function App() {
   const [healthStatus, setHealthStatus] = useState<string>('checking...');
@@ -23,6 +14,7 @@ function App() {
     selectedPolygon,
     desoResult,
     selectedDesoCodes,
+    propertyPoint,
     aggregatedMetrics,
     loading,
     error,
@@ -611,11 +603,11 @@ function App() {
                         const countStart = aggregatedMetrics.metrics.population.age_distribution_comparison!.start_distribution[ageGroup as keyof typeof aggregatedMetrics.metrics.population.age_distribution_comparison.start_distribution];
                         const countEnd = aggregatedMetrics.metrics.population.age_distribution_comparison!.end_distribution[ageGroup as keyof typeof aggregatedMetrics.metrics.population.age_distribution_comparison.end_distribution];
 
-                        const totalStart = Object.values(aggregatedMetrics.metrics.population.age_distribution_comparison!.start_distribution).reduce((sum, val) => sum + val, 0);
-                        const totalEnd = Object.values(aggregatedMetrics.metrics.population.age_distribution_comparison!.end_distribution).reduce((sum, val) => sum + val, 0);
+                        const totalStart = (Object.values(aggregatedMetrics.metrics.population.age_distribution_comparison!.start_distribution) as number[]).reduce((sum, val) => sum + val, 0);
+                        const totalEnd = (Object.values(aggregatedMetrics.metrics.population.age_distribution_comparison!.end_distribution) as number[]).reduce((sum, val) => sum + val, 0);
 
-                        const percentageStart = (countStart / totalStart) * 100;
-                        const percentageEnd = (countEnd / totalEnd) * 100;
+                        const percentageStart = (countStart as number / totalStart) * 100;
+                        const percentageEnd = (countEnd as number / totalEnd) * 100;
                         const change = countEnd - countStart;
                         const percentageChange = percentageEnd - percentageStart;
 
@@ -1321,8 +1313,8 @@ function App() {
                       {/* Period breakdown with dual bars */}
                       <div className="space-y-3">
                         <p className="text-sm font-medium text-gray-700">Fördelning per byggnadsperiod:</p>
-                        {aggregatedMetrics.metrics.building_age.periods.map(period => {
-                          const kommunPeriod = aggregatedMetrics.metrics.building_age?.kommun_avg?.periods.find(p => p.period === period.period);
+                        {aggregatedMetrics.metrics.building_age.periods.map((period: any) => {
+                          const kommunPeriod = aggregatedMetrics.metrics.building_age?.kommun_avg?.periods.find((p: any) => p.period === period.period);
 
                           return (
                             <div key={period.period} className="space-y-1">
@@ -1374,18 +1366,47 @@ function App() {
 
                 {/* Export Buttons */}
                 <div className="space-y-2">
-                  <button
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    onClick={() => {
-                      if (aggregatedMetrics && desoResult) {
-                        exportToCSV(aggregatedMetrics, selectedDesoCodes, desoResult.kommun_name, booliData);
-                      }
-                    }}
-                    disabled={!aggregatedMetrics || !desoResult}
-                    title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera alla data (inkl. prisanalys) till CSV'}
-                  >
-                    📥 Exportera till CSV {booliData ? '(inkl. prisdata)' : ''}
-                  </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      onClick={() => {
+                        if (aggregatedMetrics && desoResult) {
+                          exportToCSV(
+                            aggregatedMetrics,
+                            selectedDesoCodes,
+                            desoResult.kommun_name,
+                            booliData,
+                            propertyPoint?.beteckning,
+                            propertyPoint?.coordinates
+                          );
+                        }
+                      }}
+                      disabled={!aggregatedMetrics || !desoResult}
+                      title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera alla data till CSV'}
+                    >
+                      📥 CSV
+                    </button>
+
+                    <button
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      onClick={() => {
+                        if (aggregatedMetrics && desoResult) {
+                          exportToJSON(
+                            aggregatedMetrics,
+                            selectedDesoCodes,
+                            desoResult.kommun_name,
+                            booliData,
+                            propertyPoint?.beteckning,
+                            propertyPoint?.coordinates
+                          );
+                        }
+                      }}
+                      disabled={!aggregatedMetrics || !desoResult}
+                      title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera alla data till JSON'}
+                    >
+                      📦 JSON
+                    </button>
+                  </div>
 
                   <button
                     className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed print:hidden"
@@ -1395,6 +1416,30 @@ function App() {
                   >
                     🖨️ Skriv ut / Spara som PDF
                   </button>
+
+                  {/* Analysis Buttons */}
+                  <div className="border-t pt-2 mt-2">
+                    <p className="text-xs text-gray-600 mb-2 font-medium">Vidare Analys:</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        onClick={() => alert('Quick Analys kommer snart!')}
+                        disabled={!aggregatedMetrics || !desoResult}
+                        title="Snabb analys av områdets potential"
+                      >
+                        ⚡ Quick Analys
+                      </button>
+
+                      <button
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        onClick={() => alert('Full Analys kommer snart!')}
+                        disabled={!aggregatedMetrics || !desoResult}
+                        title="Fullständig analys med rekommendationer"
+                      >
+                        📊 Full Analys
+                      </button>
+                    </div>
+                  </div>
 
                   <button
                     className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition print:hidden"

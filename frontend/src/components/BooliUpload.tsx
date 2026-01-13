@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadBooliData, getBooliSummary } from '../services/api';
+import { uploadBooliData } from '../services/api';
 
 interface UploadStatus {
   uploading: boolean;
@@ -55,7 +55,7 @@ export const BooliUpload: React.FC = () => {
     });
 
     try {
-      const result = await uploadBooliData(files, region);
+      const result = await uploadBooliData(files as { soldNew: File; soldOld: File; trendsNew: File; trendsOld: File }, region);
 
       setStatus({
         uploading: false,
