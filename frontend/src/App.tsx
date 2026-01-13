@@ -762,14 +762,16 @@ function App() {
                         )}
                       </div>
 
-                      {/* Breakdown by size */}
+                      {/* Breakdown by household type */}
                       <div className="space-y-2">
                         {[
-                          { label: '1 person', count: aggregatedMetrics.metrics.household.single_person, kommunKey: 'single_person', color: 'bg-blue-600', lightColor: 'bg-blue-300' },
-                          { label: '2 personer', count: aggregatedMetrics.metrics.household.two_person, kommunKey: 'two_person', color: 'bg-indigo-600', lightColor: 'bg-indigo-300' },
-                          { label: '3+ personer', count: aggregatedMetrics.metrics.household.three_plus_person, kommunKey: 'three_plus_person', color: 'bg-purple-600', lightColor: 'bg-purple-300' }
+                          { label: 'Ensamstående', count: aggregatedMetrics.metrics.household.ensamstaende_utan_barn, kommunKey: 'ensamstaende_utan_barn', color: 'bg-blue-600', lightColor: 'bg-blue-300' },
+                          { label: 'Ensamstående med barn', count: aggregatedMetrics.metrics.household.ensamstaende_med_barn, kommunKey: 'ensamstaende_med_barn', color: 'bg-cyan-600', lightColor: 'bg-cyan-300' },
+                          { label: 'Par', count: aggregatedMetrics.metrics.household.par_utan_barn, kommunKey: 'par_utan_barn', color: 'bg-indigo-600', lightColor: 'bg-indigo-300' },
+                          { label: 'Familjer', count: aggregatedMetrics.metrics.household.familjer, kommunKey: 'familjer', color: 'bg-purple-600', lightColor: 'bg-purple-300' },
+                          { label: 'Övriga', count: aggregatedMetrics.metrics.household.ovriga, kommunKey: 'ovriga', color: 'bg-gray-600', lightColor: 'bg-gray-300' }
                         ].map(({ label, count, kommunKey, color, lightColor }) => {
-                          const percentage = (count / aggregatedMetrics.metrics.household.total_households) * 100;
+                          const percentage = ((count as number) / aggregatedMetrics.metrics.household.total_households) * 100;
 
                           // Get kommun percentage
                           const kommunAvg = aggregatedMetrics.metrics.household.kommun_avg;

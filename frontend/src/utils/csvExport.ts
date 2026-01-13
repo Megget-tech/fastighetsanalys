@@ -91,22 +91,35 @@ export function exportToCSV(
   rows.push(`Totalt antal hushåll,${metrics.metrics.household.total_households},${metrics.metrics.household.kommun_avg?.total_households || 'N/A'}`);
   rows.push(`Snitt storlek (personer/hushåll),${metrics.metrics.household.average_household_size.toFixed(2)},${metrics.metrics.household.kommun_avg?.average_household_size.toFixed(2) || 'N/A'}`);
   rows.push('');
-  rows.push('Fördelning,Antal,Procent (%),Kommun Procent (%)');
-  const singlePct = ((metrics.metrics.household.single_person / metrics.metrics.household.total_households) * 100).toFixed(1);
-  const twoPct = ((metrics.metrics.household.two_person / metrics.metrics.household.total_households) * 100).toFixed(1);
-  const threePlusPct = ((metrics.metrics.household.three_plus_person / metrics.metrics.household.total_households) * 100).toFixed(1);
-  const kommunSinglePct = metrics.metrics.household.kommun_avg
-    ? ((metrics.metrics.household.kommun_avg.single_person / metrics.metrics.household.kommun_avg.total_households) * 100).toFixed(1)
+  rows.push('Hushållstyp,Antal,Procent (%),Kommun Procent (%)');
+
+  const ensamPct = ((metrics.metrics.household.ensamstaende_utan_barn / metrics.metrics.household.total_households) * 100).toFixed(1);
+  const ensamBarnPct = ((metrics.metrics.household.ensamstaende_med_barn / metrics.metrics.household.total_households) * 100).toFixed(1);
+  const parPct = ((metrics.metrics.household.par_utan_barn / metrics.metrics.household.total_households) * 100).toFixed(1);
+  const familjPct = ((metrics.metrics.household.familjer / metrics.metrics.household.total_households) * 100).toFixed(1);
+  const ovrigaPct = ((metrics.metrics.household.ovriga / metrics.metrics.household.total_households) * 100).toFixed(1);
+
+  const kommunEnsamPct = metrics.metrics.household.kommun_avg
+    ? ((metrics.metrics.household.kommun_avg.ensamstaende_utan_barn / metrics.metrics.household.kommun_avg.total_households) * 100).toFixed(1)
     : 'N/A';
-  const kommunTwoPct = metrics.metrics.household.kommun_avg
-    ? ((metrics.metrics.household.kommun_avg.two_person / metrics.metrics.household.kommun_avg.total_households) * 100).toFixed(1)
+  const kommunEnsamBarnPct = metrics.metrics.household.kommun_avg
+    ? ((metrics.metrics.household.kommun_avg.ensamstaende_med_barn / metrics.metrics.household.kommun_avg.total_households) * 100).toFixed(1)
     : 'N/A';
-  const kommunThreePlusPct = metrics.metrics.household.kommun_avg
-    ? ((metrics.metrics.household.kommun_avg.three_plus_person / metrics.metrics.household.kommun_avg.total_households) * 100).toFixed(1)
+  const kommunParPct = metrics.metrics.household.kommun_avg
+    ? ((metrics.metrics.household.kommun_avg.par_utan_barn / metrics.metrics.household.kommun_avg.total_households) * 100).toFixed(1)
     : 'N/A';
-  rows.push(`1 person,${metrics.metrics.household.single_person},${singlePct},${kommunSinglePct}`);
-  rows.push(`2 personer,${metrics.metrics.household.two_person},${twoPct},${kommunTwoPct}`);
-  rows.push(`3+ personer,${metrics.metrics.household.three_plus_person},${threePlusPct},${kommunThreePlusPct}`);
+  const kommunFamiljPct = metrics.metrics.household.kommun_avg
+    ? ((metrics.metrics.household.kommun_avg.familjer / metrics.metrics.household.kommun_avg.total_households) * 100).toFixed(1)
+    : 'N/A';
+  const kommunOvrigaPct = metrics.metrics.household.kommun_avg
+    ? ((metrics.metrics.household.kommun_avg.ovriga / metrics.metrics.household.kommun_avg.total_households) * 100).toFixed(1)
+    : 'N/A';
+
+  rows.push(`Ensamstående,${metrics.metrics.household.ensamstaende_utan_barn},${ensamPct},${kommunEnsamPct}`);
+  rows.push(`Ensamstående med barn,${metrics.metrics.household.ensamstaende_med_barn},${ensamBarnPct},${kommunEnsamBarnPct}`);
+  rows.push(`Par,${metrics.metrics.household.par_utan_barn},${parPct},${kommunParPct}`);
+  rows.push(`Familjer,${metrics.metrics.household.familjer},${familjPct},${kommunFamiljPct}`);
+  rows.push(`Övriga,${metrics.metrics.household.ovriga},${ovrigaPct},${kommunOvrigaPct}`);
   rows.push('');
 
   // HUSTYP

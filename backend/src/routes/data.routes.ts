@@ -55,6 +55,8 @@ router.get('/metrics/:desoCode', async (req: Request, res: Response) => {
         tenure_form: scbMetrics.tenure_form,
         economic_standard: scbMetrics.economic_standard,
         earned_income: scbMetrics.earned_income,
+        vehicles: scbMetrics.vehicles,
+        building_age: scbMetrics.building_age,
         booli: booliMetrics
       }
     };

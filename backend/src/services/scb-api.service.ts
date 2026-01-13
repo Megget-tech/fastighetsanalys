@@ -909,9 +909,14 @@ export async function getOriginDataFromSCB(regionCode: string, year: string = '2
  */
 export async function getHouseholdDataFromSCB(regionCode: string, year: string = '2024'): Promise<{
   total_households: number;
-  single_person: number;
-  two_person: number;
-  three_plus_person: number;
+  ensamstaende_utan_barn: number;
+  ensamstaende_med_barn: number;
+  par_utan_barn: number;
+  familjer: number;
+  ovriga: number;
+  single_person?: number;
+  two_person?: number;
+  three_plus_person?: number;
   average_household_size: number;
 } | null> {
   return await queueSCBRequest(`household-${regionCode}-${year}`, async () => {
@@ -977,22 +982,12 @@ export async function getHouseholdDataFromSCB(regionCode: string, year: string =
         return acc;
       }, {});
 
-      const esub = householdsByType['ESUB'] || 0; // Single without children
-      const sbub = householdsByType['SBUB'] || 0; // Couple without children
-      const esmb = householdsByType['ESMB'] || 0; // Single parent with children
-      const sbmb = householdsByType['SBMB'] || 0; // Couple with children
-      const ovriga = householdsByType['OVRIGA'] || 0; // Other
+      const esub = householdsByType['ESUB'] || 0; // Ensamstående utan barn
+      const sbub = householdsByType['SBUB'] || 0; // Sammanboende utan barn (par)
+      const esmb = householdsByType['ESMB'] || 0; // Ensamstående med barn
+      const sbmb = householdsByType['SBMB'] || 0; // Sammanboende med barn (familjer)
+      const ovriga = householdsByType['OVRIGA'] || 0; // Övriga hushåll
 
-      // Map household types to sizes (approximation):
-      // - ESUB (single without children) → 1 person
-      // - SBUB (couple without children) → 2 persons
-      // - ESMB (single parent) → ~2 persons (could be more)
-      // - SBMB (couple with children) → 3+ persons
-      // - OVRIGA → mixed, split between 2 and 3+
-
-      const singlePerson = esub;
-      const twoPerson = sbub + Math.floor(esmb * 0.5) + Math.floor(ovriga * 0.5);
-      const threePlusPerson = sbmb + Math.ceil(esmb * 0.5) + Math.ceil(ovriga * 0.5);
       const totalHouseholds = esub + sbub + esmb + sbmb + ovriga;
 
       // Calculate average household size (approximation based on types)
@@ -1000,10 +995,20 @@ export async function getHouseholdDataFromSCB(regionCode: string, year: string =
         ? ((esub * 1) + (sbub * 2) + (esmb * 2.5) + (sbmb * 3.5) + (ovriga * 2)) / totalHouseholds
         : 0;
 
-      console.log(`[SCB API v1] Households for ${regionCode}: ${totalHouseholds} total (1p: ${singlePerson}, 2p: ${twoPerson}, 3+p: ${threePlusPerson}, avg: ${avgSize.toFixed(2)})`);
+      console.log(`[SCB API v1] Households for ${regionCode}: ${totalHouseholds} total (ESUB: ${esub}, ESMB: ${esmb}, SBUB: ${sbub}, SBMB: ${sbmb}, OVRIGA: ${ovriga}, avg: ${avgSize.toFixed(2)})`);
+
+      // Also provide legacy size-based mapping for backwards compatibility
+      const singlePerson = esub;
+      const twoPerson = sbub + Math.floor(esmb * 0.5) + Math.floor(ovriga * 0.5);
+      const threePlusPerson = sbmb + Math.ceil(esmb * 0.5) + Math.ceil(ovriga * 0.5);
 
       return {
         total_households: totalHouseholds,
+        ensamstaende_utan_barn: esub,
+        ensamstaende_med_barn: esmb,
+        par_utan_barn: sbub,
+        familjer: sbmb,
+        ovriga: ovriga,
         single_person: singlePerson,
         two_person: twoPerson,
         three_plus_person: threePlusPerson,

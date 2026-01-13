@@ -142,9 +142,19 @@ export interface OriginMetrics extends OriginBase {
 
 export interface HouseholdBase {
   total_households: number;
-  single_person: number;      // 1 person
-  two_person: number;          // 2 personer
-  three_plus_person: number;   // 3+ personer
+
+  // By household type (SCB categories)
+  ensamstaende_utan_barn: number;     // ESUB - Ensamstående utan barn
+  ensamstaende_med_barn: number;      // ESMB - Ensamstående med barn
+  par_utan_barn: number;              // SBUB - Sammanboende utan barn (par)
+  familjer: number;                   // SBMB - Sammanboende med barn (familjer)
+  ovriga: number;                     // OVRIGA - Övriga hushåll
+
+  // Legacy size-based (for backwards compatibility, can be removed later)
+  single_person?: number;      // 1 person
+  two_person?: number;          // 2 personer
+  three_plus_person?: number;   // 3+ personer
+
   average_household_size: number;
 }
 

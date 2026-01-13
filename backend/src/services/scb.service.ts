@@ -23,7 +23,9 @@ import {
   getHousingTypeDataForKommun,
   getTenureFormDataForKommun,
   getVehicleDataFromSCB,
-  getVehicleDataForKommun
+  getVehicleDataForKommun,
+  getBuildingAgeDataFromSCB,
+  getBuildingAgeDataForKommun
 } from './scb-api.service';
 import {
   IncomeMetrics,
@@ -37,6 +39,7 @@ import {
   EconomicStandardMetrics,
   EarnedIncomeMetrics,
   VehicleMetrics,
+  BuildingAgeMetrics,
   SCBTimeSeries
 } from '../models/types';
 
@@ -482,6 +485,11 @@ export async function getHouseholdMetrics(desoCode: string, kommunCode?: string)
 
         return {
           total_households: householdData.total_households,
+          ensamstaende_utan_barn: householdData.ensamstaende_utan_barn,
+          ensamstaende_med_barn: householdData.ensamstaende_med_barn,
+          par_utan_barn: householdData.par_utan_barn,
+          familjer: householdData.familjer,
+          ovriga: householdData.ovriga,
           single_person: householdData.single_person,
           two_person: householdData.two_person,
           three_plus_person: householdData.three_plus_person,
@@ -503,18 +511,34 @@ export async function getHouseholdMetrics(desoCode: string, kommunCode?: string)
  */
 function getMockHouseholdMetrics(): HouseholdMetrics {
   const totalHouseholds = Math.floor(500 + Math.random() * 1500);
-  const singlePct = 0.35 + Math.random() * 0.15; // 35-50%
-  const twoPct = 0.30 + Math.random() * 0.10; // 30-40%
-  const threePlusPct = 1 - singlePct - twoPct;
 
-  const single = Math.floor(totalHouseholds * singlePct);
-  const two = Math.floor(totalHouseholds * twoPct);
-  const threePlus = totalHouseholds - single - two;
+  // Mock household type distribution
+  const esubPct = 0.25 + Math.random() * 0.10; // 25-35% ensamstående utan barn
+  const esmbPct = 0.05 + Math.random() * 0.05; // 5-10% ensamstående med barn
+  const sbubPct = 0.25 + Math.random() * 0.10; // 25-35% par
+  const sbmbPct = 0.25 + Math.random() * 0.15; // 25-40% familjer
+  const ovrigaPct = 1 - esubPct - esmbPct - sbubPct - sbmbPct;
 
-  const avgSize = ((single * 1) + (two * 2) + (threePlus * 3.5)) / totalHouseholds;
+  const esub = Math.floor(totalHouseholds * esubPct);
+  const esmb = Math.floor(totalHouseholds * esmbPct);
+  const sbub = Math.floor(totalHouseholds * sbubPct);
+  const sbmb = Math.floor(totalHouseholds * sbmbPct);
+  const ovriga = totalHouseholds - esub - esmb - sbub - sbmb;
+
+  const avgSize = ((esub * 1) + (sbub * 2) + (esmb * 2.5) + (sbmb * 3.5) + (ovriga * 2)) / totalHouseholds;
+
+  // Legacy size-based mapping
+  const single = esub;
+  const two = sbub + Math.floor(esmb * 0.5) + Math.floor(ovriga * 0.5);
+  const threePlus = sbmb + Math.ceil(esmb * 0.5) + Math.ceil(ovriga * 0.5);
 
   return {
     total_households: totalHouseholds,
+    ensamstaende_utan_barn: esub,
+    ensamstaende_med_barn: esmb,
+    par_utan_barn: sbub,
+    familjer: sbmb,
+    ovriga: ovriga,
     single_person: single,
     two_person: two,
     three_plus_person: threePlus,
@@ -1402,6 +1426,32 @@ export async function getAggregatedMetrics(desoCodes: string[]) {
       0
     );
 
+    const totalEsamstaendeUtanBarn = validMetrics.reduce(
+      (sum, m) => sum + (m!.metrics.household?.ensamstaende_utan_barn || 0),
+      0
+    );
+
+    const totalEnsamstaendeMedBarn = validMetrics.reduce(
+      (sum, m) => sum + (m!.metrics.household?.ensamstaende_med_barn || 0),
+      0
+    );
+
+    const totalParUtanBarn = validMetrics.reduce(
+      (sum, m) => sum + (m!.metrics.household?.par_utan_barn || 0),
+      0
+    );
+
+    const totalFamiljer = validMetrics.reduce(
+      (sum, m) => sum + (m!.metrics.household?.familjer || 0),
+      0
+    );
+
+    const totalOvriga = validMetrics.reduce(
+      (sum, m) => sum + (m!.metrics.household?.ovriga || 0),
+      0
+    );
+
+    // Legacy size-based (optional)
     const totalSinglePerson = validMetrics.reduce(
       (sum, m) => sum + (m!.metrics.household?.single_person || 0),
       0
@@ -1418,7 +1468,7 @@ export async function getAggregatedMetrics(desoCodes: string[]) {
     );
 
     const aggregatedAvgHouseholdSize = totalHouseholds > 0
-      ? ((totalSinglePerson * 1) + (totalTwoPerson * 2) + (totalThreePlusPerson * 3.5)) / totalHouseholds
+      ? ((totalEsamstaendeUtanBarn * 1) + (totalParUtanBarn * 2) + (totalEnsamstaendeMedBarn * 2.5) + (totalFamiljer * 3.5) + (totalOvriga * 2)) / totalHouseholds
       : 0;
 
     // Aggregate housing type metrics (sum counts, recalculate percentage)
@@ -1681,6 +1731,11 @@ export async function getAggregatedMetrics(desoCodes: string[]) {
         },
         household: {
           total_households: totalHouseholds,
+          ensamstaende_utan_barn: totalEsamstaendeUtanBarn,
+          ensamstaende_med_barn: totalEnsamstaendeMedBarn,
+          par_utan_barn: totalParUtanBarn,
+          familjer: totalFamiljer,
+          ovriga: totalOvriga,
           single_person: totalSinglePerson,
           two_person: totalTwoPerson,
           three_plus_person: totalThreePlusPerson,
