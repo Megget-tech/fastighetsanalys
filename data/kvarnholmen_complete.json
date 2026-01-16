@@ -1,0 +1,84 @@
+{
+  "location": {
+    "name": "Kvarnholmen, Nacka, Nacka kommun, Stockholms län, 131 37, Sverige",
+    "coordinates": [
+      59.3157233,
+      18.1385701
+    ],
+    "municipality": "Nacka kommun"
+  },
+  "services_within_1km": {
+    "education": {
+      "schools": 0,
+      "kindergartens": 0,
+      "closest_school": null
+    },
+    "retail": {
+      "supermarkets": 0,
+      "convenience_stores": 1,
+      "closest_supermarket": null
+    },
+    "health": {
+      "healthcare_centers": 0,
+      "pharmacies": 0,
+      "closest_pharmacy": null
+    },
+    "fitness": {
+      "gyms": 13,
+      "top_rated_gym": {
+        "name": "Bonobo Gym",
+        "rating": 5,
+        "reviews": 19
+      },
+      "source": "google_places"
+    },
+    "dining": {
+      "restaurants": 20,
+      "cafes": 4,
+      "bars": 4,
+      "top_rated_restaurant": {
+        "name": "Lilla Don",
+        "rating": 5,
+        "reviews": 4
+      },
+      "top_rated_cafe": {
+        "name": "Era Ora Kvarnholmen",
+        "rating": 5,
+        "reviews": 24
+      },
+      "source": "google_places"
+    },
+    "recreation": {
+      "parks": 5,
+      "playgrounds": 21
+    }
+  },
+  "transit_access": {
+    "available": true,
+    "closest_stop": {
+      "name": "Kvarnholmens centrum (Nacka kn)",
+      "distance_m": 124,
+      "lines": [
+        "402",
+        "93"
+      ]
+    },
+    "frequency_analysis": {
+      "description": "Avgång var 10:e minut",
+      "average_frequency_min": 10,
+      "total_departures_weekday": 66
+    },
+    "travel_times": {},
+    "nearby_stops_count": 10
+  },
+  "recreation": {
+    "parks": 5,
+    "playgrounds": 21
+  },
+  "data_sources": {
+    "osm": true,
+    "trafiklab": true,
+    "google_places": true
+  },
+  "summary": "Kvarnholmen, Nacka, Nacka kommun, Stockholms län, 131 37, Sverige har 0 skolor, 0 mataffär(er), 20 restauranger och 4 caféer inom 1 km. Kollektivtrafik: utmärkt."
+}

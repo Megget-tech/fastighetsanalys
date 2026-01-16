@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "real-estate-analysis"
+version = "1.0.0"
+description = "Multi-agent system for automated real estate market analysis"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "real_estate_analysis"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+langgraph = "^0.2.0"
+langchain-anthropic = "^0.2.0"
+langchain-core = "^0.3.0"
+pydantic = "^2.0.0"
+python-dotenv = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-asyncio = "^0.23.0"
+black = "^24.0.0"
+ruff = "^0.6.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+analyze = "main:main"

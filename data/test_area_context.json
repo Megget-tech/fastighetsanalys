@@ -1,0 +1,84 @@
+{
+  "location": {
+    "name": "Sergels torg, Klara, Norrmalm, Norra innerstadens stadsdelsområde, Stockholm, Stockholms kommun, Stockholms län, 111 51, Sverige",
+    "coordinates": [
+      59.3321933,
+      18.0640247
+    ],
+    "municipality": "Stockholms kommun"
+  },
+  "services_within_1km": {
+    "education": {
+      "schools": 0,
+      "kindergartens": 1,
+      "closest_school": null
+    },
+    "retail": {
+      "supermarkets": 0,
+      "convenience_stores": 22,
+      "closest_supermarket": null
+    },
+    "health": {
+      "healthcare_centers": 0,
+      "pharmacies": 10,
+      "closest_pharmacy": {
+        "name": "Apoteket",
+        "coordinates": [
+          59.3340311,
+          18.0610966
+        ],
+        "distance_m": 263,
+        "tags": {
+          "amenity": "pharmacy",
+          "app:apple": "https://itunes.apple.com/se/app/mitt-apotek/id1053398061",
+          "app:google": "https://play.google.com/store/apps/details?id=se.apoteket.recept&hl=sv",
+          "branch": "Ugglan",
+          "brand": "Apoteket",
+          "brand:wikidata": "Q1785637",
+          "check_date": "2025-09-03",
+          "check_date:opening_hours": "2024-10-29",
+          "dispensing": "yes",
+          "healthcare": "pharmacy",
+          "name": "Apoteket",
+          "opening_hours": "Mo-Fr 09:00-19:00; Sa 10:00-18:00; Su 11:00-17:00",
+          "operator": "Apoteket AB (556138-6532)",
+          "owner": "Svenska Staten",
+          "phone": "+46771450450",
+          "website": "https://www.apoteket.se/apotek/apoteket-ugglan-stockholm",
+          "website:stock": "https://www.fass.se/",
+          "wheelchair": "limited",
+          "wikidata": "Q10416128",
+          "wikimedia_commons": "Category:Apoteket Ugglan"
+        },
+        "osm_type": "node",
+        "osm_id": 1400116818
+      }
+    },
+    "fitness": {
+      "gyms": 26,
+      "sports_facilities": 26
+    },
+    "dining": {
+      "restaurants": 332,
+      "cafes": 0
+    },
+    "recreation": {
+      "parks": 31,
+      "playgrounds": 0
+    }
+  },
+  "transit_access": {
+    "available": false,
+    "message": "Transit data not available"
+  },
+  "recreation": {
+    "parks": 31,
+    "playgrounds": 0
+  },
+  "data_sources": {
+    "osm": true,
+    "trafiklab": false,
+    "google_places": false
+  },
+  "summary": "Sergels torg, Klara, Norrmalm, Norra innerstadens stadsdelsområde, Stockholm, Stockholms kommun, Stockholms län, 111 51, Sverige har 0 skolor, 0 mataffär(er), 332 restauranger och 0 caféer inom 1 km. Kollektivtrafik: ej tillgänglig."
+}

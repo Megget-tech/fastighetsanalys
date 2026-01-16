@@ -1,0 +1,267 @@
+{
+  "input_data": {
+    "demographic_data": {
+      "total_population": 8450,
+      "total_households": 4200,
+      "population_by_age": {
+        "25-29": 980,
+        "30-34": 1150,
+        "35-39": 1050
+      },
+      "household_size_distribution": {
+        "1_person": 1680,
+        "2_persons": 1890
+      },
+      "economic_standard": {
+        "high": 1890,
+        "medium_high": 1050
+      },
+      "education_level": {
+        "university_degree": 3360
+      }
+    },
+    "housing_stock_data": {
+      "total_units": 4200,
+      "units_by_size": {
+        "1_rok": 840,
+        "2_rok": 1680,
+        "3_rok": 1260
+      },
+      "units_by_type": {
+        "apartment": 3990
+      }
+    },
+    "sales_data": [
+      {
+        "transaction_date": "2023-11-15",
+        "price": 4500000,
+        "size_sqm": 55,
+        "rooms": 2
+      },
+      {
+        "transaction_date": "2023-10-22",
+        "price": 6800000,
+        "size_sqm": 82,
+        "rooms": 3
+      }
+    ],
+    "price_history": {
+      "2021": {
+        "average_sqm_price": 78000
+      },
+      "2022": {
+        "average_sqm_price": 81000
+      },
+      "2023": {
+        "average_sqm_price": 85000
+      }
+    },
+    "new_construction_data": [
+      {
+        "project_name": "Kvarnholmen Strand",
+        "developer": "JM AB",
+        "total_units": 200,
+        "sales_status": "80% sold"
+      }
+    ],
+    "geographic_data": {
+      "distance_to_city_center_km": 8.5
+    },
+    "future_plans": [
+      "Ny tunnelbanestation planerad 2028",
+      "Utbyggnad av kommersiell service pågår"
+    ]
+  },
+  "project_params": {
+    "project_name": "Quick Analysis Test Project",
+    "location": "Kvarnholmen, Nacka",
+    "property_designation": "UMEÅ TOLVMANSGÅRDEN 4",
+    "project_size_units": 100,
+    "analysis_date": "2026-01-08"
+  },
+  "area_context": {
+    "location": {
+      "name": "TOLVMANSGÅRDEN, UMEÅ",
+      "coordinates": [
+        63.83620741283938,
+        20.197171124730914
+      ],
+      "municipality": "UMEÅ"
+    },
+    "services_within_1km": {
+      "education": {
+        "schools": 3,
+        "kindergartens": 6,
+        "closest_school": {
+          "name": "Grubbeskolan",
+          "coordinates": [
+            63.8331187,
+            20.1997976
+          ],
+          "distance_m": 367,
+          "tags": {
+            "addr:city": "Umeå",
+            "addr:country": "SE",
+            "addr:housenumber": "37",
+            "addr:postcode": "90355",
+            "addr:street": "Lagmansgatan",
+            "amenity": "school",
+            "name": "Grubbeskolan",
+            "website": "https://www.skola.umea.se/grubbe.4.13c1b69101a982ca2a800050004.html"
+          },
+          "osm_type": "way",
+          "osm_id": 182764407
+        }
+      },
+      "retail": {
+        "supermarkets": 1,
+        "convenience_stores": 0,
+        "closest_supermarket": {
+          "name": "ICA Kvantum Kronoparken",
+          "coordinates": [
+            63.8408721,
+            20.1919484
+          ],
+          "distance_m": 578,
+          "tags": {
+            "addr:city": "Umeå",
+            "addr:country": "SE",
+            "addr:housenumber": "18",
+            "addr:postcode": "90361",
+            "addr:street": "Kronoskogsvägen",
+            "brand": "ICA Kvantum",
+            "brand:wikidata": "Q1663776",
+            "brand:wikipedia": "sv:Ica",
+            "building": "supermarket",
+            "contact:phone": "+46-90717240",
+            "contact:website": "http://www.ica.se/kvantum/kvantumumea",
+            "name": "ICA Kvantum Kronoparken",
+            "opening_hours": "Mo-Su 07:00-23:00",
+            "shop": "supermarket"
+          },
+          "osm_type": "way",
+          "osm_id": 114998116
+        }
+      },
+      "health": {
+        "healthcare_centers": 0,
+        "pharmacies": 0,
+        "closest_pharmacy": null
+      },
+      "fitness": {
+        "gyms": 2,
+        "top_rated_gym": {
+          "name": "Green Butterfly",
+          "rating": 5,
+          "reviews": 5
+        },
+        "source": "google_places"
+      },
+      "dining": {
+        "restaurants": 7,
+        "cafes": 2,
+        "bars": 1,
+        "top_rated_restaurant": {
+          "name": "Aylia Sushi bar Umeå",
+          "rating": 4.3,
+          "reviews": 223
+        },
+        "top_rated_cafe": {
+          "name": "OKQ8",
+          "rating": 4.2,
+          "reviews": 257
+        },
+        "source": "google_places"
+      },
+      "recreation": {
+        "parks": 1,
+        "playgrounds": 0
+      }
+    },
+    "transit_access": {
+      "available": true,
+      "closest_stop": {
+        "name": "Umeå Kronoparksvägen",
+        "distance_m": 128,
+        "lines": [
+          "1",
+          "114",
+          "133",
+          "72"
+        ]
+      },
+      "frequency_analysis": {
+        "description": "Avgång var 3:e minut",
+        "average_frequency_min": 3,
+        "total_departures_weekday": 191
+      },
+      "travel_times": {},
+      "nearby_stops_count": 10
+    },
+    "recreation": {
+      "parks": 1,
+      "playgrounds": 0
+    },
+    "data_sources": {
+      "osm": true,
+      "trafiklab": true,
+      "google_places": true
+    },
+    "summary": "TOLVMANSGÅRDEN, UMEÅ har 3 skolor, 1 mataffär(er), 7 restauranger och 2 caféer inom 1 km. Kollektivtrafik: utmärkt."
+  },
+  "orchestrator_validated": null,
+  "data_quality_score": null,
+  "demographics_output": null,
+  "market_data_output": null,
+  "competition_output": null,
+  "migration_output": null,
+  "market_intelligence_output": null,
+  "pricing_output": null,
+  "product_mix_output": null,
+  "synthesis_output": null,
+  "qa_output": null,
+  "qa_decision": null,
+  "qa_quality_score": null,
+  "agents_to_rerun": [],
+  "report_output": null,
+  "current_phase": 1,
+  "review_loop_count": 0,
+  "review_loop_agent": null,
+  "errors": [
+    "Quick Market analysis failed: LLM invocation failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CWuUHRqR2qfh5BFpvsx45'}",
+    "Quick Location analysis failed: LLM invocation failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CWuUHT9YSqocFc6o7Y4yW'}",
+    "Quick Synthesis failed: LLM invocation failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CWuUHUFXLMZz5o2zJxuVV'}"
+  ],
+  "warnings": [],
+  "processing_log": [
+    {
+      "timestamp": "2026-01-08T06:53:57.590966",
+      "agent": "quick_market_analyst",
+      "status": "failed",
+      "execution_time_seconds": 0.48519110679626465,
+      "message": "Quick Market analysis failed: LLM invocation failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CWuUHRqR2qfh5BFpvsx45'}"
+    },
+    {
+      "timestamp": "2026-01-08T06:53:57.856600",
+      "agent": "quick_location_analyst",
+      "status": "failed",
+      "execution_time_seconds": 0.2633228302001953,
+      "message": "Quick Location analysis failed: LLM invocation failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CWuUHT9YSqocFc6o7Y4yW'}"
+    },
+    {
+      "timestamp": "2026-01-08T06:53:58.029695",
+      "agent": "quick_synthesizer",
+      "status": "failed",
+      "execution_time_seconds": 0.17145395278930664,
+      "message": "Quick Synthesis failed: LLM invocation failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CWuUHUFXLMZz5o2zJxuVV'}"
+    }
+  ],
+  "start_time": "2026-01-08T06:53:57.082026",
+  "end_time": null,
+  "agent_execution_times": {
+    "quick_market_analyst": 0.48519110679626465,
+    "quick_location_analyst": 0.2633228302001953,
+    "quick_synthesizer": 0.17145395278930664
+  },
+  "total_tokens_used": null
+}

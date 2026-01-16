@@ -1,0 +1,760 @@
+{
+  "location": {
+    "name": "TOLVMANSGÅRDEN, UMEÅ",
+    "coordinates": [
+      63.83620741283938,
+      20.197171124730914
+    ],
+    "municipality": "UMEÅ"
+  },
+  "services_within_1km": {
+    "education": {
+      "schools": 0,
+      "kindergartens": 0,
+      "closest_school": null
+    },
+    "retail": {
+      "supermarkets": 1,
+      "convenience_stores": 0,
+      "closest_supermarket": {
+        "name": "ICA Kvantum Kronoparken",
+        "coordinates": [
+          63.8408721,
+          20.1919484
+        ],
+        "distance_m": 578,
+        "tags": {
+          "addr:city": "Umeå",
+          "addr:country": "SE",
+          "addr:housenumber": "18",
+          "addr:postcode": "90361",
+          "addr:street": "Kronoskogsvägen",
+          "brand": "ICA Kvantum",
+          "brand:wikidata": "Q1663776",
+          "brand:wikipedia": "sv:Ica",
+          "building": "supermarket",
+          "contact:phone": "+46-90717240",
+          "contact:website": "http://www.ica.se/kvantum/kvantumumea",
+          "name": "ICA Kvantum Kronoparken",
+          "opening_hours": "Mo-Su 07:00-23:00",
+          "shop": "supermarket"
+        },
+        "osm_type": "way",
+        "osm_id": 114998116
+      }
+    },
+    "health": {
+      "healthcare_centers": 0,
+      "pharmacies": 0,
+      "closest_pharmacy": null
+    },
+    "fitness": {
+      "gyms": 2,
+      "top_rated_gym": {
+        "name": "Green Butterfly",
+        "rating": 5,
+        "reviews": 5
+      },
+      "source": "google_places"
+    },
+    "dining": {
+      "restaurants": 7,
+      "cafes": 2,
+      "bars": 1,
+      "top_rated_restaurant": {
+        "name": "Aylia Sushi bar Umeå",
+        "rating": 4.3,
+        "reviews": 223
+      },
+      "top_rated_cafe": {
+        "name": "OKQ8",
+        "rating": 4.2,
+        "reviews": 257
+      },
+      "source": "google_places"
+    },
+    "recreation": {
+      "parks": 0,
+      "playgrounds": 12
+    }
+  },
+  "transit_access": {
+    "available": true,
+    "closest_stop": {
+      "name": "Umeå Kronoparksvägen",
+      "distance_m": 128,
+      "lines": [
+        "1",
+        "72"
+      ]
+    },
+    "frequency_analysis": {
+      "description": "Avgång var 8:e minut",
+      "average_frequency_min": 8,
+      "total_departures_weekday": 85
+    },
+    "travel_times": {
+      "Umeå centrum": {
+        "destination": "Umeå centrum",
+        "duration_min": 13,
+        "duration_text": "13 min",
+        "distance_m": 3704,
+        "distance_text": "3,7 km",
+        "transit_details": null,
+        "departure_time": "15:56"
+      },
+      "Umeå Universitetssjukhus": {
+        "destination": "Umeå Universitetssjukhus",
+        "duration_min": 25,
+        "duration_text": "25 min",
+        "distance_m": 7164,
+        "distance_text": "7,2 km",
+        "transit_details": null,
+        "departure_time": "15:56"
+      }
+    },
+    "nearby_stops": [
+      {
+        "id": "A=1@O=Umeå Kronoparksvägen@X=20198465@Y=63835197@U=1@L=740045331@",
+        "name": "Umeå Kronoparksvägen",
+        "coordinates": [
+          63.835197,
+          20.198465
+        ],
+        "distance_m": 128,
+        "products": 128
+      },
+      {
+        "id": "A=1@O=Umeå Grubbeskolan@X=20196784@Y=63834585@U=1@L=740026903@",
+        "name": "Umeå Grubbeskolan",
+        "coordinates": [
+          63.834585,
+          20.196784
+        ],
+        "distance_m": 180,
+        "products": 128
+      },
+      {
+        "id": "A=1@O=Umeå Stickvägen@X=20199013@Y=63839242@U=1@L=740045256@",
+        "name": "Umeå Stickvägen",
+        "coordinates": [
+          63.839242,
+          20.199013
+        ],
+        "distance_m": 349,
+        "products": 128
+      },
+      {
+        "id": "A=1@O=Umeå Kungsänget@X=20189143@Y=63836249@U=1@L=740045333@",
+        "name": "Umeå Kungsänget",
+        "coordinates": [
+          63.836249,
+          20.189143
+        ],
+        "distance_m": 393,
+        "products": 128
+      },
+      {
+        "id": "A=1@O=Grubbe E12 (Umeå kn)@X=20200191@Y=63840231@U=1@L=740014024@",
+        "name": "Grubbe E12 (Umeå kn)",
+        "coordinates": [
+          63.840231,
+          20.200191
+        ],
+        "distance_m": 471,
+        "products": 128
+      },
+      {
+        "id": "A=1@O=Umeå Kronoparken@X=20192343@Y=63840195@U=1@L=740045229@",
+        "name": "Umeå Kronoparken",
+        "coordinates": [
+          63.840195,
+          20.192343
+        ],
+        "distance_m": 503,
+        "products": 128
+      },
+      {
+        "id": "A=1@O=Umeå Gabrieljansvägen@X=20206546@Y=63833803@U=1@L=740045309@",
+        "name": "Umeå Gabrieljansvägen",
+        "coordinates": [
+          63.833803,
+          20.206546
+        ],
+        "distance_m": 531,
+        "products": 128
+      },
+      {
+        "id": "A=1@O=Kronoparken 507 (Umeå kn)@X=20191507@Y=63841462@U=1@L=740045270@",
+        "name": "Kronoparken 507 (Umeå kn)",
+        "coordinates": [
+          63.841462,
+          20.191507
+        ],
+        "distance_m": 647,
+        "products": 128
+      },
+      {
+        "id": "A=1@O=Umeå Aspvägen@X=20212731@Y=63836329@U=1@L=740044885@",
+        "name": "Umeå Aspvägen",
+        "coordinates": [
+          63.836329,
+          20.212731
+        ],
+        "distance_m": 763,
+        "products": 128
+      },
+      {
+        "id": "A=1@O=Umeå Hedvägen@X=20181089@Y=63836051@U=1@L=740045222@",
+        "name": "Umeå Hedvägen",
+        "coordinates": [
+          63.836051,
+          20.181089
+        ],
+        "distance_m": 789,
+        "products": 128
+      }
+    ],
+    "nearby_stops_count": 10
+  },
+  "recreation": {
+    "parks": 0,
+    "playgrounds": 12
+  },
+  "raw_infrastructure": {
+    "schools": [],
+    "kindergartens": [],
+    "healthcare": [],
+    "pharmacies": [],
+    "supermarkets": [
+      {
+        "name": "ICA Kvantum Kronoparken",
+        "coordinates": [
+          63.8408721,
+          20.1919484
+        ],
+        "distance_m": 578,
+        "tags": {
+          "addr:city": "Umeå",
+          "addr:country": "SE",
+          "addr:housenumber": "18",
+          "addr:postcode": "90361",
+          "addr:street": "Kronoskogsvägen",
+          "brand": "ICA Kvantum",
+          "brand:wikidata": "Q1663776",
+          "brand:wikipedia": "sv:Ica",
+          "building": "supermarket",
+          "contact:phone": "+46-90717240",
+          "contact:website": "http://www.ica.se/kvantum/kvantumumea",
+          "name": "ICA Kvantum Kronoparken",
+          "opening_hours": "Mo-Su 07:00-23:00",
+          "shop": "supermarket"
+        },
+        "osm_type": "way",
+        "osm_id": 114998116
+      }
+    ],
+    "convenience_stores": [],
+    "restaurants": [
+      {
+        "name": "Restaurang Westside - Pizzeria Umeå",
+        "coordinates": [
+          63.8339922,
+          20.2102884
+        ],
+        "address": "Backenvägen 46, Umeå",
+        "rating": 4.2,
+        "user_ratings_total": 425,
+        "place_id": "ChIJj540Y4JcfEYRV3UtBqrZY5c",
+        "types": [
+          "bar",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      },
+      {
+        "name": "Parkens Pizza",
+        "coordinates": [
+          63.8396792,
+          20.198675
+        ],
+        "address": "Kronoskogsvägen 2, Umeå",
+        "rating": 4,
+        "user_ratings_total": 190,
+        "place_id": "ChIJybAq1ppcfEYRJWLiWfN9YKQ",
+        "types": [
+          "meal_takeaway",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      },
+      {
+        "name": "Aylia Sushi bar Umeå",
+        "coordinates": [
+          63.8387366,
+          20.1884806
+        ],
+        "address": "Kronoskogsvägen 83, Umeå",
+        "rating": 4.3,
+        "user_ratings_total": 223,
+        "place_id": "ChIJpdDGlY9cfEYRSXH5v9wIAeQ",
+        "types": [
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      },
+      {
+        "name": "McDonald's Umeå Kronoparken",
+        "coordinates": [
+          63.84036849999999,
+          20.1956516
+        ],
+        "address": "Kronoskogsvägen 12, Umeå",
+        "rating": 3.9,
+        "user_ratings_total": 397,
+        "place_id": "ChIJ74pc3AxdfEYRkBxlYxRJdYw",
+        "types": [
+          "cafe",
+          "store",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      },
+      {
+        "name": "La Ciau Restaurang & Pizzeria Umeå - Pizza Umeå",
+        "coordinates": [
+          63.83883890000001,
+          20.1885697
+        ],
+        "address": "Kronoskogsvägen 83, Umeå",
+        "rating": 4.1,
+        "user_ratings_total": 233,
+        "place_id": "ChIJx0TBvY9cfEYRb7VQAAq7qJs",
+        "types": [
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      },
+      {
+        "name": "Picadeli",
+        "coordinates": [
+          63.8408774,
+          20.1919525
+        ],
+        "address": "Kronoskogsvägen 18, Umeå",
+        "rating": null,
+        "user_ratings_total": null,
+        "place_id": "ChIJY3Kia6xdfEYRo0UNxXdgeW8",
+        "types": [
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      },
+      {
+        "name": "OKQ8",
+        "coordinates": [
+          63.84092,
+          20.18962
+        ],
+        "address": "Kronoskogsvägen 20, Umeå",
+        "rating": 4.2,
+        "user_ratings_total": 257,
+        "place_id": "ChIJfbA-JJBcfEYRLEbb7l0vkEI",
+        "types": [
+          "gas_station",
+          "car_wash",
+          "cafe",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      }
+    ],
+    "cafes": [
+      {
+        "name": "McDonald's Umeå Kronoparken",
+        "coordinates": [
+          63.84036849999999,
+          20.1956516
+        ],
+        "address": "Kronoskogsvägen 12, Umeå",
+        "rating": 3.9,
+        "user_ratings_total": 397,
+        "place_id": "ChIJ74pc3AxdfEYRkBxlYxRJdYw",
+        "types": [
+          "cafe",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "store",
+          "establishment"
+        ],
+        "distance_m": null
+      },
+      {
+        "name": "OKQ8",
+        "coordinates": [
+          63.84092,
+          20.18962
+        ],
+        "address": "Kronoskogsvägen 20, Umeå",
+        "rating": 4.2,
+        "user_ratings_total": 257,
+        "place_id": "ChIJfbA-JJBcfEYRLEbb7l0vkEI",
+        "types": [
+          "gas_station",
+          "cafe",
+          "car_wash",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      }
+    ],
+    "gyms": [
+      {
+        "name": "Green Butterfly",
+        "coordinates": [
+          63.8365669,
+          20.1986053
+        ],
+        "address": "Sandåsvägen 31, Umeå",
+        "rating": 5,
+        "user_ratings_total": 5,
+        "place_id": "ChIJzyob84RcfEYRZeSr7ETswqI",
+        "types": [
+          "gym",
+          "health",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      },
+      {
+        "name": "Viking Kraftsport",
+        "coordinates": [
+          63.8340551,
+          20.21052539999999
+        ],
+        "address": "Backenvägen 46, Umeå",
+        "rating": 4.7,
+        "user_ratings_total": 6,
+        "place_id": "ChIJzyItY4JcfEYR1TABOLdnyC8",
+        "types": [
+          "gym",
+          "health",
+          "point_of_interest",
+          "establishment"
+        ],
+        "distance_m": null
+      }
+    ],
+    "parks": [],
+    "playgrounds": [
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8350458,
+          20.1943436
+        ],
+        "distance_m": 189,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "node",
+        "osm_id": 1469964098
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8360481,
+          20.2044884
+        ],
+        "distance_m": 359,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "way",
+        "osm_id": 501056362
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8395802,
+          20.1922204
+        ],
+        "distance_m": 447,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "node",
+        "osm_id": 1524731377
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8325503,
+          20.2037467
+        ],
+        "distance_m": 519,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "node",
+        "osm_id": 1453996661
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8336605,
+          20.2068551
+        ],
+        "distance_m": 553,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "node",
+        "osm_id": 1453996928
+      },
+      {
+        "name": "Kungsänget",
+        "coordinates": [
+          63.8332826,
+          20.1876834
+        ],
+        "distance_m": 568,
+        "tags": {
+          "access": "yes",
+          "leisure": "playground",
+          "name": "Kungsänget"
+        },
+        "osm_type": "way",
+        "osm_id": 519152952
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8327446,
+          20.206497
+        ],
+        "distance_m": 598,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "node",
+        "osm_id": 1453996700
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8326833,
+          20.2105322
+        ],
+        "distance_m": 763,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "way",
+        "osm_id": 121177194
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8380852,
+          20.2155824
+        ],
+        "distance_m": 927,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "node",
+        "osm_id": 1301033198
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8404072,
+          20.2138266
+        ],
+        "distance_m": 941,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "way",
+        "osm_id": 488885610
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8354196,
+          20.2164165
+        ],
+        "distance_m": 948,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "node",
+        "osm_id": 1501993202
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8399849,
+          20.2156867
+        ],
+        "distance_m": 1000,
+        "tags": {
+          "leisure": "playground"
+        },
+        "osm_type": "way",
+        "osm_id": 488885609
+      }
+    ],
+    "bus_stops": [
+      {
+        "name": "Kronoparksvägen",
+        "coordinates": [
+          63.8351799,
+          20.1985149
+        ],
+        "distance_m": 132,
+        "tags": {
+          "bus": "yes",
+          "highway": "bus_stop",
+          "name": "Kronoparksvägen",
+          "public_transport": "stop_position"
+        },
+        "osm_type": "node",
+        "osm_id": 4641994081
+      },
+      {
+        "name": "Unknown",
+        "coordinates": [
+          63.8392752,
+          20.1993498
+        ],
+        "distance_m": 357,
+        "tags": {
+          "highway": "bus_stop",
+          "note": "bus 81"
+        },
+        "osm_type": "node",
+        "osm_id": 6581930256
+      },
+      {
+        "name": "Kungsänget",
+        "coordinates": [
+          63.8362463,
+          20.1892205
+        ],
+        "distance_m": 390,
+        "tags": {
+          "bus": "yes",
+          "highway": "bus_stop",
+          "name": "Kungsänget",
+          "public_transport": "stop_position"
+        },
+        "osm_type": "node",
+        "osm_id": 291138484
+      },
+      {
+        "name": "Gabrieljansvägen",
+        "coordinates": [
+          63.8341348,
+          20.2075931
+        ],
+        "distance_m": 561,
+        "tags": {
+          "bus": "yes",
+          "highway": "bus_stop",
+          "name": "Gabrieljansvägen",
+          "public_transport": "stop_position"
+        },
+        "osm_type": "node",
+        "osm_id": 158589632
+      },
+      {
+        "name": "Hedvägen",
+        "coordinates": [
+          63.8360828,
+          20.181215
+        ],
+        "distance_m": 782,
+        "tags": {
+          "bus": "yes",
+          "highway": "bus_stop",
+          "name": "Hedvägen",
+          "public_transport": "stop_position"
+        },
+        "osm_type": "node",
+        "osm_id": 613406373
+      },
+      {
+        "name": "Hedvägen",
+        "coordinates": [
+          63.835983,
+          20.1809058
+        ],
+        "distance_m": 798,
+        "tags": {
+          "bus": "yes",
+          "highway": "bus_stop",
+          "name": "Hedvägen",
+          "public_transport": "stop_position"
+        },
+        "osm_type": "node",
+        "osm_id": 6188447463
+      },
+      {
+        "name": "Hartvigsgatan",
+        "coordinates": [
+          63.8332242,
+          20.2153378
+        ],
+        "distance_m": 951,
+        "tags": {
+          "bus": "yes",
+          "gtfs_id": "740045219",
+          "highway": "bus_stop",
+          "local_ref": "B",
+          "name": "Hartvigsgatan",
+          "nat_name": "Umeå Hartvigsgatan",
+          "public_transport": "stop_position"
+        },
+        "osm_type": "node",
+        "osm_id": 158589628
+      }
+    ],
+    "subway_stations": [],
+    "train_stations": []
+  },
+  "data_sources": {
+    "osm": true,
+    "trafiklab": true,
+    "google_places": true,
+    "google_distance_matrix": true
+  },
+  "summary": "TOLVMANSGÅRDEN, UMEÅ har 0 skolor, 1 mataffär(er), 7 restauranger och 2 caféer inom 1 km. Kollektivtrafik: utmärkt."
+}
