@@ -10,6 +10,7 @@ import areasRoutes from './routes/areas.routes';
 import dataRoutes from './routes/data.routes';
 import propertiesRoutes from './routes/properties.routes';
 import booliRoutes from './routes/booli.routes';
+import analysisRoutes from './routes/analysis.routes';
 import { getSCBQueueStats } from './utils/rate-limiter';
 import { getCacheStats } from './services/cache.service';
 
@@ -73,6 +74,7 @@ app.use('/api/areas', areasRoutes);
 app.use('/api/data', dataRoutes);
 app.use('/api/properties', propertiesRoutes);
 app.use('/api/booli', booliRoutes);
+app.use('/api/analysis', analysisRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
@@ -155,6 +157,9 @@ async function startServer() {
       console.log('  GET  /api/booli/sales');
       console.log('  GET  /api/booli/trends');
       console.log('  GET  /api/booli/summary');
+      console.log('  POST /api/analysis/quick');
+      console.log('  POST /api/analysis/full');
+      console.log('  GET  /api/analysis/files/:filename');
       console.log('\n✨ Ready to accept requests!\n');
     });
 

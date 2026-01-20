@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useAnalysisStore } from './store/analysisStore';
-import { findDeSoByPolygon, getAggregatedMetrics, getTimeSeries, healthCheck, getBooliSales, getBooliSummary, clearBooliData } from './services/api';
+import { findDeSoByPolygon, getAggregatedMetrics, getTimeSeries, healthCheck, getBooliSales, getBooliSummary, clearBooliData, runQuickAnalysis, runFullAnalysis, getAnalysisFileUrl, QuickAnalysisResult, FullAnalysisResult } from './services/api';
 import { MapView } from './components/Map/MapView';
 import { PropertySearch } from './components/PropertySearch';
 import { BooliUpload } from './components/BooliUpload';
 import { BooliAnalysis } from './components/BooliAnalysis';
 import { exportToCSV, exportToJSON } from './utils/csvExport';
+import { exportToExcel } from './utils/excelExport';
 
 function App() {
   const [healthStatus, setHealthStatus] = useState<string>('checking...');
   const [booliData, setBooliData] = useState<any>(null);
+  const [nyproduktionFile, setNyproduktionFile] = useState<File | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<QuickAnalysisResult | null>(null);
+  const [fullAnalysisResult, setFullAnalysisResult] = useState<FullAnalysisResult | null>(null);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [fullAnalysisLoading, setFullAnalysisLoading] = useState(false);
   const {
     selectedPolygon,
     desoResult,
@@ -1410,18 +1416,41 @@ function App() {
 
                 {/* Export Buttons */}
                 <div className="space-y-2">
+                  {/* Excel export - full width, prominent */}
+                  <button
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    onClick={async () => {
+                      if (aggregatedMetrics && desoResult) {
+                        const coordinates = propertyPoint?.coordinates || desoResult.centroid;
+                        await exportToExcel(
+                          aggregatedMetrics,
+                          selectedDesoCodes,
+                          desoResult.kommun_name,
+                          booliData,
+                          propertyPoint?.beteckning,
+                          coordinates
+                        );
+                      }
+                    }}
+                    disabled={!aggregatedMetrics || !desoResult}
+                    title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera till Excel med tabeller och diagram'}
+                  >
+                    📊 Exportera till Excel
+                  </button>
+
                   <div className="grid grid-cols-2 gap-2">
                     <button
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed text-sm"
                       onClick={() => {
                         if (aggregatedMetrics && desoResult) {
+                          const coordinates = propertyPoint?.coordinates || desoResult.centroid;
                           exportToCSV(
                             aggregatedMetrics,
                             selectedDesoCodes,
                             desoResult.kommun_name,
                             booliData,
                             propertyPoint?.beteckning,
-                            propertyPoint?.coordinates
+                            coordinates
                           );
                         }
                       }}
@@ -1432,16 +1461,17 @@ function App() {
                     </button>
 
                     <button
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed text-sm"
                       onClick={() => {
                         if (aggregatedMetrics && desoResult) {
+                          const coordinates = propertyPoint?.coordinates || desoResult.centroid;
                           exportToJSON(
                             aggregatedMetrics,
                             selectedDesoCodes,
                             desoResult.kommun_name,
                             booliData,
                             propertyPoint?.beteckning,
-                            propertyPoint?.coordinates
+                            coordinates
                           );
                         }
                       }}
@@ -1453,7 +1483,7 @@ function App() {
                   </div>
 
                   <button
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed print:hidden"
+                    className="w-full bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed print:hidden"
                     onClick={() => window.print()}
                     disabled={!aggregatedMetrics || !desoResult}
                     title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Skriv ut eller spara som PDF'}
@@ -1462,27 +1492,282 @@ function App() {
                   </button>
 
                   {/* Analysis Buttons */}
-                  <div className="border-t pt-2 mt-2">
-                    <p className="text-xs text-gray-600 mb-2 font-medium">Vidare Analys:</p>
+                  <div className="border-t pt-3 mt-3">
+                    <p className="text-sm text-gray-700 mb-3 font-semibold">Vidare Analys</p>
+
+                    {/* Nyproduktion file upload */}
+                    <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                      <label className="block text-xs font-medium text-gray-600 mb-2">
+                        Nyproduktionsprojekt (valfritt)
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <label className="flex-1 cursor-pointer">
+                          <input
+                            type="file"
+                            accept=".xlsx,.xls,.csv"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                setNyproduktionFile(file);
+                                console.log('[Nyproduktion] File selected:', file.name);
+                              }
+                            }}
+                          />
+                          <div className="flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition text-sm">
+                            <span className="text-gray-600">
+                              {nyproduktionFile ? '📄 ' + nyproduktionFile.name : '📎 Välj fil...'}
+                            </span>
+                          </div>
+                        </label>
+                        {nyproduktionFile && (
+                          <button
+                            onClick={() => setNyproduktionFile(null)}
+                            className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition"
+                            title="Ta bort fil"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Excel eller CSV med aktuella nyproduktionsprojekt
+                      </p>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-                        onClick={() => alert('Quick Analys kommer snart!')}
-                        disabled={!aggregatedMetrics || !desoResult}
+                        onClick={async () => {
+                          if (!aggregatedMetrics || !desoResult) return;
+
+                          setAnalysisLoading(true);
+                          setAnalysisResult(null);
+
+                          try {
+                            // Build input data for analysis
+                            const inputData = {
+                              property_name: propertyPoint?.beteckning,
+                              coordinates: desoResult.centroid ? {
+                                longitude: desoResult.centroid[0],
+                                latitude: desoResult.centroid[1]
+                              } : undefined,
+                              kommun_name: desoResult.kommun_name,
+                              deso_codes: selectedDesoCodes,
+                              export_date: new Date().toISOString(),
+                              metrics: aggregatedMetrics.metrics,
+                              booli_data: booliData
+                            };
+
+                            console.log('[Quick Analysis] Starting with input:', inputData);
+
+                            const result = await runQuickAnalysis(inputData, nyproduktionFile || undefined);
+                            setAnalysisResult(result);
+
+                            console.log('[Quick Analysis] Result:', result);
+                          } catch (err: any) {
+                            console.error('[Quick Analysis] Error:', err);
+                            setAnalysisResult({
+                              success: false,
+                              error: err.message || 'Analysen misslyckades'
+                            });
+                          } finally {
+                            setAnalysisLoading(false);
+                          }
+                        }}
+                        disabled={!aggregatedMetrics || !desoResult || analysisLoading}
                         title="Snabb analys av områdets potential"
                       >
-                        ⚡ Quick Analys
+                        {analysisLoading ? '⏳ Analyserar...' : '⚡ Quick Analys'}
                       </button>
 
                       <button
                         className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-                        onClick={() => alert('Full Analys kommer snart!')}
-                        disabled={!aggregatedMetrics || !desoResult}
-                        title="Fullständig analys med rekommendationer"
+                        onClick={async () => {
+                          if (!aggregatedMetrics || !desoResult) return;
+
+                          setFullAnalysisLoading(true);
+                          setFullAnalysisResult(null);
+
+                          try {
+                            const inputData = {
+                              property_name: propertyPoint?.beteckning,
+                              coordinates: desoResult.centroid ? {
+                                longitude: desoResult.centroid[0],
+                                latitude: desoResult.centroid[1]
+                              } : undefined,
+                              kommun_name: desoResult.kommun_name,
+                              deso_codes: selectedDesoCodes,
+                              export_date: new Date().toISOString(),
+                              metrics: aggregatedMetrics.metrics,
+                              booli_data: booliData
+                            };
+
+                            console.log('[Full Analysis] Starting...');
+                            const result = await runFullAnalysis(inputData, nyproduktionFile || undefined);
+                            setFullAnalysisResult(result);
+                            console.log('[Full Analysis] Result:', result);
+                          } catch (err: any) {
+                            console.error('[Full Analysis] Error:', err);
+                            setFullAnalysisResult({
+                              success: false,
+                              error: err.message || 'Analysen misslyckades'
+                            });
+                          } finally {
+                            setFullAnalysisLoading(false);
+                          }
+                        }}
+                        disabled={!aggregatedMetrics || !desoResult || analysisLoading || fullAnalysisLoading}
+                        title="Fullständig analys med rekommendationer (tar 5-15 minuter)"
                       >
-                        📊 Full Analys
+                        {fullAnalysisLoading ? '⏳ Analyserar...' : '📊 Full Analys'}
                       </button>
                     </div>
+
+                    {/* Full Analysis Loading Indicator */}
+                    {fullAnalysisLoading && (
+                      <div className="mt-3 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="animate-spin h-4 w-4 border-2 border-indigo-600 border-t-transparent rounded-full"></div>
+                          <p className="text-sm text-indigo-700 font-medium">Full analys pågår...</p>
+                        </div>
+                        <p className="text-xs text-indigo-600 mt-1">Detta kan ta 5-15 minuter. Stäng inte webbläsaren.</p>
+                      </div>
+                    )}
+
+                    {/* Quick Analysis Result */}
+                    {analysisResult && (
+                      <div className={`mt-3 p-3 rounded-lg border ${
+                        analysisResult.success
+                          ? analysisResult.recommendation === 'GO'
+                            ? 'bg-green-50 border-green-200'
+                            : analysisResult.recommendation === 'NO-GO'
+                            ? 'bg-red-50 border-red-200'
+                            : 'bg-yellow-50 border-yellow-200'
+                          : 'bg-red-50 border-red-200'
+                      }`}>
+                        {analysisResult.success ? (
+                          <>
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className={`text-2xl ${
+                                analysisResult.recommendation === 'GO' ? 'text-green-600' :
+                                analysisResult.recommendation === 'NO-GO' ? 'text-red-600' :
+                                'text-yellow-600'
+                              }`}>
+                                {analysisResult.recommendation === 'GO' ? '✅' :
+                                 analysisResult.recommendation === 'NO-GO' ? '❌' : '⚠️'}
+                              </span>
+                              <div>
+                                <p className="font-bold text-sm">
+                                  {analysisResult.recommendation === 'GO' ? 'GO - Rekommenderas' :
+                                   analysisResult.recommendation === 'NO-GO' ? 'NO-GO - Avrådes' :
+                                   'VIDARE ANALYS KRÄVS'}
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                  Konfidens: {analysisResult.confidence === 'high' ? 'Hög' :
+                                              analysisResult.confidence === 'medium' ? 'Medel' : 'Låg'}
+                                </p>
+                              </div>
+                            </div>
+                            <p className="text-sm text-gray-700 mb-2">{analysisResult.rationale}</p>
+                            {analysisResult.files?.pdf && (
+                              <a
+                                href={getAnalysisFileUrl(analysisResult.files.pdf, 'rapport.pdf')}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium"
+                              >
+                                📄 Ladda ner rapport (PDF)
+                              </a>
+                            )}
+                          </>
+                        ) : (
+                          <div className="text-red-700">
+                            <p className="font-bold text-sm">Analysen misslyckades</p>
+                            <p className="text-xs">{analysisResult.error}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Full Analysis Result */}
+                    {fullAnalysisResult && (
+                      <div className={`mt-3 p-3 rounded-lg border ${
+                        fullAnalysisResult.success
+                          ? fullAnalysisResult.qaDecision === 'APPROVED'
+                            ? 'bg-green-50 border-green-200'
+                            : fullAnalysisResult.qaDecision === 'REJECTED'
+                            ? 'bg-red-50 border-red-200'
+                            : 'bg-yellow-50 border-yellow-200'
+                          : 'bg-red-50 border-red-200'
+                      }`}>
+                        {fullAnalysisResult.success ? (
+                          <>
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className={`text-2xl ${
+                                fullAnalysisResult.qaDecision === 'APPROVED' ? 'text-green-600' :
+                                fullAnalysisResult.qaDecision === 'REJECTED' ? 'text-red-600' :
+                                'text-yellow-600'
+                              }`}>
+                                {fullAnalysisResult.qaDecision === 'APPROVED' ? '✅' :
+                                 fullAnalysisResult.qaDecision === 'REJECTED' ? '❌' : '⚠️'}
+                              </span>
+                              <div>
+                                <p className="font-bold text-sm">
+                                  Full Analys: {fullAnalysisResult.qaDecision === 'APPROVED' ? 'GODKÄND' :
+                                   fullAnalysisResult.qaDecision === 'REJECTED' ? 'EJ GODKÄND' :
+                                   'VILLKORLIGT GODKÄND'}
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                  Konfidens: {fullAnalysisResult.confidence === 'high' ? 'Hög' :
+                                              fullAnalysisResult.confidence === 'medium' ? 'Medel' : 'Låg'}
+                                </p>
+                              </div>
+                            </div>
+                            <p className="text-sm text-gray-700 mb-2">{fullAnalysisResult.rationale}</p>
+
+                            {fullAnalysisResult.keyRecommendations && fullAnalysisResult.keyRecommendations.length > 0 && (
+                              <div className="mb-2">
+                                <p className="text-xs font-semibold text-gray-600 mb-1">Nyckelrekommendationer:</p>
+                                <ul className="text-xs text-gray-700 list-disc list-inside">
+                                  {fullAnalysisResult.keyRecommendations.map((rec, i) => (
+                                    <li key={i}>{rec}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            <div className="flex flex-wrap gap-2">
+                              {fullAnalysisResult.files?.pdf && (
+                                <a
+                                  href={getAnalysisFileUrl(fullAnalysisResult.files.pdf, 'full_rapport.pdf')}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium"
+                                >
+                                  📄 Full rapport (PDF)
+                                </a>
+                              )}
+                              {fullAnalysisResult.files?.executivePdf && (
+                                <a
+                                  href={getAnalysisFileUrl(fullAnalysisResult.files.executivePdf, 'executive_rapport.pdf')}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                                >
+                                  📋 Executive rapport
+                                </a>
+                              )}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-red-700">
+                            <p className="font-bold text-sm">Full analys misslyckades</p>
+                            <p className="text-xs">{fullAnalysisResult.error}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <button

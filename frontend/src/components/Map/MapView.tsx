@@ -13,8 +13,14 @@ export function MapView() {
   const map = useRef<mapboxgl.Map | null>(null);
   const draw = useRef<MapboxDraw | null>(null);
   const propertyMarker = useRef<mapboxgl.Marker | null>(null);
+  const propertyPointRef = useRef<{ coordinates: [number, number]; beteckning: string } | null>(null);
 
   const { setSelectedPolygon, setPropertyPoint, desoResult, propertyPoint } = useAnalysisStore();
+
+  // Keep ref in sync with store value
+  useEffect(() => {
+    propertyPointRef.current = propertyPoint;
+  }, [propertyPoint]);
 
   // Initialize map
   useEffect(() => {
@@ -228,8 +234,12 @@ export function MapView() {
         const polygon = feature.geometry as GeoJSONPolygon;
         console.log('[MapView] Polygon drawn, notifying store');
 
-        // Clear property point marker when user draws polygon
-        setPropertyPoint(null);
+        // Only clear property point if user is drawing without having searched for a property
+        // Keep propertyPoint if it has a beteckning (from property search)
+        // Use ref to get current value (avoid stale closure)
+        if (!propertyPointRef.current?.beteckning) {
+          setPropertyPoint(null);
+        }
 
         setSelectedPolygon(polygon);
       }

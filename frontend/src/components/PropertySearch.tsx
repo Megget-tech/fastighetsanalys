@@ -64,6 +64,22 @@ export function PropertySearch() {
         coordinates: property.geometry.coordinates
       };
 
+      // Calculate centroid from polygon for propertyPoint
+      const coords = property.geometry.coordinates[0] as number[][];
+      const n = coords.length;
+      let sumLon = 0, sumLat = 0;
+      for (const c of coords) {
+        sumLon += c[0];
+        sumLat += c[1];
+      }
+      const centroid: [number, number] = [sumLon / n, sumLat / n];
+
+      // Set property point with beteckning and centroid
+      setPropertyPoint({
+        coordinates: centroid as [number, number],
+        beteckning: property.properties.beteckning
+      });
+
       // Set polygon (this will trigger DeSO search)
       setSelectedPolygon(polygon);
 

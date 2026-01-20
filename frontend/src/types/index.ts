@@ -22,6 +22,7 @@ export interface FindDeSoResponse {
   kommun_name: string;
   coverage_percentage: number;
   warnings: string[];
+  centroid?: [number, number]; // [longitude, latitude]
 }
 
 export interface IncomeMetrics {

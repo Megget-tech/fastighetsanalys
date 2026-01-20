@@ -39,13 +39,24 @@ router.post('/find-deso', async (req: Request, res: Response) => {
     // Get details for matched areas
     const desoDetails = await getDeSoDetails(matchResult.deso_codes);
 
+    // Calculate centroid from polygon
+    const coords = polygon.coordinates[0];
+    const n = coords.length;
+    let sumLon = 0, sumLat = 0;
+    for (const c of coords) {
+      sumLon += c[0];
+      sumLat += c[1];
+    }
+    const centroid: [number, number] = [sumLon / n, sumLat / n];
+
     const response: FindDeSoResponse = {
       deso_codes: matchResult.deso_codes,
       deso_names: desoDetails.map(d => d.name),
       kommun_code: matchResult.fallback_kommun || desoDetails[0]?.kommun_code || '',
       kommun_name: desoDetails[0]?.kommun_name || '',
       coverage_percentage: matchResult.coverage_percentage,
-      warnings: matchResult.warnings
+      warnings: matchResult.warnings,
+      centroid
     };
 
     res.json(response);

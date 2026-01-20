@@ -179,6 +179,109 @@ export async function clearBooliData() {
   return response.data;
 }
 
+/**
+ * Quick Analysis result type
+ */
+export interface QuickAnalysisResult {
+  success: boolean;
+  recommendation?: 'GO' | 'NO-GO' | 'FURTHER-ANALYSIS';
+  confidence?: 'high' | 'medium' | 'low';
+  rationale?: string;
+  error?: string;
+  files?: {
+    pdf?: string;
+    map?: string;
+    json?: string;
+  };
+  marketAnalysis?: string;
+  locationAnalysis?: string;
+  synthesis?: string;
+}
+
+/**
+ * Run quick analysis on collected data
+ */
+export async function runQuickAnalysis(
+  inputData: any,
+  nyproduktionFile?: File
+): Promise<QuickAnalysisResult> {
+  const formData = new FormData();
+  formData.append('inputData', JSON.stringify(inputData));
+
+  if (nyproduktionFile) {
+    formData.append('nyproduktionFile', nyproduktionFile);
+  }
+
+  const response = await axios.post<QuickAnalysisResult>(
+    `${API_URL}/analysis/quick`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      timeout: 120000 // 2 minutes for analysis
+    }
+  );
+
+  return response.data;
+}
+
+/**
+ * Full Analysis result type
+ */
+export interface FullAnalysisResult {
+  success: boolean;
+  recommendation?: 'GO' | 'NO-GO' | 'FURTHER-ANALYSIS';
+  confidence?: 'high' | 'medium' | 'low';
+  rationale?: string;
+  qaDecision?: 'APPROVED' | 'REJECTED' | 'CONDITIONAL';
+  keyRecommendations?: string[];
+  error?: string;
+  files?: {
+    pdf?: string;
+    executivePdf?: string;
+    map?: string;
+    json?: string;
+  };
+  fullResults?: any;
+}
+
+/**
+ * Run full analysis on collected data
+ * Note: This takes 5-15 minutes to complete
+ */
+export async function runFullAnalysis(
+  inputData: any,
+  nyproduktionFile?: File
+): Promise<FullAnalysisResult> {
+  const formData = new FormData();
+  formData.append('inputData', JSON.stringify(inputData));
+
+  if (nyproduktionFile) {
+    formData.append('nyproduktionFile', nyproduktionFile);
+  }
+
+  const response = await axios.post<FullAnalysisResult>(
+    `${API_URL}/analysis/full`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      timeout: 900000 // 15 minutes for full analysis
+    }
+  );
+
+  return response.data;
+}
+
+/**
+ * Get analysis file (PDF, etc.)
+ */
+export function getAnalysisFileUrl(filePath: string, filename: string): string {
+  return `${API_URL}/analysis/files/${encodeURIComponent(filename)}?path=${encodeURIComponent(filePath)}`;
+}
+
 export default {
   findDeSoByPolygon,
   getMetrics,
