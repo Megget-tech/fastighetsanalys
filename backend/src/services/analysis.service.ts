@@ -128,10 +128,15 @@ export async function runQuickAnalysis(
     // Run Python script
     const result = await runPythonScript(args);
 
-    // Parse the JSON output from stdout
+    // Parse the JSON output from stdout (extract JSON from last line)
     let summary: AnalysisSummary;
     try {
-      summary = JSON.parse(result.stdout);
+      // The Python script outputs progress info before JSON, so find the JSON object
+      const jsonMatch = result.stdout.match(/\{[\s\S]*"status"[\s\S]*\}$/);
+      if (!jsonMatch) {
+        throw new Error('No JSON found in output');
+      }
+      summary = JSON.parse(jsonMatch[0]);
     } catch (e) {
       console.error('[Analysis] Failed to parse stdout as JSON:', result.stdout);
       throw new Error('Failed to parse analysis output');
@@ -231,10 +236,15 @@ export async function runFullAnalysis(
     // Run Python script (with longer timeout for full analysis)
     const result = await runPythonScript(args);
 
-    // Parse the JSON output from stdout
+    // Parse the JSON output from stdout (extract JSON from last line)
     let summary: FullAnalysisSummary;
     try {
-      summary = JSON.parse(result.stdout);
+      // The Python script outputs progress info before JSON, so find the JSON object
+      const jsonMatch = result.stdout.match(/\{[\s\S]*"status"[\s\S]*\}$/);
+      if (!jsonMatch) {
+        throw new Error('No JSON found in output');
+      }
+      summary = JSON.parse(jsonMatch[0]);
     } catch (e) {
       console.error('[Full Analysis] Failed to parse stdout as JSON:', result.stdout);
       throw new Error('Failed to parse analysis output');

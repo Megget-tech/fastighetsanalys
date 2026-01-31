@@ -1,0 +1,163 @@
+﻿FASTIGHETSANALYS - EXPORT
+Exportdatum,2026-01-14 15:02:32
+Kommun,Umeå
+Antal områden,1
+DeSO-koder,"2480C1310"
+
+INKOMST
+Metric,Område,Kommun,Riket
+Medianinkomst (kr),323400,303800,312500
+Medelinkomst (kr),368300,,
+Percentil 20 (kr),242550,,
+Percentil 80 (kr),452760,,
+
+BEFOLKNING
+Metric,Område,Kommun
+Total befolkning,1829,133091
+Tillväxttakt (%),"0.00%",
+
+ÅLDERSFÖRDELNING
+Åldersgrupp,Antal,Procent (%),Kommun Procent (%)
+0-4 år,99,5.4,5.2
+5-9 år,110,6.0,5.6
+10-14 år,128,7.0,5.7
+15-19 år,86,4.7,5.5
+20-24 år,94,5.1,9.3
+25-29 år,110,6.0,7.9
+30-34 år,145,7.9,8.3
+35-39 år,111,6.1,7.0
+40-44 år,120,6.6,6.3
+45-49 år,110,6.0,5.9
+50-54 år,101,5.5,5.5
+55-59 år,132,7.2,5.6
+60-64 år,95,5.2,4.6
+65-69 år,91,5.0,4.5
+70-74 år,89,4.9,4.4
+75-79 år,93,5.1,4.1
+80+ år,115,6.3,4.7
+
+UTBILDNING
+Nivå,Område (%),Kommun (%),Riket (%)
+Förgymnasial,4.4,20,18
+Gymnasial,37.3,45,43
+Eftergymnasial,58.3,35,39
+
+HÄRKOMST
+Kategori,Antal,Procent (%),Kommun Procent (%)
+Svensk bakgrund,1706,92.4,83.1
+Utländsk bakgrund,141,7.6,16.9
+
+HUSHÅLLSSTORLEK
+Metric,Område,Kommun
+Totalt antal hushåll,901,66802
+Snitt storlek (personer/hushåll),1.93,1.87
+
+Hushållstyp,Antal,Procent (%),Kommun Procent (%)
+Ensamstående,399,44.3,45.8
+Ensamstående med barn,59,6.5,5.3
+Par,213,23.6,24.1
+Familjer,202,22.4,20.0
+Övriga,28,3.1,4.9
+
+HUSTYP
+Typ,Antal personer,Procent (%),Kommun Procent (%)
+Småhus,963,52.5,50.2
+Flerbostadshus,870,47.5,49.8
+
+UPPLÅTELSEFORM
+Typ,Antal personer,Procent (%),Kommun Procent (%)
+Äganderätt,326,34.1,28.9
+Bostadsrätt,387,40.5,23.2
+Hyresrätt,243,25.4,47.9
+
+FLYTTMÖNSTER
+Metric,Värde
+Nettoinflyttning,-7
+
+EKONOMISK STANDARD
+Metric,Område,Kommun
+Medianvärde (tkr),323,304
+Medelvärde (tkr),368,344
+Antal personer,1814,130651
+Förändring 2019-2023,-1.1%,
+
+Kvartil,Område (%),Kommun (%)
+Kvartil 1,17.0,25.0
+Kvartil 2,28.0,28.0
+Kvartil 3,30.0,27.0
+Kvartil 4,25.0,21.0
+
+FÖRVÄRVSINKOMST
+Metric,Område,Kommun
+Medianvärde (tkr),378,347
+Medelvärde (tkr),405,364
+Antal personer,1399,102523
+
+Kvartil,Område (%),Kommun (%)
+Kvartil 1,18.0,25.0
+Kvartil 2,26.0,24.0
+Kvartil 3,28.0,27.0
+Kvartil 4,29.0,24.0
+
+PRISANALYS (Booli)
+
+GENOMSNITTSPRISER
+Kategori,Antal sålda,Medelpris (kr),Medel kr/m²,Tidigaste försäljning,Senaste försäljning
+Succession,295,1966366,29615,2022-01-07,2025-12-19
+
+SENASTE FÖRSÄLJNINGAR (Max 50 st)
+Adress,Pris (kr),Kr/m²,Rum,Boarea (m²),Månadsavgift (kr),Såld datum,Kategori,BRF,Byggår,Våning
+"Thoméegränd 4A",1295000,24904,2.0,52.00,5155,2025-12-19,Succession,HSB BRF Borgmästaren,N/A,N/A
+"Köpmangatan 49B",1325000,27604,1.5,48.00,4304,2025-12-18,Succession,HSB BRF Riksbanken,N/A,N/A
+"Fältjägargränd 16A",2250000,26163,3.0,86.00,4698,2025-12-14,Succession,BRF Rådmannen,N/A,N/A
+"Storgatan 52B",3050000,30808,4.0,99.00,7458,2025-12-10,Succession,HSB BRF Skjutbanan,N/A,N/A
+"Törnstens gränd 10B",2975000,28883,3.0,103.00,4912,2025-12-01,Succession,BRF Barberaren 1,N/A,N/A
+"Thoméegränd 10",1400000,17722,3.0,79.00,4776,2025-11-22,Succession,-,N/A,N/A
+"Kyrkgatan 55",2370000,28973,2.0,81.80,5692,2025-11-19,Succession,BRF Arken,N/A,N/A
+"Prästgatan 10B",1775000,23826,3.0,74.50,5070,2025-11-13,Succession,HSB BRF Instrumentmakaren,N/A,N/A
+"Kyrkgatan 55",2050000,28512,2.0,71.90,5310,2025-10-29,Succession,BRF Arken,N/A,N/A
+"Storgatan 40",4300000,44979,3.0,95.60,7228,2025-10-25,Succession,Tullvakten i Östersund BRF,N/A,N/A
+"Storgatan 52A",945000,29531,1.0,32.00,3286,2025-10-21,Succession,HSB BRF Skjutbanan,N/A,N/A
+"Storsjöstråket 18",2300000,30667,2.0,75.00,6282,2025-10-20,Succession,BRF Sjöbodarna 1 Östersund,N/A,N/A
+"Storgatan 60A",1900000,25000,3.0,76.00,4443,2025-10-16,Succession,BRF Härberget 4,N/A,N/A
+"Storsjöstråket 20",2475000,33000,2.0,75.00,6682,2025-10-14,Succession,BRF Sjöbodarna 1 Östersund,N/A,N/A
+"Brogränd 18",1750000,25547,3.0,68.50,4280,2025-09-30,Succession,BRF Östersundshus nr 10,N/A,N/A
+"Köpmangatan 56B",2450000,27652,4.0,88.60,6588,2025-09-25,Succession,BRF Östersundshus nr 24,N/A,N/A
+"Storgatan 60A",740000,33636,1.0,22.00,1286,2025-09-25,Succession,BRF Härberget 4,N/A,N/A
+"Fältjägargränd 18",1995000,25253,3.0,79.00,5967,2025-09-24,Succession,Riksbyggen BRF Östersundshus 7,N/A,N/A
+"Fältjägargränd 16A",1150000,30667,1.0,37.50,2048,2025-09-19,Succession,BRF Rådmannen,N/A,N/A
+"Rådhusgatan 28B",2250000,18367,6.0,122.50,6406,2025-09-11,Succession,HSB BRF Kaptenen,N/A,N/A
+"Rådhusgatan 60D",1195000,30177,1.0,39.60,3519,2025-09-10,Succession,HSB BRF Järnvägsmannen,N/A,N/A
+"Rådhusgatan 28A",2200000,23784,3.0,92.50,5242,2025-09-08,Succession,HSB BRF Kaptenen,N/A,N/A
+"Rådhusgatan 28B",2400000,19672,5.0,122.00,6630,2025-09-05,Succession,HSB BRF Kaptenen,N/A,N/A
+"Storsjöstråket 18",3650000,41477,3.0,88.00,7570,2025-09-04,Succession,BRF Sjöbodarna 1 Östersund,N/A,N/A
+"Prästgatan 65E",1150000,31944,1.5,36.00,2201,2025-08-15,Succession,BRF Hellströmska Palatset,N/A,N/A
+"Storgatan 63A",1920000,21099,3.0,91.00,5393,2025-08-15,Succession,Riksbyggen BRF Brandenburg 4,N/A,N/A
+"Storsjöstråket 16",3235000,38976,3.0,83.00,4751,2025-08-12,Succession,Riksbyggen BRF Storsjöstrand,N/A,N/A
+"Köpmangatan 46C",1540000,29057,2.0,53.00,3330,2025-08-12,Succession,HSB BRF Filialbanken,N/A,N/A
+"Storgatan 9C",1070000,31014,1.0,34.50,2644,2025-08-08,Succession,HSB BRF Instrumentmakaren,N/A,N/A
+"Kyrkgatan 29A",1480000,24262,2.0,61.00,3805,2025-07-18,Succession,Riksbyggen BRF Repslagaren,N/A,N/A
+"Storgatan 9D",1000000,19048,2.0,52.50,3594,2025-07-17,Succession,HSB BRF Instrumentmakaren,N/A,N/A
+"Storgatan 50B",2475000,28779,2.0,86.00,7152,2025-07-14,Succession,HSB BRF Skjutbanan,N/A,N/A
+"Prästgatan 65E",1350000,37500,1.0,36.00,2201,2025-07-10,Succession,BRF Hellströmska Palatset,N/A,N/A
+"Rådhusgatan 28D",1325000,24091,2.0,55.00,3511,2025-07-10,Succession,HSB BRF Kaptenen,N/A,N/A
+"Storgatan 52B",1075000,31618,1.0,34.00,3486,2025-07-09,Succession,HSB BRF Skjutbanan,N/A,N/A
+"Postgränd 2B",1420000,29583,2.0,48.00,2913,2025-07-03,Succession,BRF Räntmästeran 1,N/A,N/A
+"Storsjöstråket 32",3000000,32967,3.0,91.00,8022,2025-06-27,Succession,BRF Sjöbodarna 1 Östersund,N/A,N/A
+"Storgatan 9B",1350000,29670,2.0,45.50,3234,2025-06-24,Succession,HSB BRF Instrumentmakaren,N/A,N/A
+"Storgatan 53A",995000,20306,1.0,49.00,4283,2025-06-20,Succession,BRF Staben 6,N/A,N/A
+"Residensgränd 6B",4000000,45455,3.0,88.00,1575,2025-06-19,Succession,BRF Torget i Östersund,N/A,N/A
+"Köpmangatan 54",1600000,37037,2.0,43.20,3535,2025-06-17,Succession,BRF Östersundshus nr 24,N/A,N/A
+"Köpmangatan 50A",875000,26119,1.0,33.50,3078,2025-06-13,Succession,HSB BRF Borgmästaren,N/A,N/A
+"Storgatan 7A",1075000,27215,1.0,39.50,2795,2025-06-11,Succession,HSB BRF Storgatan 7,N/A,N/A
+"Köpmangatan 46B",1695000,27787,2.0,61.00,3507,2025-06-05,Succession,HSB BRF Filialbanken,N/A,N/A
+"Köpmangatan 46C",1150000,31081,1.0,37.00,2529,2025-05-29,Succession,HSB BRF Filialbanken,N/A,N/A
+"Köpmangatan 46A",2400000,32877,3.0,73.00,4401,2025-05-20,Succession,HSB BRF Filialbanken,N/A,N/A
+"Köpmangatan 59A",1600000,27119,2.0,59.00,3557,2025-05-15,Succession,BRF Skjutbanan 6,N/A,N/A
+"Storsjöstråket 32",2250000,37500,2.0,60.00,5225,2025-05-13,Succession,BRF Sjöbodarna 1 Östersund,N/A,N/A
+"Törnstens gränd 10A",3450000,30000,4.0,115.00,5332,2025-05-09,Succession,BRF Barberaren 1,N/A,N/A
+"Köpmangatan 50A",1600000,22535,3.0,71.00,6719,2025-05-08,Succession,HSB BRF Borgmästaren,N/A,N/A
+
+---
+Genererat av Fastighetsanalysprogram
+Datakälla: SCB (Statistiska Centralbyrån)
