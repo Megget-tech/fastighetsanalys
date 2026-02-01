@@ -25,7 +25,7 @@ class QuickSynthesizerAgent(BaseAgent):
         super().__init__(
             agent_id="quick_synthesizer",
             agent_name="Quick Synthesizer",
-            temperature=0.4,
+            temperature=0.1,  # Low for consistency
             max_tokens=3072,
         )
 

@@ -23,7 +23,7 @@ class QuickMarketAnalystAgent(BaseAgent):
         super().__init__(
             agent_id="quick_market_analyst",
             agent_name="Quick Market Analyst",
-            temperature=0.3,
+            temperature=0.1,  # Low for consistency
             max_tokens=3072,
         )
 
