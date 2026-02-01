@@ -58,6 +58,7 @@ class AreaContextCollector:
         self,
         location: Optional[str] = None,
         property_designation: Optional[str] = None,
+        coordinates: Optional[Dict[str, float]] = None,
         radius_m: int = 1000,
         destinations: Optional[List[str]] = None,
         future_plans: Optional[List[str]] = None
@@ -69,6 +70,8 @@ class AreaContextCollector:
             location: Location name or address (e.g., "Kvarnholmen, Nacka")
             property_designation: Property designation (e.g., "UMEÅ TOLVMANSGÅRDEN 4")
                                  Takes priority over location if both provided
+            coordinates: Optional pre-resolved coordinates {"latitude": float, "longitude": float}
+                        If provided, skips geocoding step
             radius_m: Search radius in meters (default 1000m = 1km)
             destinations: Optional list of destinations for travel time calculations
             future_plans: Optional list of future development plans/visions
@@ -101,8 +104,21 @@ class AreaContextCollector:
         location_data = None
         property_info = None
 
-        # Try Lantmäteriet first if property designation provided
-        if property_designation and self.lantmateriet.is_available():
+        # Use pre-provided coordinates if available
+        if coordinates and (coordinates.get('latitude') or coordinates.get('lat')):
+            lat = coordinates.get('latitude') or coordinates.get('lat')
+            lon = coordinates.get('longitude') or coordinates.get('lon')
+            location_data = {
+                "name": property_designation or location or f"{lat}, {lon}",
+                "coordinates": (lat, lon),
+                "municipality": None,
+                "property_designation": property_designation,
+                "source": "provided"
+            }
+            print(f"   ✓ Using provided coordinates: {lat}, {lon}")
+
+        # Try Lantmäteriet first if property designation provided and no coords yet
+        if not location_data and property_designation and self.lantmateriet.is_available():
             print("   Trying Lantmäteriet API...")
             property_info = self.lantmateriet.get_property_info(property_designation)
 

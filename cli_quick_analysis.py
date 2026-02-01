@@ -136,6 +136,7 @@ def run_quick_analysis(
 
                 area_context = area_collector.collect(
                     property_designation=metadata.get('property_name'),
+                    coordinates=coords,
                     radius_m=1000,
                     destinations=destinations
                 )
