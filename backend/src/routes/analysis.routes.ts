@@ -215,7 +215,11 @@ router.get('/files/:filename', async (req: Request, res: Response) => {
     }
 
     // Security: Only allow serving files from temp directories
-    if (!filePath.includes('/tmp/') && !filePath.includes('\\temp\\')) {
+    // macOS uses /var/folders/, Linux uses /tmp/, Windows uses \temp\
+    const isInTempDir = filePath.includes('/tmp/') ||
+                        filePath.includes('/var/folders/') ||
+                        filePath.includes('\\temp\\');
+    if (!isInTempDir) {
       return res.status(403).json({ error: 'Access denied' });
     }
 

@@ -106,11 +106,24 @@ export async function runQuickAnalysis(
   const pdfPath = path.join(tempDir, 'report.pdf');
 
   console.log('[Analysis] Temp directory:', tempDir);
-  console.log('[Analysis] Input data:', JSON.stringify(inputData, null, 2).substring(0, 500) + '...');
+
+  // Transform input data to expected format with metadata wrapper
+  const transformedData = {
+    metadata: {
+      kommun: inputData.kommun_name,
+      property_name: inputData.property_name,
+      coordinates: inputData.coordinates,
+      deso_codes: inputData.deso_codes
+    },
+    metrics: inputData.metrics,
+    booli_data: inputData.booli_data
+  };
+
+  console.log('[Analysis] Input data:', JSON.stringify(transformedData, null, 2).substring(0, 500) + '...');
 
   try {
     // Write input data to temp file
-    await fs.writeFile(inputPath, JSON.stringify(inputData, null, 2));
+    await fs.writeFile(inputPath, JSON.stringify(transformedData, null, 2));
 
     // Build command arguments
     const args = [
@@ -132,11 +145,21 @@ export async function runQuickAnalysis(
     let summary: AnalysisSummary;
     try {
       // The Python script outputs progress info before JSON, so find the JSON object
-      const jsonMatch = result.stdout.match(/\{[\s\S]*"status"[\s\S]*\}$/);
+      // Trim whitespace and find the last JSON object in the output
+      const trimmedOutput = result.stdout.trim();
+      const jsonMatch = trimmedOutput.match(/\{"status"[^{}]*(?:\{[^{}]*\}[^{}]*)*\}$/);
       if (!jsonMatch) {
-        throw new Error('No JSON found in output');
+        // Try alternative: find line starting with {"status"
+        const lines = trimmedOutput.split('\n');
+        const jsonLine = lines.find(line => line.trim().startsWith('{"status"'));
+        if (jsonLine) {
+          summary = JSON.parse(jsonLine.trim());
+        } else {
+          throw new Error('No JSON found in output');
+        }
+      } else {
+        summary = JSON.parse(jsonMatch[0]);
       }
-      summary = JSON.parse(jsonMatch[0]);
     } catch (e) {
       console.error('[Analysis] Failed to parse stdout as JSON:', result.stdout);
       throw new Error('Failed to parse analysis output');
@@ -215,9 +238,21 @@ export async function runFullAnalysis(
   console.log('[Full Analysis] Temp directory:', tempDir);
   console.log('[Full Analysis] Starting full analysis (this may take 5-15 minutes)...');
 
+  // Transform input data to expected format with metadata wrapper
+  const transformedData = {
+    metadata: {
+      kommun: inputData.kommun_name,
+      property_name: inputData.property_name,
+      coordinates: inputData.coordinates,
+      deso_codes: inputData.deso_codes
+    },
+    metrics: inputData.metrics,
+    booli_data: inputData.booli_data
+  };
+
   try {
     // Write input data to temp file
-    await fs.writeFile(inputPath, JSON.stringify(inputData, null, 2));
+    await fs.writeFile(inputPath, JSON.stringify(transformedData, null, 2));
 
     // Build command arguments
     const args = [
@@ -240,11 +275,21 @@ export async function runFullAnalysis(
     let summary: FullAnalysisSummary;
     try {
       // The Python script outputs progress info before JSON, so find the JSON object
-      const jsonMatch = result.stdout.match(/\{[\s\S]*"status"[\s\S]*\}$/);
+      // Trim whitespace and find the last JSON object in the output
+      const trimmedOutput = result.stdout.trim();
+      const jsonMatch = trimmedOutput.match(/\{"status"[^{}]*(?:\{[^{}]*\}[^{}]*)*\}$/);
       if (!jsonMatch) {
-        throw new Error('No JSON found in output');
+        // Try alternative: find line starting with {"status"
+        const lines = trimmedOutput.split('\n');
+        const jsonLine = lines.find(line => line.trim().startsWith('{"status"'));
+        if (jsonLine) {
+          summary = JSON.parse(jsonLine.trim());
+        } else {
+          throw new Error('No JSON found in output');
+        }
+      } else {
+        summary = JSON.parse(jsonMatch[0]);
       }
-      summary = JSON.parse(jsonMatch[0]);
     } catch (e) {
       console.error('[Full Analysis] Failed to parse stdout as JSON:', result.stdout);
       throw new Error('Failed to parse analysis output');

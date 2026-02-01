@@ -219,7 +219,7 @@ export async function runQuickAnalysis(
       headers: {
         'Content-Type': 'multipart/form-data'
       },
-      timeout: 120000 // 2 minutes for analysis
+      timeout: 300000 // 5 minutes for analysis (includes area context collection)
     }
   );
 
