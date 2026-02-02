@@ -160,6 +160,19 @@ Baserat på marknadsanalysens data:
 - Föreslå produktmix-fördelning
 - Motivera med data
 
+**Prisrekommendation - viktigt:**
+- Nyproduktion har ALLTID premium över befintligt bestånd
+- Utgå från marknadsanalysens recommended_price_range
+- Om nyproduktionsdata finns (new_construction), använd dessa priser som referens
+- Faktorer som motiverar högre priser:
+  - Attraktivt läge (centralt, kommunikationer, service)
+  - Stark målgruppsmatch
+  - Låg konkurrens
+  - Hög ekonomisk standard i området
+  - Modern standard och energiklass
+- Prisintervallet ska vara realistiskt för nyproduktion, INTE baserat på äldre bestånd
+- Low = konservativ prissättning, Mid = marknadspris, High = premium-positionering
+
 ### 5. Rekommendera Next Steps
 
 Prioriterade actions:
@@ -177,7 +190,7 @@ Prioriterade actions:
 5. Kritisk nästa steg
 
 **Exempel:**
-"Projekt i Umeå med fokus på unga familjer och yrkesverksamma. Området har god ekonomisk standard och stark efterfrågan på moderna bostäder. Prisläget (snitt 30,000 kr/kvm) möjliggör nyproduktion kring 35-40,000 kr/kvm. Begränsad konkurrensdata - rekommenderar inhämtning. GO med förbehåll för konkurrensanalys."
+"Projekt i Umeå med fokus på unga familjer och yrkesverksamma. Området har god ekonomisk standard och stark efterfrågan på moderna bostäder. Befintligt bestånd säljs för ca 30,000 kr/kvm - med nyproduktionspremium och attraktivt läge rekommenderas prissättning kring 42,000-48,000 kr/kvm. Konkurrenter i området tar 45,000-50,000 kr/kvm. GO med stöd för premium-positionering."
 
 ## Hantera Databegränsningar
 

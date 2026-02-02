@@ -128,7 +128,17 @@ Du MÅSTE returnera EXAKT denna JSON-struktur:
 - Gruppera per rumsantal (rooms: 1, 1.5, 2, 2.5, 3, etc.)
 - Analysera månadsavgifter (monthly_fee)
 - Använd booli_data.summary för aggregerad statistik
-- Rekommendera prisintervall för nyproduktion (ofta 10-25% över befintligt)
+
+**Prisrekommendation för nyproduktion:**
+- Nyproduktion har normalt en betydande premium över befintligt bestånd
+- Premium beror på: läge, målgrupp, kvalitet, energiklass, efterfrågan
+- Typiska premienivåer:
+  - **Attraktiva lägen med hög efterfrågan**: 30-50% över befintligt
+  - **Medelgoda lägen**: 20-35% över befintligt
+  - **Svagare lägen**: 10-20% över befintligt
+- Jämför med nyproduktionspriser i närområdet om data finns (new_construction)
+- Ta hänsyn till målgruppens köpkraft (economic_standard)
+- Undersök vad konkurrenter tar för nyproduktion
 
 ### 4. Nyckeltal
 - market_activity: Baserat på antal transaktioner
