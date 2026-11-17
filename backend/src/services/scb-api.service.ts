@@ -348,198 +348,76 @@ export async function getHistoricalPopulationFromSCB(
 }
 
 /**
- * Intern helper: Hämta inkomst-data för en kommun från TAB1507 (utan queue)
+ * Hämta inkomst (sammanräknad förvärvsinkomst, median och medel) för ett DeSO-område,
+ * dess kommun och riket från TAB6679. Ersätter TAB1507 som SCB har tagit bort.
+ * Alla tre regionerna hämtas i ett och samma anrop.
  */
-async function fetchIncomeForKommun(kommunCode: string, year: string): Promise<{
-  median: number;
-  mean: number;
-} | null> {
-  const tableId = 'TAB1507';
-  const url = `${SCB_API_BASE}/tables/${tableId}/data?outputFormat=json-stat2`;
-
-  const query: SCBQuery = {
-    selection: [
-      {
-        variableCode: "Region",
-        valueCodes: [kommunCode]
-      },
-      {
-        variableCode: "ContentsCode",
-        valueCodes: ["000006T9", "000006T8"] // Median och medel
-      },
-      {
-        variableCode: "Tid",
-        valueCodes: [year]
-      }
-    ]
-  };
-
-  try {
-    console.log(`[SCB API] Fetching income data for kommun ${kommunCode} (year: ${year})`);
-
-    const response = await axios.post<JSONStat2Response>(url, query, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      timeout: 30000
-    });
-
-    const values = response.data.value;
-
-    if (!values || values.length < 2) {
-      console.error('[SCB API] Insufficient income data for kommun');
-      return null;
-    }
-
-    // Första värdet är median, andra är medel (i tusental kronor)
-    const median = values[0] * 1000;
-    const mean = values[1] * 1000;
-
-    console.log(`[SCB API] Income for kommun ${kommunCode}: Median ${median} kr, Mean ${mean} kr`);
-
-    return { median, mean };
-  } catch (error: any) {
-    console.error(`[SCB API] Error fetching income for kommun:`, error.message);
-    return null;
-  }
-}
-
-/**
- * Intern helper: Hämta inkomst-data för hela riket från TAB1507 (utan queue)
- */
-async function fetchIncomeForRiket(year: string): Promise<{
-  median: number;
-  mean: number;
-} | null> {
-  const tableId = 'TAB1507';
-  const url = `${SCB_API_BASE}/tables/${tableId}/data?outputFormat=json-stat2`;
-
-  const query: SCBQuery = {
-    selection: [
-      {
-        variableCode: "Region",
-        valueCodes: ["00"] // Riket = kod "00"
-      },
-      {
-        variableCode: "ContentsCode",
-        valueCodes: ["000006T9", "000006T8"] // Median och medel
-      },
-      {
-        variableCode: "Tid",
-        valueCodes: [year]
-      }
-    ]
-  };
-
-  try {
-    console.log(`[SCB API] Fetching income data for riket (year: ${year})`);
-
-    const response = await axios.post<JSONStat2Response>(url, query, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      timeout: 30000
-    });
-
-    const values = response.data.value;
-
-    if (!values || values.length < 2) {
-      console.error('[SCB API] Insufficient income data for riket');
-      return null;
-    }
-
-    // Första värdet är median, andra är medel (i tusental kronor)
-    const median = values[0] * 1000;
-    const mean = values[1] * 1000;
-
-    console.log(`[SCB API] Income for riket: Median ${median} kr, Mean ${mean} kr`);
-
-    return { median, mean };
-  } catch (error: any) {
-    console.error(`[SCB API] Error fetching income for riket:`, error.message);
-    return null;
-  }
-}
-
-/**
- * Hämta inkomst-data för ett DeSO-område från TAB1507
- */
-export async function getIncomeDataFromSCB(desoCode: string, year: string = '2023'): Promise<{
+export async function getIncomeDataFromSCB(desoCode: string, year: string = '2024'): Promise<{
   median_income: number;
   mean_income: number;
   kommun_median?: number;
   riket_median?: number;
+  year: string;
 } | null> {
   return await queueSCBRequest(`income-${desoCode}-${year}`, async () => {
-    const tableId = 'TAB1507';
-    const url = `${SCB_API_BASE}/tables/${tableId}/data?outputFormat=json-stat2`;
-
-    // TAB1507 använder INTE _DeSO2025 suffix
-    const desoCodeForQuery = desoCode;
-
-    // Extract kommun code (first 4 digits of DeSO code)
+    const url = `${SCB_API_BASE}/tables/TAB6679/data?outputFormat=json-stat2`;
     const kommunCode = desoCode.substring(0, 4);
+    const desoRegion = `${desoCode}_DeSO2025`; // TAB6679 kräver _DeSO2025-suffix
 
     const query: SCBQuery = {
       selection: [
-        {
-          variableCode: "Region",
-          valueCodes: [desoCodeForQuery]
-        },
-        {
-          variableCode: "ContentsCode",
-          valueCodes: ["000006T9", "000006T8"] // Median och medel
-        },
-        {
-          variableCode: "Tid",
-          valueCodes: [year]
-        }
+        { variableCode: "Region", valueCodes: [desoRegion, kommunCode, "00"] },
+        { variableCode: "InkomstTyp", valueCodes: ["SaFörInk"] },
+        { variableCode: "Kon", valueCodes: ["1+2"] }, // Endast totalt
+        { variableCode: "ContentsCode", valueCodes: ["0000089U", "0000089T"] }, // Median, medel (tkr)
+        { variableCode: "Tid", valueCodes: [year] }
       ]
     };
 
     try {
       console.log(`[SCB API] Fetching income data for DeSO ${desoCode} (year: ${year})`);
 
-      // Fetch DeSO, kommun, and riket data in parallel
-      const [desoResponse, kommunData, riketData] = await Promise.all([
-        axios.post<JSONStat2Response>(url, query, {
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          timeout: 30000
-        }),
-        fetchIncomeForKommun(kommunCode, year),
-        fetchIncomeForRiket(year)
-      ]);
+      const response = await axios.post<any>(url, query, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 30000
+      });
 
-      const values = desoResponse.data.value;
+      const data = response.data;
+      const regionIndex: Record<string, number> = data.dimension.Region.category.index;
+      const contentsIndex: Record<string, number> = data.dimension.ContentsCode.category.index;
+      const contentsSize = Object.keys(contentsIndex).length;
+      // Region är enda dimensionen med fler än ett värde utöver ContentsCode (Region × ContentsCode)
+      const valueKr = (region: string, contents: string): number | undefined => {
+        const r = regionIndex[region];
+        const c = contentsIndex[contents];
+        if (r === undefined || c === undefined) return undefined;
+        const v = data.value?.[r * contentsSize + c];
+        return typeof v === 'number' ? Math.round(v * 1000) : undefined; // tkr → kr
+      };
 
-      if (!values || values.length < 2) {
-        console.error('[SCB API] Insufficient income data in response');
+      const median = valueKr(desoRegion, '0000089U');
+      const mean = valueKr(desoRegion, '0000089T');
+
+      if (median === undefined || mean === undefined) {
+        console.error(`[SCB API] No income data for ${desoCode} in TAB6679`);
         return null;
       }
 
-      // Första värdet är median, andra är medel (i tusental kronor)
-      const medianIncome = values[0] * 1000; // Konvertera från tkr till kr
-      const meanIncome = values[1] * 1000;
-
-      console.log(`[SCB API] Income for ${desoCode}: Median ${medianIncome} kr, Mean ${meanIncome} kr`);
+      console.log(`[SCB API] Income for ${desoCode}: Median ${median} kr, Mean ${mean} kr`);
 
       return {
-        median_income: medianIncome,
-        mean_income: meanIncome,
-        kommun_median: kommunData?.median,
-        riket_median: riketData?.median
+        median_income: median,
+        mean_income: mean,
+        kommun_median: valueKr(kommunCode, '0000089U'),
+        riket_median: valueKr('00', '0000089U'),
+        year
       };
     } catch (error: any) {
-      if (error.response?.status === 404) {
-        console.error(`[SCB API] DeSO code not found in income table: ${desoCode}`);
-      } else if (error.response) {
-        console.error(`[SCB API] HTTP ${error.response.status}:`, error.response.data);
+      if (error.response) {
+        console.error(`[SCB API] Income HTTP ${error.response.status}:`, error.response.data);
       } else {
-        console.error(`[SCB API] Error:`, error.message);
+        console.error(`[SCB API] Income error:`, error.message);
       }
-
       return null;
     }
   });

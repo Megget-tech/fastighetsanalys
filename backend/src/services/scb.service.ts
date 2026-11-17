@@ -88,7 +88,7 @@ async function fetchFromSCB(tableId: string, query: any): Promise<any> {
  * Get income metrics for a DeSO area
  */
 export async function getIncomeMetrics(desoCode: string): Promise<IncomeMetrics> {
-  const cacheKey = generateCacheKey('scb', `income-${desoCode}`, {});
+  const cacheKey = generateCacheKey('scb', `income-v2-${desoCode}`, {}) // v2: TAB6679 (TAB1507 borttagen);
 
   return getCachedOrFetch(
     cacheKey,
@@ -110,9 +110,9 @@ export async function getIncomeMetrics(desoCode: string): Promise<IncomeMetrics>
           mean_income: incomeData.mean_income,
           kommun_median: incomeData.kommun_median || 310000,
           riket_median: incomeData.riket_median || 325000,
-          percentile_20: incomeData.median_income * 0.75,
-          percentile_80: incomeData.median_income * 1.4,
-          year: '2023'  // Income data is from 2023 (latest available)
+          percentile_20: Math.round(incomeData.median_income * 0.75),
+          percentile_80: Math.round(incomeData.median_income * 1.4),
+          year: incomeData.year
         };
       } catch (error) {
         console.error(`[SCB] Error fetching income metrics:`, error);
@@ -128,8 +128,8 @@ export async function getIncomeMetrics(desoCode: string): Promise<IncomeMetrics>
  */
 function getMockIncomeMetrics(): IncomeMetrics {
   return {
-    median_income: 320000 + Math.random() * 100000,
-    mean_income: 340000 + Math.random() * 100000,
+    median_income: Math.round(320000 + Math.random() * 100000),
+    mean_income: Math.round(340000 + Math.random() * 100000),
     kommun_median: 310000,
     riket_median: 325000,
     percentile_20: 250000,

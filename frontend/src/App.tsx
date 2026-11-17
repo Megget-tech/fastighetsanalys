@@ -321,20 +321,20 @@ function App() {
                         Medianinkomst {aggregatedMetrics.metrics.income.year && <span className="text-gray-400">({aggregatedMetrics.metrics.income.year})</span>}
                       </p>
                       <p className="text-lg font-semibold text-gray-900">
-                        {aggregatedMetrics.metrics.income.median_income.toLocaleString('sv-SE')} kr
+                        {aggregatedMetrics.metrics.income.median_income.toLocaleString('sv-SE', { maximumFractionDigits: 0 })} kr
                       </p>
                       <div className="mt-2 flex gap-4 text-xs">
                         <div>
                           <span className="text-gray-500">Kommun: </span>
                           <span className={aggregatedMetrics.metrics.income.median_income > aggregatedMetrics.metrics.income.kommun_median ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
-                            {aggregatedMetrics.metrics.income.kommun_median.toLocaleString('sv-SE')} kr
+                            {aggregatedMetrics.metrics.income.kommun_median.toLocaleString('sv-SE', { maximumFractionDigits: 0 })} kr
                             {aggregatedMetrics.metrics.income.median_income > aggregatedMetrics.metrics.income.kommun_median ? ' ↑' : ' ↓'}
                           </span>
                         </div>
                         <div>
                           <span className="text-gray-500">Riket: </span>
                           <span className={aggregatedMetrics.metrics.income.median_income > aggregatedMetrics.metrics.income.riket_median ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
-                            {aggregatedMetrics.metrics.income.riket_median.toLocaleString('sv-SE')} kr
+                            {aggregatedMetrics.metrics.income.riket_median.toLocaleString('sv-SE', { maximumFractionDigits: 0 })} kr
                             {aggregatedMetrics.metrics.income.median_income > aggregatedMetrics.metrics.income.riket_median ? ' ↑' : ' ↓'}
                           </span>
                         </div>
