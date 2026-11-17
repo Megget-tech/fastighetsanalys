@@ -5,6 +5,7 @@ import { MapView } from './components/Map/MapView';
 import { PropertySearch } from './components/PropertySearch';
 import { BooliUpload } from './components/BooliUpload';
 import { BooliAnalysis } from './components/BooliAnalysis';
+import { ThemeToggle } from './components/ThemeToggle';
 import { exportToCSV, exportToJSON } from './utils/csvExport';
 import { exportToExcel } from './utils/excelExport';
 
@@ -15,6 +16,7 @@ function App() {
   const [analysisResult, setAnalysisResult] = useState<QuickAnalysisResult | null>(null);
   const [fullAnalysisResult, setFullAnalysisResult] = useState<FullAnalysisResult | null>(null);
   const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [fullAnalysisElapsed, setFullAnalysisElapsed] = useState(0);
   const [fullAnalysisLoading, setFullAnalysisLoading] = useState(false);
   const {
     selectedPolygon,
@@ -142,6 +144,9 @@ function App() {
       setAggregatedMetrics(null);
       setTimeSeries(null);
       setError(null);
+      setAnalysisResult(null);
+      setFullAnalysisResult(null);
+      setNyproduktionFile(null);
 
       alert('Analysen har rensats. Rita ett nytt område på kartan för att börja.');
     } catch (err: any) {
@@ -153,21 +158,32 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900">
-              Fastighetsanalys
-            </h1>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Backend:</span>
-              <span className={`text-sm font-medium ${
-                healthStatus === 'connected' ? 'text-green-600' :
-                healthStatus === 'disconnected' ? 'text-red-600' :
-                'text-yellow-600'
-              }`}>
-                {healthStatus}
+            <div className="flex items-center gap-2.5">
+              <span
+                className="w-6 h-6 rounded-md grid place-items-center"
+                style={{ background: 'linear-gradient(135deg, var(--accent), #8b5cf6)' }}
+              >
+                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="#fff" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6" />
+                </svg>
               </span>
+              <h1 className="text-base font-semibold tracking-tight text-gray-900">
+                Fastighetsanalys
+              </h1>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-2.5 py-1 text-xs text-gray-500">
+                <span className={`w-1.5 h-1.5 rounded-full ${
+                  healthStatus === 'connected' ? 'bg-green-500' :
+                  healthStatus === 'disconnected' ? 'bg-red-500' :
+                  'bg-yellow-500'
+                }`} />
+                Backend: {healthStatus}
+              </span>
+              <ThemeToggle />
             </div>
           </div>
         </div>
@@ -1588,6 +1604,7 @@ function App() {
 
                           setFullAnalysisLoading(true);
                           setFullAnalysisResult(null);
+                          setFullAnalysisElapsed(0);
 
                           try {
                             const inputData = {
@@ -1604,7 +1621,7 @@ function App() {
                             };
 
                             console.log('[Full Analysis] Starting...');
-                            const result = await runFullAnalysis(inputData, nyproduktionFile || undefined);
+                            const result = await runFullAnalysis(inputData, nyproduktionFile || undefined, setFullAnalysisElapsed);
                             setFullAnalysisResult(result);
                             console.log('[Full Analysis] Result:', result);
                           } catch (err: any) {
@@ -1631,7 +1648,9 @@ function App() {
                           <div className="animate-spin h-4 w-4 border-2 border-indigo-600 border-t-transparent rounded-full"></div>
                           <p className="text-sm text-indigo-700 font-medium">Full analys pågår...</p>
                         </div>
-                        <p className="text-xs text-indigo-600 mt-1">Detta kan ta 5-15 minuter. Stäng inte webbläsaren.</p>
+                        <p className="text-xs text-indigo-600 mt-1">
+                          Har pågått {Math.floor(fullAnalysisElapsed / 60)} min {fullAnalysisElapsed % 60} s. Brukar ta 5-15 minuter. Låt fliken vara öppen.
+                        </p>
                       </div>
                     )}
 

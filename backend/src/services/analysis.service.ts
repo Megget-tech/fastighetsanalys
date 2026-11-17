@@ -3,8 +3,9 @@ import path from 'path';
 import fs from 'fs/promises';
 import os from 'os';
 
-// Path to the fanalys project
-const FANALYS_PATH = '/Users/patrikpettersson/Documents/Dokument/fanalys/real_estate_analysis';
+// Analysen (fanalys) ligger i repot under analysis/. Samma relativa sökväg gäller från src/ (dev) och dist/ (build).
+// FANALYS_PATH kan sättas för att peka någon annanstans.
+export const FANALYS_PATH = process.env.FANALYS_PATH || path.resolve(__dirname, '../../../analysis');
 
 export interface AnalysisInput {
   // Metadata
@@ -44,6 +45,7 @@ export interface AnalysisSummary {
 
 export interface AnalysisResult {
   success: boolean;
+  tempDir?: string;
   summary: AnalysisSummary;
   fullResults?: any;
   files: {
@@ -60,7 +62,8 @@ function runPythonScript(args: string[]): Promise<{ stdout: string; stderr: stri
   return new Promise((resolve, reject) => {
     console.log('[Analysis] Running Python script with args:', args);
 
-    const python = spawn('python3', args, {
+    // Python with fanalys deps (pandas, langgraph, ...) - set PYTHON_PATH in .env
+    const python = spawn(process.env.PYTHON_PATH || 'python3', args, {
       cwd: FANALYS_PATH,
       env: { ...process.env }
     });
@@ -176,6 +179,7 @@ export async function runQuickAnalysis(
 
     return {
       success: summary.status === 'completed',
+      tempDir,
       summary,
       fullResults,
       files: {
@@ -190,6 +194,7 @@ export async function runQuickAnalysis(
     // Don't clean up temp dir on error - useful for debugging
     return {
       success: false,
+      tempDir,
       summary: {
         status: 'error',
         recommendation: 'FURTHER-ANALYSIS',
@@ -210,6 +215,7 @@ export interface FullAnalysisSummary extends AnalysisSummary {
 
 export interface FullAnalysisResult {
   success: boolean;
+  tempDir?: string;
   summary: FullAnalysisSummary;
   fullResults?: any;
   files: {
@@ -306,6 +312,7 @@ export async function runFullAnalysis(
 
     return {
       success: summary.status === 'completed',
+      tempDir,
       summary,
       fullResults,
       files: {
@@ -320,6 +327,7 @@ export async function runFullAnalysis(
     console.error('[Full Analysis] Error:', error);
     return {
       success: false,
+      tempDir,
       summary: {
         status: 'error',
         recommendation: 'FURTHER-ANALYSIS',

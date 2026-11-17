@@ -1,22 +1,21 @@
-# Real Estate Analysis System Dependencies
-# Generated from pyproject.toml
+# Analysens beroenden (fanalys). Versionerna är de som körts lokalt mot backend.
+# Installeras i Docker-imagen (se ../Dockerfile).
 
-# Core dependencies
-langgraph>=0.2.0
-langchain-anthropic>=0.2.0
-langchain-core>=0.3.0
-pydantic>=2.0.0
-python-dotenv>=1.0.0
+# LLM-agenter
+langgraph==0.6.11
+langchain-anthropic==0.3.22
+langchain-core==0.3.83
+anthropic==0.75.0
+pydantic==2.12.5
+python-dotenv==1.2.1
 
-# PDF generation
-reportlab>=4.0.0
-markdown>=3.5.0
+# Indata (nyproduktion från Excel/CSV)
+pandas==2.3.3
+openpyxl==3.1.5
 
-# Area context collection
-requests>=2.31.0
+# PDF-rapporter
+reportlab==4.4.9
+fpdf2==2.8.4
 
-# Development dependencies
-pytest>=8.0.0
-pytest-asyncio>=0.23.0
-black>=24.0.0
-ruff>=0.6.0
+# Områdeskontext (Google Places, Trafiklab, Lantmäteriet)
+requests==2.32.5

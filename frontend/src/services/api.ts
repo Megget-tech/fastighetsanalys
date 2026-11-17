@@ -6,7 +6,15 @@ import type {
   TimeSeriesData
 } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+// VITE_API_URL kan vara en full URL (http://localhost:3000/api) eller bara backendens värdnamn,
+// som Render ger via render.yaml (fdata-backend.onrender.com) – då läggs https:// och /api på.
+function normalizeApiUrl(raw: string | undefined): string {
+  let url = (raw || 'http://localhost:3000/api').trim().replace(/\/+$/, '');
+  if (!/^https?:\/\//.test(url)) url = `https://${url}`;
+  if (!/\/api$/.test(url)) url = `${url}/api`;
+  return url;
+}
+const API_URL = normalizeApiUrl(import.meta.env.VITE_API_URL);
 
 const api = axios.create({
   baseURL: API_URL,
@@ -199,31 +207,70 @@ export interface QuickAnalysisResult {
 }
 
 /**
- * Run quick analysis on collected data
+ * Analyserna körs som bakgrundsjobb i backend: POST startar (svar 202 { jobId }),
+ * sedan frågar vi efter status tills jobbet är klart. Inga långa HTTP-anrop som kan brytas.
  */
-export async function runQuickAnalysis(
+const POLL_INTERVAL_MS = 4000;
+const MAX_POLL_ERRORS = 5;
+
+async function startAndWaitForJob<T>(
+  endpoint: 'quick' | 'full',
   inputData: any,
-  nyproduktionFile?: File
-): Promise<QuickAnalysisResult> {
+  nyproduktionFile?: File,
+  onProgress?: (elapsedSeconds: number) => void
+): Promise<T> {
   const formData = new FormData();
   formData.append('inputData', JSON.stringify(inputData));
-
   if (nyproduktionFile) {
     formData.append('nyproduktionFile', nyproduktionFile);
   }
 
-  const response = await axios.post<QuickAnalysisResult>(
-    `${API_URL}/analysis/quick`,
+  const start = await axios.post<{ success: boolean; jobId?: string; error?: string }>(
+    `${API_URL}/analysis/${endpoint}`,
     formData,
     {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      timeout: 300000 // 5 minutes for analysis (includes area context collection)
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 60000,
+      validateStatus: () => true,
     }
   );
+  if (!start.data?.jobId) {
+    return { success: false, error: start.data?.error || `Analysen kunde inte startas (HTTP ${start.status})` } as T;
+  }
 
-  return response.data;
+  const jobId = start.data.jobId;
+  let errors = 0;
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
+    try {
+      const { data } = await axios.get(`${API_URL}/analysis/jobs/${jobId}`, { timeout: 15000 });
+      errors = 0;
+      onProgress?.(data.elapsedSeconds);
+      if (data.status === 'done' || data.status === 'error') {
+        return (data.result || { success: false, error: data.error || 'Analysen misslyckades' }) as T;
+      }
+    } catch (err: any) {
+      if (err?.response?.status === 404) {
+        return { success: false, error: err.response.data?.error || 'Analysjobbet försvann (tjänsten startades om).' } as T;
+      }
+      // Tillfälligt nätverksfel: försök igen några gånger innan vi ger upp
+      if (++errors >= MAX_POLL_ERRORS) {
+        return { success: false, error: 'Tappade kontakten med servern under analysen.' } as T;
+      }
+    }
+  }
+}
+
+/**
+ * Run quick analysis on collected data
+ */
+export async function runQuickAnalysis(
+  inputData: any,
+  nyproduktionFile?: File,
+  onProgress?: (elapsedSeconds: number) => void
+): Promise<QuickAnalysisResult> {
+  return startAndWaitForJob<QuickAnalysisResult>('quick', inputData, nyproduktionFile, onProgress);
 }
 
 /**
@@ -252,34 +299,18 @@ export interface FullAnalysisResult {
  */
 export async function runFullAnalysis(
   inputData: any,
-  nyproduktionFile?: File
+  nyproduktionFile?: File,
+  onProgress?: (elapsedSeconds: number) => void
 ): Promise<FullAnalysisResult> {
-  const formData = new FormData();
-  formData.append('inputData', JSON.stringify(inputData));
-
-  if (nyproduktionFile) {
-    formData.append('nyproduktionFile', nyproduktionFile);
-  }
-
-  const response = await axios.post<FullAnalysisResult>(
-    `${API_URL}/analysis/full`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      timeout: 900000 // 15 minutes for full analysis
-    }
-  );
-
-  return response.data;
+  return startAndWaitForJob<FullAnalysisResult>('full', inputData, nyproduktionFile, onProgress);
 }
 
 /**
  * Get analysis file (PDF, etc.)
  */
-export function getAnalysisFileUrl(filePath: string, filename: string): string {
-  return `${API_URL}/analysis/files/${encodeURIComponent(filename)}?path=${encodeURIComponent(filePath)}`;
+export function getAnalysisFileUrl(fileUrl: string, filename: string): string {
+  // fileUrl kommer från backend som /analysis/jobs/<id>/files/<nyckel>
+  return `${API_URL}${fileUrl}?name=${encodeURIComponent(filename)}`;
 }
 
 export default {

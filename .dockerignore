@@ -1,0 +1,17 @@
+**/node_modules
+**/dist
+**/.env
+**/.env.*
+!**/.env.example
+.git
+.claude
+frontend
+docs
+analyser
+prisexempel
+backend/uploads
+analysis/venv
+analysis/test_output
+analysis/reports
+analysis/**/__pycache__
+analysis/*.png

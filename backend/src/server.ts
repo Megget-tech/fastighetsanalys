@@ -23,8 +23,15 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+// FRONTEND_URL: en eller flera (kommaseparerade) adresser. Render ger bara värdnamnet → https:// läggs på.
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
+  .split(',')
+  .map((o) => o.trim().replace(/\/+$/, ''))
+  .filter(Boolean)
+  .map((o) => (/^https?:\/\//.test(o) ? o : `https://${o}`));
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: allowedOrigins,
   credentials: true
 }));
 

@@ -45,3 +45,9 @@ postgres-data/
 tmp/
 temp/
 *.tmp
+
+# Uppladdningar (lokala testfiler; analysen lägger dem numera i temp)
+backend/uploads/
+
+# Python
+__pycache__/

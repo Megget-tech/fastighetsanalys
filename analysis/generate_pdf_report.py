@@ -9,6 +9,9 @@ from pathlib import Path
 from datetime import datetime
 from fpdf import FPDF, XPos, YPos
 
+sys.path.insert(0, str(Path(__file__).parent))
+from utils.fonts import add_unicode_fonts
+
 
 class QuickAnalysisPDF(FPDF):
     """Custom PDF class for Quick Analysis reports."""
@@ -16,8 +19,8 @@ class QuickAnalysisPDF(FPDF):
     def __init__(self):
         super().__init__()
         # Use built-in font that supports Swedish characters
-        self.add_font('DejaVu', '', '/System/Library/Fonts/Supplemental/Arial Unicode.ttf')
-        self.add_font('DejaVu', 'B', '/System/Library/Fonts/Supplemental/Arial Unicode.ttf')
+        # Typsnitt med svenska tecken: DejaVu i Docker/Linux, Arial Unicode på macOS
+        add_unicode_fonts(self, 'DejaVu')
         # Set margins
         self.set_left_margin(20)
         self.set_right_margin(20)
