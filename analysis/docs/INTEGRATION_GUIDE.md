@@ -372,7 +372,7 @@ echo $ANTHROPIC_API_KEY
 curl -X POST https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "content-type: application/json" \
-  -d '{"model":"claude-sonnet-4.5","max_tokens":10,"messages":[{"role":"user","content":"Hi"}]}'
+  -d '{"model":"claude-sonnet-5-5","max_tokens":10,"messages":[{"role":"user","content":"Hi"}]}'
 ```
 
 ### Problem: Jobs tar för lång tid

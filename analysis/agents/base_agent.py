@@ -15,6 +15,11 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Claude Sonnet 5.5; override with ANTHROPIC_MODEL
+DEFAULT_MODEL = "claude-sonnet-5-5"
+# Extra max_tokens for adaptive thinking, which counts against the limit
+THINKING_HEADROOM_TOKENS = 16000
+
 
 class BaseAgent:
     """
@@ -26,10 +31,10 @@ class BaseAgent:
         self,
         agent_id: str,
         agent_name: str,
-        model: str = "claude-sonnet-4-20250514",
-        temperature: float = 0.2,
+        model: Optional[str] = None,
+        temperature: Optional[float] = None,
         max_tokens: int = 4096,
-        timeout: int = 120,
+        timeout: int = 300,
     ):
         """
         Initialize the base agent.
@@ -37,15 +42,19 @@ class BaseAgent:
         Args:
             agent_id: Unique identifier for the agent
             agent_name: Human-readable name
-            model: Claude model to use
-            temperature: LLM temperature (0-1)
-            max_tokens: Maximum tokens in response
-            timeout: Request timeout in seconds (default 120)
+            model: Claude model to use (default: ANTHROPIC_MODEL or claude-sonnet-5-5)
+            temperature: Ignored. Claude Sonnet 5.5 only accepts the default temperature
+                (any other value returns HTTP 400); kept so subclasses don't break.
+            max_tokens: Maximum tokens in the answer (thinking headroom is added on top)
+            timeout: Request timeout in seconds (default 300)
         """
+        model = model or os.getenv("ANTHROPIC_MODEL") or DEFAULT_MODEL
+        # Sonnet 5.5 always thinks (adaptive), and thinking counts against max_tokens
+        max_tokens = min(max_tokens + THINKING_HEADROOM_TOKENS, 32000)
+
         self.agent_id = agent_id
         self.agent_name = agent_name
         self.model_name = model
-        self.temperature = temperature
         self.max_tokens = max_tokens
         self.timeout = timeout
 
@@ -56,7 +65,6 @@ class BaseAgent:
 
         self.llm = ChatAnthropic(
             model=model,
-            temperature=temperature,
             max_tokens=max_tokens,
             timeout=timeout,
             max_retries=2,
@@ -134,7 +142,7 @@ Analysera datan noggrant och ge ditt svar i följande format:
 
         try:
             response = self.llm.invoke(messages)
-            content = response.content
+            content = self._response_text(response)
 
             if return_json:
                 # Try to extract JSON from markdown code blocks if present
@@ -155,6 +163,25 @@ Analysera datan noggrant och ge ditt svar i följande format:
             raise ValueError(f"Failed to parse LLM response as JSON: {e}\nResponse: {content}")
         except Exception as e:
             raise RuntimeError(f"LLM invocation failed: {e}")
+
+    @staticmethod
+    def _response_text(response) -> str:
+        """
+        Return the answer text. With thinking on, content is a list of blocks
+        (thinking + text) instead of a plain string; keep only the text blocks.
+        """
+        content = response.content
+        if isinstance(content, str):
+            return content
+        parts = []
+        for block in content:
+            if isinstance(block, str):
+                parts.append(block)
+            elif isinstance(block, dict) and block.get("type") == "text":
+                parts.append(block.get("text", ""))
+        if not parts and response.response_metadata.get("stop_reason") == "refusal":
+            raise RuntimeError("Modellen avböjde att svara (stop_reason: refusal)")
+        return "".join(parts)
 
     def create_output(
         self,

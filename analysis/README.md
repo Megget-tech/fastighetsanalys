@@ -1,6 +1,6 @@
 # Real Estate Analysis System
 
-Multi-agent system for automated residential development project analysis using LangGraph and Claude Sonnet 4.
+Multi-agent system for automated residential development project analysis using LangGraph and Claude Sonnet 5.5.
 
 ## Overview
 
