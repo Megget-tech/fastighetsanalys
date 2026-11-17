@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-feature-settings: "cv11", "ss01";
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #f5f5f5;
+  color: var(--text);
+  background-color: var(--bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -20,7 +20,42 @@
 body {
   margin: 0;
   min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
 }
+
+/* Fält och knappar i Volymstudies stil */
+input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]), select, textarea {
+  background-color: var(--yta);
+  color: var(--text);
+  border-color: var(--line);
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-soft) !important;
+}
+input::placeholder, textarea::placeholder { color: var(--svag); }
+input[type=checkbox], input[type=radio], input[type=range] { accent-color: var(--accent); }
+button { transition: background-color 0.12s, border-color 0.12s, color 0.12s, filter 0.12s; }
+
+/* Mapbox-kontroller och popup följer temat */
+.mapboxgl-ctrl-group { background: var(--panel) !important; box-shadow: var(--skugga-liten) !important; border-radius: 7px !important; }
+.mapboxgl-ctrl-group button + button { border-top-color: var(--line) !important; }
+:root[data-tema="mork"] .mapboxgl-ctrl-group button .mapboxgl-ctrl-icon,
+:root[data-tema="mork"] .mapbox-gl-draw_ctrl-draw-btn { filter: invert(0.9); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="ljus"]) .mapboxgl-ctrl-group button .mapboxgl-ctrl-icon,
+  :root:not([data-tema="ljus"]) .mapbox-gl-draw_ctrl-draw-btn { filter: invert(0.9); }
+}
+.mapboxgl-popup-content { background: var(--panel); color: var(--text); border-radius: 10px; box-shadow: var(--skugga); }
+
+/* Recharts: rutnät och axlar */
+.recharts-cartesian-grid line { stroke: var(--line); }
+.recharts-cartesian-axis-tick-value { fill: var(--muted); }
+.recharts-cartesian-axis-line, .recharts-cartesian-axis-tick-line { stroke: var(--line-stark); }
+.recharts-default-tooltip { background: var(--panel) !important; border-color: var(--line) !important; border-radius: 7px; box-shadow: var(--skugga); }
+.recharts-legend-item-text { color: var(--muted) !important; }
 
 #root {
   min-height: 100vh;
@@ -33,16 +68,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--line-stark);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--svag);
 }
 
 /* Print styles */
