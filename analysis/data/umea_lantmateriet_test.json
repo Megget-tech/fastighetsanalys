@@ -1,0 +1,130 @@
+{
+  "location": {
+    "name": "TOLVMANSGÅRDEN, UMEÅ",
+    "coordinates": [
+      63.83620741283938,
+      20.197171124730914
+    ],
+    "municipality": "UMEÅ"
+  },
+  "services_within_1km": {
+    "education": {
+      "schools": 3,
+      "kindergartens": 6,
+      "closest_school": {
+        "name": "Grubbeskolan",
+        "coordinates": [
+          63.8331187,
+          20.1997976
+        ],
+        "distance_m": 367,
+        "tags": {
+          "addr:city": "Umeå",
+          "addr:country": "SE",
+          "addr:housenumber": "37",
+          "addr:postcode": "90355",
+          "addr:street": "Lagmansgatan",
+          "amenity": "school",
+          "name": "Grubbeskolan",
+          "website": "https://www.skola.umea.se/grubbe.4.13c1b69101a982ca2a800050004.html"
+        },
+        "osm_type": "way",
+        "osm_id": 182764407
+      }
+    },
+    "retail": {
+      "supermarkets": 1,
+      "convenience_stores": 0,
+      "closest_supermarket": {
+        "name": "ICA Kvantum Kronoparken",
+        "coordinates": [
+          63.8408721,
+          20.1919484
+        ],
+        "distance_m": 578,
+        "tags": {
+          "addr:city": "Umeå",
+          "addr:country": "SE",
+          "addr:housenumber": "18",
+          "addr:postcode": "90361",
+          "addr:street": "Kronoskogsvägen",
+          "brand": "ICA Kvantum",
+          "brand:wikidata": "Q1663776",
+          "brand:wikipedia": "sv:Ica",
+          "building": "supermarket",
+          "contact:phone": "+46-90717240",
+          "contact:website": "http://www.ica.se/kvantum/kvantumumea",
+          "name": "ICA Kvantum Kronoparken",
+          "opening_hours": "Mo-Su 07:00-23:00",
+          "shop": "supermarket"
+        },
+        "osm_type": "way",
+        "osm_id": 114998116
+      }
+    },
+    "health": {
+      "healthcare_centers": 0,
+      "pharmacies": 0,
+      "closest_pharmacy": null
+    },
+    "fitness": {
+      "gyms": 2,
+      "top_rated_gym": {
+        "name": "Green Butterfly",
+        "rating": 5,
+        "reviews": 5
+      },
+      "source": "google_places"
+    },
+    "dining": {
+      "restaurants": 7,
+      "cafes": 2,
+      "bars": 1,
+      "top_rated_restaurant": {
+        "name": "Aylia Sushi bar Umeå",
+        "rating": 4.3,
+        "reviews": 223
+      },
+      "top_rated_cafe": {
+        "name": "OKQ8",
+        "rating": 4.2,
+        "reviews": 257
+      },
+      "source": "google_places"
+    },
+    "recreation": {
+      "parks": 1,
+      "playgrounds": 12
+    }
+  },
+  "transit_access": {
+    "available": true,
+    "closest_stop": {
+      "name": "Umeå Kronoparksvägen",
+      "distance_m": 128,
+      "lines": [
+        "1",
+        "114",
+        "133",
+        "72"
+      ]
+    },
+    "frequency_analysis": {
+      "description": "Avgång var 3:e minut",
+      "average_frequency_min": 3,
+      "total_departures_weekday": 191
+    },
+    "travel_times": {},
+    "nearby_stops_count": 10
+  },
+  "recreation": {
+    "parks": 1,
+    "playgrounds": 12
+  },
+  "data_sources": {
+    "osm": true,
+    "trafiklab": true,
+    "google_places": true
+  },
+  "summary": "TOLVMANSGÅRDEN, UMEÅ har 3 skolor, 1 mataffär(er), 7 restauranger och 2 caféer inom 1 km. Kollektivtrafik: utmärkt."
+}

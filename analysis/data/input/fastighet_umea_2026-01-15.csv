@@ -1,0 +1,164 @@
+﻿FASTIGHETSANALYS - EXPORT
+Exportdatum,2026-01-15 14:56:00
+Kommun,Umeå
+Antal områden,1
+DeSO-koder,"2480C1310"
+
+INKOMST
+Metric,Område,Kommun,Riket
+Medianinkomst (kr),323400,303800,312500
+Medelinkomst (kr),368300,,
+Percentil 20 (kr),242550,,
+Percentil 80 (kr),452760,,
+
+BEFOLKNING
+Metric,Område,Kommun
+Total befolkning,1829,133091
+Tillväxttakt (%),"0.00%",
+
+ÅLDERSFÖRDELNING
+Åldersgrupp,Antal,Procent (%),Kommun Procent (%)
+0-4 år,99,5.4,5.2
+5-9 år,110,6.0,5.6
+80+ år,115,6.3,4.7
+10-14 år,128,7.0,5.7
+15-19 år,86,4.7,5.5
+20-24 år,94,5.1,9.3
+25-29 år,110,6.0,7.9
+30-34 år,145,7.9,8.3
+35-39 år,111,6.1,7.0
+40-44 år,120,6.6,6.3
+45-49 år,110,6.0,5.9
+50-54 år,101,5.5,5.5
+55-59 år,132,7.2,5.6
+60-64 år,95,5.2,4.6
+65-69 år,91,5.0,4.5
+70-74 år,89,4.9,4.4
+75-79 år,93,5.1,4.1
+
+UTBILDNING
+Nivå,Område (%),Kommun (%),Riket (%)
+Förgymnasial,4.4,20,18
+Gymnasial,37.3,45,43
+Eftergymnasial,58.3,35,39
+
+HÄRKOMST
+Kategori,Antal,Procent (%),Kommun Procent (%)
+Svensk bakgrund,1706,92.4,83.1
+Utländsk bakgrund,141,7.6,16.9
+
+HUSHÅLLSSTORLEK
+Metric,Område,Kommun
+Totalt antal hushåll,901,66802
+Snitt storlek (personer/hushåll),1.93,1.87
+
+Hushållstyp,Antal,Procent (%),Kommun Procent (%)
+Ensamstående,399,44.3,45.8
+Ensamstående med barn,59,6.5,5.3
+Par,213,23.6,24.1
+Familjer,202,22.4,20.0
+Övriga,28,3.1,4.9
+
+HUSTYP
+Typ,Antal personer,Procent (%),Kommun Procent (%)
+Småhus,963,52.5,50.2
+Flerbostadshus,870,47.5,49.8
+
+UPPLÅTELSEFORM
+Typ,Antal personer,Procent (%),Kommun Procent (%)
+Äganderätt,326,34.1,28.9
+Bostadsrätt,387,40.5,23.2
+Hyresrätt,243,25.4,47.9
+
+FLYTTMÖNSTER
+Metric,Värde
+Nettoinflyttning,-7
+
+EKONOMISK STANDARD
+Metric,Område,Kommun
+Medianvärde (tkr),323,304
+Medelvärde (tkr),368,344
+Antal personer,1814,130651
+Förändring 2019-2023,-1.1%,
+
+Kvartil,Område (%),Kommun (%)
+Kvartil 1,17.0,25.0
+Kvartil 2,28.0,28.0
+Kvartil 3,30.0,27.0
+Kvartil 4,25.0,21.0
+
+FÖRVÄRVSINKOMST
+Metric,Område,Kommun
+Medianvärde (tkr),378,347
+Medelvärde (tkr),405,364
+Antal personer,1399,102523
+
+Kvartil,Område (%),Kommun (%)
+Kvartil 1,18.0,25.0
+Kvartil 2,26.0,24.0
+Kvartil 3,28.0,27.0
+Kvartil 4,29.0,24.0
+
+PRISANALYS (Booli)
+
+GENOMSNITTSPRISER
+Kategori,Antal sålda,Medelpris (kr),Medel kr/m²,Tidigaste försäljning,Senaste försäljning
+Nyproduktion,108,2248796,33655,2022-01-07,2025-11-19
+Succession,455,2078764,30958,2022-01-24,2025-12-23
+
+SENASTE FÖRSÄLJNINGAR (Max 50 st)
+Adress,Pris (kr),Kr/m²,Rum,Boarea (m²),Månadsavgift (kr),Såld datum,Kategori,BRF,Byggår,Våning
+"Balettgränd 7D",1695000,21731,4.0,78.00,6460,2025-12-23,Succession,BRF Baletten,2015.0,2.0
+"Sandåkersgatan 15A",3100000,36047,3.0,86.00,3920,2025-12-19,Succession,BRF Barken 2,2014.0,5.0
+"Kyrkhamnsvägen 22E",3150000,40909,4.0,77.00,5391,2025-12-16,Succession,BRF Kungsänget,2005.0,1.0
+"Lagmansgatan 34B",2900000,38158,3.0,76.00,4798,2025-12-16,Succession,BRF Begonian,2021.0,1.0
+"Lagmansgatan 2B",2250000,29412,3.0,76.50,4233,2025-12-13,Succession,BRF Grubbheden,1963.0,3.0
+"Lagmansgatan 30B",2585000,34013,3.0,76.00,5039,2025-12-05,Succession,BRF Begonian,2022.0,1.0
+"Brf Skulptören",1857000,30950,3.0,60.00,3587,2025-11-19,Nyproduktion,N/A,N/A,N/A
+"Lagmansgatan 42C",2420000,28810,3.0,84.00,4598,2025-11-13,Succession,BRF Lövsågen,1969.0,1.0
+"Lagmansgatan 34B",3200000,42105,3.0,76.00,4798,2025-11-13,Succession,BRF Begonian,2022.0,1.0
+"Lagmansgatan 34B",2100000,38889,2.0,54.00,3566,2025-11-11,Succession,BRF Begonian,2022.0,2.0
+"Sandåkersgatan 3E",1835000,33364,2.0,55.00,3607,2025-11-11,Succession,BRF BoKlok Sandåkern,2016.0,1.0
+"Paradisgränd 4",1050000,20000,2.0,52.50,4680,2025-11-05,Succession,BRF Backenhus nr 2,1991.0,1.0
+"Symfonivägen 9E",2950000,33146,4.0,89.00,4938,2025-11-04,Succession,-,2024.0,5.0
+"Lagmansgatan 34B",3650000,40556,3.0,90.00,6570,2025-10-31,Succession,BRF Begonian,2022.0,3.0
+"Symfonivägen 9E",2750000,34810,3.0,79.00,4472,2025-10-30,Succession,-,2024.0,5.0
+"Vänskapsgränd 19",1562500,21701,3.0,72.00,4793,2025-10-29,Succession,Riksbyggen BRF Backenhus nr 1,1987.0,2.0
+"Lagmansgatan 50C",1995000,26250,3.0,76.00,4328,2025-10-28,Succession,BRF Lövsågen,1971.0,2.0
+"Tallparksvägen 9B",1925000,28519,3.0,67.50,4347,2025-10-27,Succession,Riksbyggen BRF Grubbehus nr 1,1961.0,2.0
+"Lagmansgatan 50E",1795000,27615,2.0,65.00,3650,2025-10-24,Succession,BRF Lövsågen,1969.0,1.0
+"Paradisgränd 10",1030000,17311,2.0,59.50,5205,2025-10-24,Succession,BRF Backenhus nr 2,1991.0,1.0
+"Lagmansgatan 30C",2050000,37963,2.0,54.00,3395,2025-10-23,Succession,BRF Begonian,2022.0,4.0
+"Tallparksvägen 9C",1950000,28889,3.0,67.50,3631,2025-10-20,Succession,Riksbyggen BRF Grubbehus nr 1,1961.0,3.0
+"Kavaljersvägen 10E",1365000,26099,2.0,52.30,5179,2025-10-14,Succession,BRF Kavaljeren i Umeå,2015.0,1.0
+"Sandhallavägen 8B",1725000,29741,2.0,58.00,3832,2025-10-12,Succession,Riksbyggen BRF Grubbehus nr 1,1962.0,3.0
+"Lagmansgatan 42D",1650000,25385,2.0,65.00,3650,2025-10-09,Succession,BRF Lövsågen,1969.0,1.0
+"Paradisgränd 50",1095000,23053,2.0,47.50,4224,2025-09-30,Succession,BRF Backenhus nr 2,1991.0,2.0
+"Sandåkersgatan 11B",2050000,36607,2.0,56.00,3695,2025-09-29,Succession,BRF Hoppet,2015.0,4.0
+"Kronoskogsvägen 51",1545000,26186,2.0,59.00,4287,2025-09-24,Succession,BRF Skogen i Umeå,1972.0,3.0
+"Kronoskogsvägen 67",1495000,24113,2.0,62.00,4274,2025-09-19,Succession,BRF Skogen i Umeå,1972.0,2.0
+"Kyrkhamnsvägen 36",1950000,31967,3.0,61.00,4367,2025-09-18,Succession,BRF Kungsänget,2005.0,2.0
+"Lagmansgatan 2A",500000,6135,2.0,81.50,7352,2025-09-16,Succession,BRF Grubbheden,1962.0,N/A
+"Kullavägen 97",2025000,23143,3.0,87.50,5766,2025-09-11,Succession,HSB BRF Predikanten i Umeå,1989.0,2.0
+"Sandåkersgatan 2",2350000,35338,3.0,66.50,5441,2025-09-10,Succession,BRF Utsikten 2,2015.0,4.0
+"J A Linders väg 124",1695000,24926,2.0,68.00,4485,2025-08-30,Succession,HSB BRF Klockan,1987.0,1.0
+"Tallparksvägen 13B",1600000,27350,2.0,58.50,3832,2025-08-26,Succession,Riksbyggen BRF Grubbehus nr 1,1961.0,2.0
+"Brf Skulptören",1845600,36912,2.0,50.00,3122,2025-08-25,Nyproduktion,N/A,N/A,N/A
+"Sandhallavägen 5C",1275000,27717,1.0,46.00,2926,2025-08-21,Succession,HSB BRF Lönnen,1965.0,2.0
+"Sandåkersgatan 10",3375000,36096,3.0,93.50,4631,2025-08-19,Succession,BRF Utsikten 1,2013.0,12.0
+"Sandåkersgatan 8",1795000,N/A,N/A,N/A,3935,2025-08-18,Succession,BRF Utsikten 2,N/A,N/A
+"Brf Skulptören",2827000,31764,4.0,89.00,4938,2025-08-14,Nyproduktion,N/A,N/A,N/A
+"Brf Skulptören",1635000,32700,2.0,50.00,3122,2025-08-11,Nyproduktion,N/A,N/A,N/A
+"Sandåkersgatan 11A",1800000,32143,2.0,56.00,3441,2025-08-11,Succession,BRF Hoppet,N/A,2.0
+"Lagmansgatan 2C",1150000,41071,1.0,28.00,2075,2025-08-07,Succession,BRF Grubbheden,1963.0,3.0
+"Lagmansgatan 30B",1300000,39394,1.0,33.00,2159,2025-08-07,Succession,BRF Begonian,2022.0,2.0
+"Sandåkersgatan 15B",1900000,37255,2.0,51.00,2307,2025-08-04,Succession,BRF Barken 2,2015.0,2.0
+"Kronoskogsvägen 69",1075000,26220,1.0,41.00,3172,2025-07-15,Succession,BRF Skogen i Umeå,1972.0,2.0
+"Sandhallavägen 8A",1795000,34854,2.0,51.50,3439,2025-07-14,Succession,Riksbyggen BRF Grubbehus nr 1,1961.0,1.0
+"Kyrkhamnsvägen 22F",2595000,33701,4.0,77.00,5571,2025-06-27,Succession,BRF Kungsänget,2005.0,2.0
+"Brf Skulptören",2567000,32494,3.0,79.00,4472,2025-06-17,Nyproduktion,N/A,N/A,N/A
+"Sandåkersgatan 3J",2695000,31706,4.0,85.00,5575,2025-06-16,Succession,BRF BoKlok Sandåkern,2016.0,2.0
+
+---
+Genererat av Fastighetsanalysprogram
+Datakälla: SCB (Statistiska Centralbyrån)

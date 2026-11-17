@@ -1,0 +1,107 @@
+{
+  "location": {
+    "name": "Kvarnholmen, Nacka, Nacka kommun, Stockholms län, 131 37, Sverige",
+    "coordinates": [
+      59.3157233,
+      18.1385701
+    ],
+    "municipality": "Nacka kommun"
+  },
+  "services_within_1km": {
+    "education": {
+      "schools": 7,
+      "kindergartens": 3,
+      "closest_school": {
+        "name": "Kvarnholmens skola",
+        "coordinates": [
+          59.31706,
+          18.136331
+        ],
+        "distance_m": 196,
+        "tags": {
+          "amenity": "school",
+          "name": "Kvarnholmens skola"
+        },
+        "osm_type": "node",
+        "osm_id": 4405793229
+      }
+    },
+    "retail": {
+      "supermarkets": 2,
+      "convenience_stores": 0,
+      "closest_supermarket": {
+        "name": "Coop Kvarnholmen",
+        "coordinates": [
+          59.3165046,
+          18.1395778
+        ],
+        "distance_m": 104,
+        "tags": {
+          "addr:city": "Nacka",
+          "addr:country": "SE",
+          "addr:housenumber": "92",
+          "addr:street": "Kvarnholmsvägen",
+          "brand": "Coop",
+          "brand:wikidata": "Q106684510",
+          "name": "Coop Kvarnholmen",
+          "phone": "010-7412980",
+          "shop": "supermarket",
+          "website": "https://www.coop.se/butiker-erbjudanden/coop/coop-kvarnholmen/"
+        },
+        "osm_type": "node",
+        "osm_id": 6759144898
+      }
+    },
+    "health": {
+      "healthcare_centers": 0,
+      "pharmacies": 0,
+      "closest_pharmacy": null
+    },
+    "fitness": {
+      "gyms": 13,
+      "top_rated_gym": {
+        "name": "Bonobo Gym",
+        "rating": 5,
+        "reviews": 19
+      },
+      "source": "google_places"
+    },
+    "dining": {
+      "restaurants": 20,
+      "cafes": 4,
+      "bars": 4,
+      "top_rated_restaurant": {
+        "name": "Lilla Don",
+        "rating": 5,
+        "reviews": 4
+      },
+      "top_rated_cafe": {
+        "name": "Era Ora Kvarnholmen",
+        "rating": 5,
+        "reviews": 24
+      },
+      "source": "google_places"
+    },
+    "recreation": {
+      "parks": 5,
+      "playgrounds": 0
+    }
+  },
+  "transit_access": {
+    "available": true,
+    "closest_stop": null,
+    "frequency_analysis": {},
+    "travel_times": {},
+    "nearby_stops_count": 0
+  },
+  "recreation": {
+    "parks": 5,
+    "playgrounds": 0
+  },
+  "data_sources": {
+    "osm": true,
+    "trafiklab": true,
+    "google_places": true
+  },
+  "summary": "Kvarnholmen, Nacka, Nacka kommun, Stockholms län, 131 37, Sverige har 7 skolor, 2 mataffär(er), 20 restauranger och 4 caféer inom 1 km. Kollektivtrafik: ej tillgänglig."
+}

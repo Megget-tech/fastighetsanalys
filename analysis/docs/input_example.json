@@ -1,0 +1,100 @@
+{
+  "report_type": "quick",
+  "property_designation": "UMEÅ TOLVMANSGÅRDEN 4",
+  "fastighet_adress": "Tolvmansgården, Umeå",
+  "kommun": "Umeå",
+  "deso_codes": ["2480C1330", "2480C1310", "2480C1260"],
+
+  "befolkning": {
+    "total_befolkning": 5527,
+    "tillväxttakt": 0.0
+  },
+
+  "åldersfördelning": {
+    "0-4 år": {"antal": 299, "procent": 5.4},
+    "5-9 år": {"antal": 325, "procent": 5.9},
+    "10-14 år": {"antal": 347, "procent": 6.3},
+    "15-19 år": {"antal": 290, "procent": 5.2},
+    "20-24 år": {"antal": 444, "procent": 8.0},
+    "25-29 år": {"antal": 398, "procent": 7.2},
+    "30-34 år": {"antal": 415, "procent": 7.5},
+    "35-39 år": {"antal": 333, "procent": 6.0},
+    "40-44 år": {"antal": 374, "procent": 6.8},
+    "45-49 år": {"antal": 354, "procent": 6.4},
+    "50-54 år": {"antal": 337, "procent": 6.1},
+    "55-59 år": {"antal": 407, "procent": 7.4},
+    "60-64 år": {"antal": 288, "procent": 5.2},
+    "65-69 år": {"antal": 238, "procent": 4.3},
+    "70-74 år": {"antal": 226, "procent": 4.1},
+    "75-79 år": {"antal": 198, "procent": 3.6},
+    "80+ år": {"antal": 254, "procent": 4.6}
+  },
+
+  "inkomst": {
+    "medianinkomst_område": 333729,
+    "medianinkomst_kommun": 303800,
+    "medianinkomst_riket": 312500,
+    "medelinkomst_område": 381514,
+    "percentil_20": 250297,
+    "percentil_80": 467221
+  },
+
+  "utbildning": {
+    "förgymnasial_område": 4.9,
+    "förgymnasial_kommun": 20,
+    "gymnasial_område": 37.5,
+    "gymnasial_kommun": 45,
+    "eftergymnasial_område": 57.7,
+    "eftergymnasial_kommun": 35
+  },
+
+  "hushåll": {
+    "totalt_antal": 2663,
+    "snitt_storlek": 1.97,
+    "1_person": {"antal": 1162, "procent": 43.6},
+    "2_personer": {"antal": 785, "procent": 29.5},
+    "3plus_personer": {"antal": 716, "procent": 26.9}
+  },
+
+  "upplåtelseform": {
+    "äganderätt": {"antal": 956, "procent": 32.9},
+    "bostadsrätt": {"antal": 730, "procent": 25.1},
+    "hyresrätt": {"antal": 1223, "procent": 42.0}
+  },
+
+  "flyttmönster": {
+    "nettoinflyttning": 0
+  },
+
+  "prisanalys": {
+    "antal_sålda": 295,
+    "medelpris": 1966366,
+    "medel_kr_m2": 29615,
+    "tidigaste_försäljning": "2022-01-07",
+    "senaste_försäljning": "2025-12-19",
+    "senaste_försäljningar": [
+      {
+        "adress": "Thoméegränd 4A",
+        "pris": 1295000,
+        "kr_m2": 24904,
+        "rum": 2.0,
+        "boarea": 52.0,
+        "månadsavgift": 5155,
+        "såld_datum": "2025-12-19",
+        "kategori": "Succession",
+        "brf": "HSB BRF Borgmästaren"
+      },
+      {
+        "adress": "Köpmangatan 49B",
+        "pris": 1325000,
+        "kr_m2": 27604,
+        "rum": 1.5,
+        "boarea": 48.0,
+        "månadsavgift": 4304,
+        "såld_datum": "2025-12-18",
+        "kategori": "Succession",
+        "brf": "HSB BRF Riksbanken"
+      }
+    ]
+  }
+}
