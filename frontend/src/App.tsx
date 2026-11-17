@@ -213,11 +213,6 @@ function App() {
           )}
         </div>
 
-        {/* Booli Upload - hidden when printing */}
-        <div className="print:hidden">
-          <BooliUpload />
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Map Panel */}
           <div className="space-y-4">
@@ -386,125 +381,20 @@ function App() {
                     </div>
                   </div>
                 </div>
+              </div>
+            )}
+          </div>
+        </div>
 
-                {/* Education Breakdown (Utbildningsnivå) */}
-                {aggregatedMetrics.metrics.education && (
-                  <div>
-                    <h3 className="font-semibold mb-3">
-                      Utbildningsnivå {aggregatedMetrics.metrics.education.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.education.year})</span>}
-                    </h3>
-                    <div className="space-y-2">
-                      {[
-                        {
-                          label: 'Förgymnasial',
-                          percentage: aggregatedMetrics.metrics.education.forgymnasial,
-                          color: 'bg-red-600',
-                          description: 'Grundskola eller lägre'
-                        },
-                        {
-                          label: 'Gymnasial',
-                          percentage: aggregatedMetrics.metrics.education.gymnasial,
-                          color: 'bg-yellow-600',
-                          description: 'Gymnasium'
-                        },
-                        {
-                          label: 'Eftergymnasial',
-                          percentage: aggregatedMetrics.metrics.education.eftergymnasial,
-                          color: 'bg-green-600',
-                          description: 'Högskola/Universitet'
-                        }
-                      ].map(({ label, percentage, color, description }) => {
-                        // Calculate absolute count from percentage
-                        const count = Math.round((percentage / 100) * aggregatedMetrics.metrics.population.total);
-
-                        return (
-                          <div key={label} className="space-y-1">
-                            <div className="flex justify-between text-sm">
-                              <div>
-                                <span className="text-gray-700 font-medium">{label}</span>
-                                <span className="text-gray-500 text-xs ml-2">({description})</span>
-                              </div>
-                              <span className="font-medium text-gray-900">
-                                {count.toLocaleString('sv-SE')} ({percentage.toFixed(1)}%)
-                              </span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div
-                                className={`${color} h-2 rounded-full transition-all`}
-                                style={{ width: `${percentage}%` }}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Comparison with kommun/riket */}
-                    <div className="mt-3 bg-gray-50 rounded-lg p-3">
-                      <p className="text-xs font-medium text-gray-700 mb-2">Jämförelse eftergymnasial utbildning:</p>
-                      <div className="grid grid-cols-3 gap-2 text-xs">
-                        <div className="text-center">
-                          <p className="text-gray-600">Område</p>
-                          <p className="font-semibold text-gray-900">
-                            {aggregatedMetrics.metrics.education.eftergymnasial.toFixed(1)}%
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-gray-600">Kommun</p>
-                          <p className={`font-semibold ${
-                            aggregatedMetrics.metrics.education.eftergymnasial > aggregatedMetrics.metrics.education.kommun_avg.eftergymnasial
-                              ? 'text-green-600' : 'text-red-600'
-                          }`}>
-                            {aggregatedMetrics.metrics.education.kommun_avg.eftergymnasial.toFixed(1)}%
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-gray-600">Riket</p>
-                          <p className={`font-semibold ${
-                            aggregatedMetrics.metrics.education.eftergymnasial > aggregatedMetrics.metrics.education.riket_avg.eftergymnasial
-                              ? 'text-green-600' : 'text-red-600'
-                          }`}>
-                            {aggregatedMetrics.metrics.education.riket_avg.eftergymnasial.toFixed(1)}%
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Booli Stats - Only for single area (not available in aggregated data) */}
-                {aggregatedMetrics.area_count === 1 && aggregatedMetrics.metrics.booli && (
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-semibold">Bostadsförsäljningar (senaste 2 åren)</h3>
-                      <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Mock data</span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Totalt antal:</span>
-                        <span className="font-medium">{aggregatedMetrics.metrics.booli.total_sales} st</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Snittpris:</span>
-                        <span className="font-medium">
-                          {aggregatedMetrics.metrics.booli.avg_price.toLocaleString('sv-SE')} kr
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Nyproduktion:</span>
-                        <span className="font-medium">
-                          {aggregatedMetrics.metrics.booli.new_production.count} st ({
-                            ((aggregatedMetrics.metrics.booli.new_production.count / aggregatedMetrics.metrics.booli.total_sales) * 100).toFixed(0)
-                          }%)
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
+        {!loading && !error && desoResult && aggregatedMetrics && (
+          <div className="mt-8 space-y-8">
+            {/* Befolkning */}
+            <section className="space-y-3">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Befolkning</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Age Distribution */}
                 {aggregatedMetrics.metrics.population.age_distribution && (
-                  <div>
+                  <div className="bg-white rounded-lg shadow p-4">
                     <h3 className="font-semibold mb-3">
                       Åldersfördelning {aggregatedMetrics.metrics.population.age_year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.population.age_year})</span>}
                     </h3>
@@ -559,472 +449,146 @@ function App() {
                     </div>
                   </div>
                 )}
-
-                {/* Historical Population (Befolkningsutveckling) */}
-                {aggregatedMetrics.metrics.population.historical_population && aggregatedMetrics.metrics.population.historical_population.length > 0 && (
-                  <div>
-                    <h3 className="font-semibold mb-3">
-                      Befolkningsutveckling
-                    </h3>
-                    <div className="grid grid-cols-3 gap-4">
-                      {(() => {
-                        const startData = aggregatedMetrics.metrics.population.historical_population[0];
-                        const endData = aggregatedMetrics.metrics.population.historical_population[aggregatedMetrics.metrics.population.historical_population.length - 1];
-                        const change = endData.population - startData.population;
-                        const changePercent = (change / startData.population) * 100;
-
-                        return (
-                          <>
-                            {/* Start year */}
-                            <div className="bg-gray-50 rounded-lg p-4">
-                              <div className="text-sm text-gray-600 mb-1">Startår</div>
-                              <div className="text-2xl font-bold text-gray-900">{startData.year}</div>
-                              <div className="text-lg text-gray-700 mt-2">
-                                {startData.population.toLocaleString('sv-SE')}
-                              </div>
-                              <div className="text-xs text-gray-500">personer</div>
-                            </div>
-
-                            {/* End year */}
-                            <div className="bg-gray-50 rounded-lg p-4">
-                              <div className="text-sm text-gray-600 mb-1">Slutår</div>
-                              <div className="text-2xl font-bold text-gray-900">{endData.year}</div>
-                              <div className="text-lg text-gray-700 mt-2">
-                                {endData.population.toLocaleString('sv-SE')}
-                              </div>
-                              <div className="text-xs text-gray-500">personer</div>
-                            </div>
-
-                            {/* Change */}
-                            <div className={`rounded-lg p-4 ${change >= 0 ? 'bg-green-50' : 'bg-red-50'}`}>
-                              <div className="text-sm text-gray-600 mb-1">Förändring</div>
-                              <div className={`text-2xl font-bold ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                {change >= 0 ? '+' : ''}{changePercent.toFixed(1)}%
-                              </div>
-                              <div className={`text-lg mt-2 ${change >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-                                {change >= 0 ? '+' : ''}{change.toLocaleString('sv-SE')}
-                              </div>
-                              <div className="text-xs text-gray-500">personer</div>
-                            </div>
-                          </>
-                        );
-                      })()}
-                    </div>
-                  </div>
-                )}
-
-                {/* Age Distribution Comparison (2019 vs 2023) */}
-                {aggregatedMetrics.metrics.population.age_distribution_comparison && (
-                  <div>
-                    <h3 className="font-semibold mb-3">
-                      Åldersfördelning: {aggregatedMetrics.metrics.population.age_distribution_comparison.start_year} vs{' '}
-                      {aggregatedMetrics.metrics.population.age_distribution_comparison.end_year}
-                    </h3>
-                    <div className="space-y-2">
-                      {Object.entries(aggregatedMetrics.metrics.population.age_distribution_comparison.end_distribution).map(([ageGroup]) => {
-                        const countStart = aggregatedMetrics.metrics.population.age_distribution_comparison!.start_distribution[ageGroup as keyof typeof aggregatedMetrics.metrics.population.age_distribution_comparison.start_distribution];
-                        const countEnd = aggregatedMetrics.metrics.population.age_distribution_comparison!.end_distribution[ageGroup as keyof typeof aggregatedMetrics.metrics.population.age_distribution_comparison.end_distribution];
-
-                        const totalStart = (Object.values(aggregatedMetrics.metrics.population.age_distribution_comparison!.start_distribution) as number[]).reduce((sum, val) => sum + val, 0);
-                        const totalEnd = (Object.values(aggregatedMetrics.metrics.population.age_distribution_comparison!.end_distribution) as number[]).reduce((sum, val) => sum + val, 0);
-
-                        const percentageStart = (countStart as number / totalStart) * 100;
-                        const percentageEnd = (countEnd as number / totalEnd) * 100;
-                        const change = countEnd - countStart;
-                        const percentageChange = percentageEnd - percentageStart;
-
-                        const startYear = aggregatedMetrics.metrics.population.age_distribution_comparison!.start_year;
-                        const endYear = aggregatedMetrics.metrics.population.age_distribution_comparison!.end_year;
-
-                        return (
-                          <div key={ageGroup} className="space-y-1">
-                            <div className="flex items-center gap-2 text-sm">
-                              <span className="text-gray-700 w-20">{ageGroup} år</span>
-                              <div className="flex-1 flex gap-2">
-                                {/* Start year label */}
-                                <div className="flex-1">
-                                  <span className="text-gray-600 text-xs">
-                                    {startYear}: {countStart.toLocaleString('sv-SE')} ({percentageStart.toFixed(1)}%)
-                                  </span>
-                                </div>
-                                {/* End year label */}
-                                <div className="flex-1">
-                                  <span className="font-medium text-gray-900 text-xs">
-                                    {endYear}: {countEnd.toLocaleString('sv-SE')} ({percentageEnd.toFixed(1)}%)
-                                  </span>
-                                </div>
-                              </div>
-                              {/* Change indicator */}
-                              <span className={`text-xs w-24 text-right ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                {change >= 0 ? '+' : ''}{change.toLocaleString('sv-SE')}
-                                {' '}({percentageChange >= 0 ? '+' : ''}{percentageChange.toFixed(1)}pp)
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="w-20"></div> {/* Spacer to align with age group label */}
-                              <div className="flex-1 flex gap-2">
-                                {/* Start year bar */}
-                                <div className="flex-1">
-                                  <div className="w-full bg-gray-200 rounded-full h-2">
-                                    <div
-                                      className="bg-gray-500 h-2 rounded-full transition-all"
-                                      style={{ width: `${percentageStart}%` }}
-                                    />
-                                  </div>
-                                </div>
-                                {/* End year bar */}
-                                <div className="flex-1">
-                                  <div className="w-full bg-gray-200 rounded-full h-2">
-                                    <div
-                                      className="bg-blue-600 h-2 rounded-full transition-all"
-                                      style={{ width: `${percentageEnd}%` }}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="w-24"></div> {/* Spacer to align with change indicator */}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-
-                {/* Origin (Härkomst) */}
-                {aggregatedMetrics.metrics.origin && (
-                  <div>
-                    <h3 className="font-semibold mb-3">
-                      Härkomst {aggregatedMetrics.metrics.origin.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.origin.year})</span>}
-                    </h3>
-                    <div className="space-y-3">
-                      {/* Total overview */}
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-green-50 rounded-lg p-3 text-center">
-                          <p className="text-xs text-green-700 font-medium mb-1">Svensk bakgrund</p>
-                          <p className="text-lg font-semibold text-green-900">
-                            {aggregatedMetrics.metrics.origin.swedish_background.toLocaleString('sv-SE')}
-                          </p>
-                          <p className="text-xs text-green-600 mt-1">
-                            {((aggregatedMetrics.metrics.origin.swedish_background / (aggregatedMetrics.metrics.origin.swedish_background + aggregatedMetrics.metrics.origin.foreign_background)) * 100).toFixed(1)}%
-                          </p>
-                          {aggregatedMetrics.metrics.origin.kommun_avg && (
-                            <div className="mt-2 text-xs border-t border-green-200 pt-2">
-                              <span className="text-green-700">Kommun: </span>
-                              <span className="font-medium text-green-800">
-                                {((aggregatedMetrics.metrics.origin.kommun_avg.swedish_background / (aggregatedMetrics.metrics.origin.kommun_avg.swedish_background + aggregatedMetrics.metrics.origin.kommun_avg.foreign_background)) * 100).toFixed(1)}%
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="bg-purple-50 rounded-lg p-3 text-center">
-                          <p className="text-xs text-purple-700 font-medium mb-1">Utländsk bakgrund</p>
-                          <p className="text-lg font-semibold text-purple-900">
-                            {aggregatedMetrics.metrics.origin.foreign_background.toLocaleString('sv-SE')}
-                          </p>
-                          <p className="text-xs text-purple-600 mt-1">
-                            {aggregatedMetrics.metrics.origin.percentage_foreign.toFixed(1)}%
-                          </p>
-                          {aggregatedMetrics.metrics.origin.kommun_avg && (
-                            <div className="mt-2 text-xs border-t border-purple-200 pt-2">
-                              <span className="text-purple-700">Kommun: </span>
-                              <span className="font-medium text-purple-800">
-                                {aggregatedMetrics.metrics.origin.kommun_avg.percentage_foreign.toFixed(1)}%
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Visual bar */}
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-xs text-gray-600">
-                          <span>Svensk</span>
-                          <span>Utländsk</span>
-                        </div>
-                        <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden flex">
-                          <div
-                            className="bg-green-500 h-full transition-all"
-                            style={{ width: `${100 - aggregatedMetrics.metrics.origin.percentage_foreign}%` }}
-                          />
-                          <div
-                            className="bg-purple-500 h-full transition-all"
-                            style={{ width: `${aggregatedMetrics.metrics.origin.percentage_foreign}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Household Size (Hushållsstorlek) */}
-                {aggregatedMetrics.metrics.household && (
-                  <div>
-                    <h3 className="font-semibold mb-3">
-                      Hushållsstorlek {aggregatedMetrics.metrics.household.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.household.year})</span>}
-                    </h3>
-                    <div className="space-y-3">
-                      {/* Total households */}
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <p className="text-xs text-gray-600 mb-1">Totalt antal hushåll</p>
-                        <p className="text-lg font-semibold text-gray-900">
-                          {aggregatedMetrics.metrics.household.total_households.toLocaleString('sv-SE')}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Snitt storlek: {aggregatedMetrics.metrics.household.average_household_size.toFixed(2)} personer/hushåll
-                        </p>
-                        {aggregatedMetrics.metrics.household.kommun_avg && (
-                          <div className="mt-2 text-xs border-t border-gray-300 pt-2">
-                            <span className="text-gray-600">Kommun snitt: </span>
-                            <span className={aggregatedMetrics.metrics.household.average_household_size > aggregatedMetrics.metrics.household.kommun_avg.average_household_size ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
-                              {aggregatedMetrics.metrics.household.kommun_avg.average_household_size.toFixed(2)} personer/hushåll
-                              {aggregatedMetrics.metrics.household.average_household_size > aggregatedMetrics.metrics.household.kommun_avg.average_household_size ? ' ↑' : ' ↓'}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Breakdown by household type */}
-                      <div className="space-y-2">
-                        {[
-                          { label: 'Ensamstående', count: aggregatedMetrics.metrics.household.ensamstaende_utan_barn, kommunKey: 'ensamstaende_utan_barn', color: 'bg-blue-600', lightColor: 'bg-blue-300' },
-                          { label: 'Ensamstående med barn', count: aggregatedMetrics.metrics.household.ensamstaende_med_barn, kommunKey: 'ensamstaende_med_barn', color: 'bg-cyan-600', lightColor: 'bg-cyan-300' },
-                          { label: 'Par', count: aggregatedMetrics.metrics.household.par_utan_barn, kommunKey: 'par_utan_barn', color: 'bg-indigo-600', lightColor: 'bg-indigo-300' },
-                          { label: 'Familjer', count: aggregatedMetrics.metrics.household.familjer, kommunKey: 'familjer', color: 'bg-purple-600', lightColor: 'bg-purple-300' },
-                          { label: 'Övriga', count: aggregatedMetrics.metrics.household.ovriga, kommunKey: 'ovriga', color: 'bg-gray-600', lightColor: 'bg-gray-300' }
-                        ].map(({ label, count, kommunKey, color, lightColor }) => {
-                          const percentage = ((count as number) / aggregatedMetrics.metrics.household.total_households) * 100;
-
-                          // Get kommun percentage
-                          const kommunAvg = aggregatedMetrics.metrics.household.kommun_avg;
-                          const kommunCount = kommunAvg?.[kommunKey as keyof typeof kommunAvg] as number | undefined;
-                          const kommunTotal = kommunAvg?.total_households || 0;
-                          const kommunPercentage = kommunCount && kommunTotal > 0 ? (kommunCount / kommunTotal) * 100 : null;
+                <div className="space-y-6">
+                  {/* Historical Population (Befolkningsutveckling) */}
+                  {aggregatedMetrics.metrics.population.historical_population && aggregatedMetrics.metrics.population.historical_population.length > 0 && (
+                    <div className="bg-white rounded-lg shadow p-4">
+                      <h3 className="font-semibold mb-3">
+                        Befolkningsutveckling
+                      </h3>
+                      <div className="grid grid-cols-3 gap-4">
+                        {(() => {
+                          const startData = aggregatedMetrics.metrics.population.historical_population[0];
+                          const endData = aggregatedMetrics.metrics.population.historical_population[aggregatedMetrics.metrics.population.historical_population.length - 1];
+                          const change = endData.population - startData.population;
+                          const changePercent = (change / startData.population) * 100;
 
                           return (
-                            <div key={label} className="space-y-1">
-                              <div className="flex justify-between text-sm">
-                                <span className="text-gray-700">{label}</span>
-                                <div className="flex gap-3">
-                                  <span className="font-medium text-gray-900">
-                                    {count.toLocaleString('sv-SE')} ({percentage.toFixed(1)}%)
-                                  </span>
-                                  {kommunPercentage !== null && (
-                                    <span className="text-gray-600 text-xs">
-                                      Kommun: {kommunPercentage.toFixed(1)}%
-                                    </span>
-                                  )}
+                            <>
+                              {/* Start year */}
+                              <div className="bg-gray-50 rounded-lg p-4">
+                                <div className="text-sm text-gray-600 mb-1">Startår</div>
+                                <div className="text-2xl font-bold text-gray-900">{startData.year}</div>
+                                <div className="text-lg text-gray-700 mt-2">
+                                  {startData.population.toLocaleString('sv-SE')}
                                 </div>
+                                <div className="text-xs text-gray-500">personer</div>
                               </div>
-                              <div className="space-y-1">
-                                {/* Area bar */}
-                                <div className="w-full bg-gray-200 rounded-full h-2">
-                                  <div
-                                    className={`${color} h-2 rounded-full transition-all`}
-                                    style={{ width: `${percentage}%` }}
-                                  />
+
+                              {/* End year */}
+                              <div className="bg-gray-50 rounded-lg p-4">
+                                <div className="text-sm text-gray-600 mb-1">Slutår</div>
+                                <div className="text-2xl font-bold text-gray-900">{endData.year}</div>
+                                <div className="text-lg text-gray-700 mt-2">
+                                  {endData.population.toLocaleString('sv-SE')}
                                 </div>
-                                {/* Kommun bar */}
-                                {kommunPercentage !== null && (
-                                  <div className="w-full bg-gray-100 rounded-full h-2">
-                                    <div
-                                      className={`${lightColor} h-2 rounded-full transition-all`}
-                                      style={{ width: `${kommunPercentage}%` }}
-                                    />
+                                <div className="text-xs text-gray-500">personer</div>
+                              </div>
+
+                              {/* Change */}
+                              <div className={`rounded-lg p-4 ${change >= 0 ? 'bg-green-50' : 'bg-red-50'}`}>
+                                <div className="text-sm text-gray-600 mb-1">Förändring</div>
+                                <div className={`text-2xl font-bold ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                  {change >= 0 ? '+' : ''}{changePercent.toFixed(1)}%
+                                </div>
+                                <div className={`text-lg mt-2 ${change >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                                  {change >= 0 ? '+' : ''}{change.toLocaleString('sv-SE')}
+                                </div>
+                                <div className="text-xs text-gray-500">personer</div>
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  )}
+                  {/* Age Distribution Comparison (2019 vs 2023) */}
+                  {aggregatedMetrics.metrics.population.age_distribution_comparison && (
+                    <div className="bg-white rounded-lg shadow p-4">
+                      <h3 className="font-semibold mb-3">
+                        Åldersfördelning: {aggregatedMetrics.metrics.population.age_distribution_comparison.start_year} vs{' '}
+                        {aggregatedMetrics.metrics.population.age_distribution_comparison.end_year}
+                      </h3>
+                      <div className="space-y-2">
+                        {Object.entries(aggregatedMetrics.metrics.population.age_distribution_comparison.end_distribution).map(([ageGroup]) => {
+                          const countStart = aggregatedMetrics.metrics.population.age_distribution_comparison!.start_distribution[ageGroup as keyof typeof aggregatedMetrics.metrics.population.age_distribution_comparison.start_distribution];
+                          const countEnd = aggregatedMetrics.metrics.population.age_distribution_comparison!.end_distribution[ageGroup as keyof typeof aggregatedMetrics.metrics.population.age_distribution_comparison.end_distribution];
+
+                          const totalStart = (Object.values(aggregatedMetrics.metrics.population.age_distribution_comparison!.start_distribution) as number[]).reduce((sum, val) => sum + val, 0);
+                          const totalEnd = (Object.values(aggregatedMetrics.metrics.population.age_distribution_comparison!.end_distribution) as number[]).reduce((sum, val) => sum + val, 0);
+
+                          const percentageStart = (countStart as number / totalStart) * 100;
+                          const percentageEnd = (countEnd as number / totalEnd) * 100;
+                          const change = countEnd - countStart;
+                          const percentageChange = percentageEnd - percentageStart;
+
+                          const startYear = aggregatedMetrics.metrics.population.age_distribution_comparison!.start_year;
+                          const endYear = aggregatedMetrics.metrics.population.age_distribution_comparison!.end_year;
+
+                          return (
+                            <div key={ageGroup} className="space-y-1">
+                              <div className="flex items-center gap-2 text-sm">
+                                <span className="text-gray-700 w-20">{ageGroup} år</span>
+                                <div className="flex-1 flex gap-2">
+                                  {/* Start year label */}
+                                  <div className="flex-1">
+                                    <span className="text-gray-600 text-xs">
+                                      {startYear}: {countStart.toLocaleString('sv-SE')} ({percentageStart.toFixed(1)}%)
+                                    </span>
                                   </div>
-                                )}
+                                  {/* End year label */}
+                                  <div className="flex-1">
+                                    <span className="font-medium text-gray-900 text-xs">
+                                      {endYear}: {countEnd.toLocaleString('sv-SE')} ({percentageEnd.toFixed(1)}%)
+                                    </span>
+                                  </div>
+                                </div>
+                                {/* Change indicator */}
+                                <span className={`text-xs w-24 text-right ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                  {change >= 0 ? '+' : ''}{change.toLocaleString('sv-SE')}
+                                  {' '}({percentageChange >= 0 ? '+' : ''}{percentageChange.toFixed(1)}pp)
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="w-20"></div> {/* Spacer to align with age group label */}
+                                <div className="flex-1 flex gap-2">
+                                  {/* Start year bar */}
+                                  <div className="flex-1">
+                                    <div className="w-full bg-gray-200 rounded-full h-2">
+                                      <div
+                                        className="bg-gray-500 h-2 rounded-full transition-all"
+                                        style={{ width: `${percentageStart}%` }}
+                                      />
+                                    </div>
+                                  </div>
+                                  {/* End year bar */}
+                                  <div className="flex-1">
+                                    <div className="w-full bg-gray-200 rounded-full h-2">
+                                      <div
+                                        className="bg-blue-600 h-2 rounded-full transition-all"
+                                        style={{ width: `${percentageEnd}%` }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="w-24"></div> {/* Spacer to align with change indicator */}
                               </div>
                             </div>
                           );
                         })}
                       </div>
                     </div>
-                  </div>
-                )}
-
-                {/* Housing Type (Hustyp) */}
-                {aggregatedMetrics.metrics.housing_type && (
-                  <div>
-                    <h3 className="font-semibold mb-3">
-                      Hustyp {aggregatedMetrics.metrics.housing_type.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.housing_type.year})</span>}
-                    </h3>
-                    <div className="space-y-3">
-                      {/* Grid overview */}
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-amber-50 rounded-lg p-3 text-center">
-                          <p className="text-xs text-amber-700 font-medium mb-1">Småhus</p>
-                          <p className="text-lg font-semibold text-amber-900">
-                            {aggregatedMetrics.metrics.housing_type.smahus.toLocaleString('sv-SE')}
-                          </p>
-                          <p className="text-xs text-amber-600 mt-1">
-                            {aggregatedMetrics.metrics.housing_type.percentage_smahus.toFixed(1)}%
-                          </p>
-                          {aggregatedMetrics.metrics.housing_type.kommun_avg && (
-                            <div className="mt-2 text-xs border-t border-amber-200 pt-2">
-                              <span className="text-amber-700">Kommun: </span>
-                              <span className="font-medium text-amber-800">
-                                {aggregatedMetrics.metrics.housing_type.kommun_avg.percentage_smahus.toFixed(1)}%
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="bg-slate-50 rounded-lg p-3 text-center">
-                          <p className="text-xs text-slate-700 font-medium mb-1">Flerbostadshus</p>
-                          <p className="text-lg font-semibold text-slate-900">
-                            {aggregatedMetrics.metrics.housing_type.flerbostadshus.toLocaleString('sv-SE')}
-                          </p>
-                          <p className="text-xs text-slate-600 mt-1">
-                            {(100 - aggregatedMetrics.metrics.housing_type.percentage_smahus).toFixed(1)}%
-                          </p>
-                          {aggregatedMetrics.metrics.housing_type.kommun_avg && (
-                            <div className="mt-2 text-xs border-t border-slate-200 pt-2">
-                              <span className="text-slate-700">Kommun: </span>
-                              <span className="font-medium text-slate-800">
-                                {(100 - aggregatedMetrics.metrics.housing_type.kommun_avg.percentage_smahus).toFixed(1)}%
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Visual bar */}
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-xs text-gray-600">
-                          <span>Småhus (Villa, Radhus)</span>
-                          <span>Flerbostadshus (Lägenheter)</span>
-                        </div>
-                        <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden flex">
-                          <div
-                            className="bg-amber-500 h-full transition-all"
-                            style={{ width: `${aggregatedMetrics.metrics.housing_type.percentage_smahus}%` }}
-                          />
-                          <div
-                            className="bg-slate-500 h-full transition-all"
-                            style={{ width: `${100 - aggregatedMetrics.metrics.housing_type.percentage_smahus}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Tenure Form (Upplåtelseform) */}
-                {aggregatedMetrics.metrics.tenure_form && (
-                  <div>
-                    <h3 className="font-semibold mb-3">
-                      Upplåtelseform {aggregatedMetrics.metrics.tenure_form.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.tenure_form.year})</span>}
-                    </h3>
-                    <div className="space-y-3">
-                      {/* Grid overview */}
-                      <div className="grid grid-cols-3 gap-2">
-                        <div className="bg-teal-50 rounded-lg p-3 text-center">
-                          <p className="text-xs text-teal-700 font-medium mb-1">Äganderätt</p>
-                          <p className="text-base font-semibold text-teal-900">
-                            {aggregatedMetrics.metrics.tenure_form.aganderatt.toLocaleString('sv-SE')}
-                          </p>
-                          <p className="text-xs text-teal-600 mt-1">
-                            {aggregatedMetrics.metrics.tenure_form.percentage_aganderatt.toFixed(1)}%
-                          </p>
-                          {aggregatedMetrics.metrics.tenure_form.kommun_avg && (
-                            <div className="mt-2 text-xs border-t border-teal-200 pt-2">
-                              <span className="text-teal-700">Kommun: </span>
-                              <span className="font-medium text-teal-800">
-                                {aggregatedMetrics.metrics.tenure_form.kommun_avg.percentage_aganderatt.toFixed(1)}%
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="bg-cyan-50 rounded-lg p-3 text-center">
-                          <p className="text-xs text-cyan-700 font-medium mb-1">Bostadsrätt</p>
-                          <p className="text-base font-semibold text-cyan-900">
-                            {aggregatedMetrics.metrics.tenure_form.bostadsratt.toLocaleString('sv-SE')}
-                          </p>
-                          <p className="text-xs text-cyan-600 mt-1">
-                            {aggregatedMetrics.metrics.tenure_form.percentage_bostadsratt.toFixed(1)}%
-                          </p>
-                          {aggregatedMetrics.metrics.tenure_form.kommun_avg && (
-                            <div className="mt-2 text-xs border-t border-cyan-200 pt-2">
-                              <span className="text-cyan-700">Kommun: </span>
-                              <span className="font-medium text-cyan-800">
-                                {aggregatedMetrics.metrics.tenure_form.kommun_avg.percentage_bostadsratt.toFixed(1)}%
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="bg-sky-50 rounded-lg p-3 text-center">
-                          <p className="text-xs text-sky-700 font-medium mb-1">Hyresrätt</p>
-                          <p className="text-base font-semibold text-sky-900">
-                            {aggregatedMetrics.metrics.tenure_form.hyresratt.toLocaleString('sv-SE')}
-                          </p>
-                          <p className="text-xs text-sky-600 mt-1">
-                            {aggregatedMetrics.metrics.tenure_form.percentage_hyresratt.toFixed(1)}%
-                          </p>
-                          {aggregatedMetrics.metrics.tenure_form.kommun_avg && (
-                            <div className="mt-2 text-xs border-t border-sky-200 pt-2">
-                              <span className="text-sky-700">Kommun: </span>
-                              <span className="font-medium text-sky-800">
-                                {aggregatedMetrics.metrics.tenure_form.kommun_avg.percentage_hyresratt.toFixed(1)}%
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Breakdown bars */}
-                      <div className="space-y-2">
-                        {[
-                          { label: 'Äganderätt', count: aggregatedMetrics.metrics.tenure_form.aganderatt, percentage: aggregatedMetrics.metrics.tenure_form.percentage_aganderatt, kommunKey: 'percentage_aganderatt', color: 'bg-teal-600', lightColor: 'bg-teal-300' },
-                          { label: 'Bostadsrätt', count: aggregatedMetrics.metrics.tenure_form.bostadsratt, percentage: aggregatedMetrics.metrics.tenure_form.percentage_bostadsratt, kommunKey: 'percentage_bostadsratt', color: 'bg-cyan-600', lightColor: 'bg-cyan-300' },
-                          { label: 'Hyresrätt', count: aggregatedMetrics.metrics.tenure_form.hyresratt, percentage: aggregatedMetrics.metrics.tenure_form.percentage_hyresratt, kommunKey: 'percentage_hyresratt', color: 'bg-sky-600', lightColor: 'bg-sky-300' }
-                        ].map(({ label, count, percentage, kommunKey, color, lightColor }) => {
-                          // Get kommun percentage
-                          const kommunAvg = aggregatedMetrics.metrics.tenure_form.kommun_avg;
-                          const kommunPercentage = kommunAvg?.[kommunKey as keyof typeof kommunAvg] as number | undefined;
-
-                          return (
-                            <div key={label} className="space-y-1">
-                              <div className="flex justify-between text-sm">
-                                <span className="text-gray-700">{label}</span>
-                                <div className="flex gap-3">
-                                  <span className="font-medium text-gray-900">
-                                    {count.toLocaleString('sv-SE')} ({percentage.toFixed(1)}%)
-                                  </span>
-                                  {kommunPercentage !== undefined && (
-                                    <span className="text-gray-600 text-xs">
-                                      Kommun: {kommunPercentage.toFixed(1)}%
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="space-y-1">
-                                {/* Area bar */}
-                                <div className="w-full bg-gray-200 rounded-full h-2">
-                                  <div
-                                    className={`${color} h-2 rounded-full transition-all`}
-                                    style={{ width: `${percentage}%` }}
-                                  />
-                                </div>
-                                {/* Kommun bar */}
-                                {kommunPercentage !== undefined && (
-                                  <div className="w-full bg-gray-100 rounded-full h-2">
-                                    <div
-                                      className={`${lightColor} h-2 rounded-full transition-all`}
-                                      style={{ width: `${kommunPercentage}%` }}
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
+                  )}
+                </div>
+              </div>
+            </section>
+            {/* Ekonomi */}
+            <section className="space-y-3">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Ekonomi</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Economic Standard (Ekonomisk standard) */}
                 {aggregatedMetrics.metrics.economic_standard && (
-                  <div>
+                  <div className="bg-white rounded-lg shadow p-4">
                     <h3 className="font-semibold mb-3">
                       Ekonomisk standard {aggregatedMetrics.metrics.economic_standard.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.economic_standard.year})</span>}
                     </h3>
@@ -1142,10 +706,9 @@ function App() {
                     </div>
                   </div>
                 )}
-
                 {/* Earned Income (Förvärvsinkomst) */}
                 {aggregatedMetrics.metrics.earned_income && (
-                  <div>
+                  <div className="bg-white rounded-lg shadow p-4">
                     <h3 className="font-semibold mb-3">
                       Förvärvsinkomst {aggregatedMetrics.metrics.earned_income.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.earned_income.year})</span>}
                     </h3>
@@ -1263,79 +826,279 @@ function App() {
                     </div>
                   </div>
                 )}
-
-                {/* Vehicles (Fordon) */}
-                {aggregatedMetrics.metrics.vehicles && (
-                  <div>
+              </div>
+            </section>
+            {/* Boende */}
+            <section className="space-y-3">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Boende</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Household Size (Hushållsstorlek) */}
+                {aggregatedMetrics.metrics.household && (
+                  <div className="bg-white rounded-lg shadow p-4">
                     <h3 className="font-semibold mb-3">
-                      Fordon {aggregatedMetrics.metrics.vehicles.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.vehicles.year})</span>}
+                      Hushållsstorlek {aggregatedMetrics.metrics.household.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.household.year})</span>}
                     </h3>
                     <div className="space-y-3">
-                      {/* Overview cards */}
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-blue-50 rounded-lg p-3">
-                          <p className="text-xs text-blue-700 font-medium mb-1">Totalt antal bilar</p>
-                          <p className="text-lg font-semibold text-blue-900">
-                            {aggregatedMetrics.metrics.vehicles.total_vehicles.toLocaleString('sv-SE')}
-                          </p>
-                          {aggregatedMetrics.metrics.vehicles.kommun_avg && (
-                            <div className="mt-2 text-xs">
-                              <span className="text-gray-600">Kommun: </span>
-                              <span className="text-gray-700">
-                                {aggregatedMetrics.metrics.vehicles.kommun_avg.total_vehicles.toLocaleString('sv-SE')}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-
-                        {aggregatedMetrics.metrics.vehicles.vehicles_per_household && (
-                          <div className="bg-green-50 rounded-lg p-3">
-                            <p className="text-xs text-green-700 font-medium mb-1">Bilar per hushåll</p>
-                            <p className="text-lg font-semibold text-green-900">
-                              {aggregatedMetrics.metrics.vehicles.vehicles_per_household.toFixed(2)}
-                            </p>
-                            {aggregatedMetrics.metrics.vehicles.kommun_avg?.vehicles_per_household && (
-                              <div className="mt-2 text-xs">
-                                <span className="text-gray-600">Kommun: </span>
-                                <span className={aggregatedMetrics.metrics.vehicles.vehicles_per_household > aggregatedMetrics.metrics.vehicles.kommun_avg.vehicles_per_household ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
-                                  {aggregatedMetrics.metrics.vehicles.kommun_avg.vehicles_per_household.toFixed(2)}
-                                  {aggregatedMetrics.metrics.vehicles.vehicles_per_household > aggregatedMetrics.metrics.vehicles.kommun_avg.vehicles_per_household ? ' ↑' : ' ↓'}
-                                </span>
-                              </div>
-                            )}
+                      {/* Total households */}
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <p className="text-xs text-gray-600 mb-1">Totalt antal hushåll</p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {aggregatedMetrics.metrics.household.total_households.toLocaleString('sv-SE')}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Snitt storlek: {aggregatedMetrics.metrics.household.average_household_size.toFixed(2)} personer/hushåll
+                        </p>
+                        {aggregatedMetrics.metrics.household.kommun_avg && (
+                          <div className="mt-2 text-xs border-t border-gray-300 pt-2">
+                            <span className="text-gray-600">Kommun snitt: </span>
+                            <span className={aggregatedMetrics.metrics.household.average_household_size > aggregatedMetrics.metrics.household.kommun_avg.average_household_size ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
+                              {aggregatedMetrics.metrics.household.kommun_avg.average_household_size.toFixed(2)} personer/hushåll
+                              {aggregatedMetrics.metrics.household.average_household_size > aggregatedMetrics.metrics.household.kommun_avg.average_household_size ? ' ↑' : ' ↓'}
+                            </span>
                           </div>
                         )}
                       </div>
 
-                      {/* Status breakdown */}
+                      {/* Breakdown by household type */}
                       <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-700">I trafik</span>
-                          <span className="text-sm font-medium">
-                            {aggregatedMetrics.metrics.vehicles.vehicles_in_traffic.toLocaleString('sv-SE')} ({((aggregatedMetrics.metrics.vehicles.vehicles_in_traffic / aggregatedMetrics.metrics.vehicles.total_vehicles) * 100).toFixed(1)}%)
-                          </span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            className="bg-blue-600 h-2 rounded-full transition-all"
-                            style={{ width: `${(aggregatedMetrics.metrics.vehicles.vehicles_in_traffic / aggregatedMetrics.metrics.vehicles.total_vehicles) * 100}%` }}
-                          />
-                        </div>
-                      </div>
+                        {[
+                          { label: 'Ensamstående', count: aggregatedMetrics.metrics.household.ensamstaende_utan_barn, kommunKey: 'ensamstaende_utan_barn', color: 'bg-blue-600', lightColor: 'bg-blue-300' },
+                          { label: 'Ensamstående med barn', count: aggregatedMetrics.metrics.household.ensamstaende_med_barn, kommunKey: 'ensamstaende_med_barn', color: 'bg-cyan-600', lightColor: 'bg-cyan-300' },
+                          { label: 'Par', count: aggregatedMetrics.metrics.household.par_utan_barn, kommunKey: 'par_utan_barn', color: 'bg-indigo-600', lightColor: 'bg-indigo-300' },
+                          { label: 'Familjer', count: aggregatedMetrics.metrics.household.familjer, kommunKey: 'familjer', color: 'bg-purple-600', lightColor: 'bg-purple-300' },
+                          { label: 'Övriga', count: aggregatedMetrics.metrics.household.ovriga, kommunKey: 'ovriga', color: 'bg-gray-600', lightColor: 'bg-gray-300' }
+                        ].map(({ label, count, kommunKey, color, lightColor }) => {
+                          const percentage = ((count as number) / aggregatedMetrics.metrics.household.total_households) * 100;
 
-                      {/* Info note */}
-                      <div className="bg-gray-50 rounded-lg p-2">
-                        <p className="text-xs text-gray-600">
-                          Personbilar registrerade på folkbokförda personer per 31 december. Inkluderar bilar från enskild firma och leasade bilar.
-                        </p>
+                          // Get kommun percentage
+                          const kommunAvg = aggregatedMetrics.metrics.household.kommun_avg;
+                          const kommunCount = kommunAvg?.[kommunKey as keyof typeof kommunAvg] as number | undefined;
+                          const kommunTotal = kommunAvg?.total_households || 0;
+                          const kommunPercentage = kommunCount && kommunTotal > 0 ? (kommunCount / kommunTotal) * 100 : null;
+
+                          return (
+                            <div key={label} className="space-y-1">
+                              <div className="flex justify-between text-sm">
+                                <span className="text-gray-700">{label}</span>
+                                <div className="flex gap-3">
+                                  <span className="font-medium text-gray-900">
+                                    {count.toLocaleString('sv-SE')} ({percentage.toFixed(1)}%)
+                                  </span>
+                                  {kommunPercentage !== null && (
+                                    <span className="text-gray-600 text-xs">
+                                      Kommun: {kommunPercentage.toFixed(1)}%
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="space-y-1">
+                                {/* Area bar */}
+                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                  <div
+                                    className={`${color} h-2 rounded-full transition-all`}
+                                    style={{ width: `${percentage}%` }}
+                                  />
+                                </div>
+                                {/* Kommun bar */}
+                                {kommunPercentage !== null && (
+                                  <div className="w-full bg-gray-100 rounded-full h-2">
+                                    <div
+                                      className={`${lightColor} h-2 rounded-full transition-all`}
+                                      style={{ width: `${kommunPercentage}%` }}
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
                 )}
+                {/* Housing Type (Hustyp) */}
+                {aggregatedMetrics.metrics.housing_type && (
+                  <div className="bg-white rounded-lg shadow p-4">
+                    <h3 className="font-semibold mb-3">
+                      Hustyp {aggregatedMetrics.metrics.housing_type.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.housing_type.year})</span>}
+                    </h3>
+                    <div className="space-y-3">
+                      {/* Grid overview */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-amber-50 rounded-lg p-3 text-center">
+                          <p className="text-xs text-amber-700 font-medium mb-1">Småhus</p>
+                          <p className="text-lg font-semibold text-amber-900">
+                            {aggregatedMetrics.metrics.housing_type.smahus.toLocaleString('sv-SE')}
+                          </p>
+                          <p className="text-xs text-amber-600 mt-1">
+                            {aggregatedMetrics.metrics.housing_type.percentage_smahus.toFixed(1)}%
+                          </p>
+                          {aggregatedMetrics.metrics.housing_type.kommun_avg && (
+                            <div className="mt-2 text-xs border-t border-amber-200 pt-2">
+                              <span className="text-amber-700">Kommun: </span>
+                              <span className="font-medium text-amber-800">
+                                {aggregatedMetrics.metrics.housing_type.kommun_avg.percentage_smahus.toFixed(1)}%
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="bg-slate-50 rounded-lg p-3 text-center">
+                          <p className="text-xs text-slate-700 font-medium mb-1">Flerbostadshus</p>
+                          <p className="text-lg font-semibold text-slate-900">
+                            {aggregatedMetrics.metrics.housing_type.flerbostadshus.toLocaleString('sv-SE')}
+                          </p>
+                          <p className="text-xs text-slate-600 mt-1">
+                            {(100 - aggregatedMetrics.metrics.housing_type.percentage_smahus).toFixed(1)}%
+                          </p>
+                          {aggregatedMetrics.metrics.housing_type.kommun_avg && (
+                            <div className="mt-2 text-xs border-t border-slate-200 pt-2">
+                              <span className="text-slate-700">Kommun: </span>
+                              <span className="font-medium text-slate-800">
+                                {(100 - aggregatedMetrics.metrics.housing_type.kommun_avg.percentage_smahus).toFixed(1)}%
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
 
+                      {/* Visual bar */}
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs text-gray-600">
+                          <span>Småhus (Villa, Radhus)</span>
+                          <span>Flerbostadshus (Lägenheter)</span>
+                        </div>
+                        <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden flex">
+                          <div
+                            className="bg-amber-500 h-full transition-all"
+                            style={{ width: `${aggregatedMetrics.metrics.housing_type.percentage_smahus}%` }}
+                          />
+                          <div
+                            className="bg-slate-500 h-full transition-all"
+                            style={{ width: `${100 - aggregatedMetrics.metrics.housing_type.percentage_smahus}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Tenure Form (Upplåtelseform) */}
+                {aggregatedMetrics.metrics.tenure_form && (
+                  <div className="bg-white rounded-lg shadow p-4">
+                    <h3 className="font-semibold mb-3">
+                      Upplåtelseform {aggregatedMetrics.metrics.tenure_form.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.tenure_form.year})</span>}
+                    </h3>
+                    <div className="space-y-3">
+                      {/* Grid overview */}
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className="bg-teal-50 rounded-lg p-3 text-center">
+                          <p className="text-xs text-teal-700 font-medium mb-1">Äganderätt</p>
+                          <p className="text-base font-semibold text-teal-900">
+                            {aggregatedMetrics.metrics.tenure_form.aganderatt.toLocaleString('sv-SE')}
+                          </p>
+                          <p className="text-xs text-teal-600 mt-1">
+                            {aggregatedMetrics.metrics.tenure_form.percentage_aganderatt.toFixed(1)}%
+                          </p>
+                          {aggregatedMetrics.metrics.tenure_form.kommun_avg && (
+                            <div className="mt-2 text-xs border-t border-teal-200 pt-2">
+                              <span className="text-teal-700">Kommun: </span>
+                              <span className="font-medium text-teal-800">
+                                {aggregatedMetrics.metrics.tenure_form.kommun_avg.percentage_aganderatt.toFixed(1)}%
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="bg-cyan-50 rounded-lg p-3 text-center">
+                          <p className="text-xs text-cyan-700 font-medium mb-1">Bostadsrätt</p>
+                          <p className="text-base font-semibold text-cyan-900">
+                            {aggregatedMetrics.metrics.tenure_form.bostadsratt.toLocaleString('sv-SE')}
+                          </p>
+                          <p className="text-xs text-cyan-600 mt-1">
+                            {aggregatedMetrics.metrics.tenure_form.percentage_bostadsratt.toFixed(1)}%
+                          </p>
+                          {aggregatedMetrics.metrics.tenure_form.kommun_avg && (
+                            <div className="mt-2 text-xs border-t border-cyan-200 pt-2">
+                              <span className="text-cyan-700">Kommun: </span>
+                              <span className="font-medium text-cyan-800">
+                                {aggregatedMetrics.metrics.tenure_form.kommun_avg.percentage_bostadsratt.toFixed(1)}%
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="bg-sky-50 rounded-lg p-3 text-center">
+                          <p className="text-xs text-sky-700 font-medium mb-1">Hyresrätt</p>
+                          <p className="text-base font-semibold text-sky-900">
+                            {aggregatedMetrics.metrics.tenure_form.hyresratt.toLocaleString('sv-SE')}
+                          </p>
+                          <p className="text-xs text-sky-600 mt-1">
+                            {aggregatedMetrics.metrics.tenure_form.percentage_hyresratt.toFixed(1)}%
+                          </p>
+                          {aggregatedMetrics.metrics.tenure_form.kommun_avg && (
+                            <div className="mt-2 text-xs border-t border-sky-200 pt-2">
+                              <span className="text-sky-700">Kommun: </span>
+                              <span className="font-medium text-sky-800">
+                                {aggregatedMetrics.metrics.tenure_form.kommun_avg.percentage_hyresratt.toFixed(1)}%
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Breakdown bars */}
+                      <div className="space-y-2">
+                        {[
+                          { label: 'Äganderätt', count: aggregatedMetrics.metrics.tenure_form.aganderatt, percentage: aggregatedMetrics.metrics.tenure_form.percentage_aganderatt, kommunKey: 'percentage_aganderatt', color: 'bg-teal-600', lightColor: 'bg-teal-300' },
+                          { label: 'Bostadsrätt', count: aggregatedMetrics.metrics.tenure_form.bostadsratt, percentage: aggregatedMetrics.metrics.tenure_form.percentage_bostadsratt, kommunKey: 'percentage_bostadsratt', color: 'bg-cyan-600', lightColor: 'bg-cyan-300' },
+                          { label: 'Hyresrätt', count: aggregatedMetrics.metrics.tenure_form.hyresratt, percentage: aggregatedMetrics.metrics.tenure_form.percentage_hyresratt, kommunKey: 'percentage_hyresratt', color: 'bg-sky-600', lightColor: 'bg-sky-300' }
+                        ].map(({ label, count, percentage, kommunKey, color, lightColor }) => {
+                          // Get kommun percentage
+                          const kommunAvg = aggregatedMetrics.metrics.tenure_form.kommun_avg;
+                          const kommunPercentage = kommunAvg?.[kommunKey as keyof typeof kommunAvg] as number | undefined;
+
+                          return (
+                            <div key={label} className="space-y-1">
+                              <div className="flex justify-between text-sm">
+                                <span className="text-gray-700">{label}</span>
+                                <div className="flex gap-3">
+                                  <span className="font-medium text-gray-900">
+                                    {count.toLocaleString('sv-SE')} ({percentage.toFixed(1)}%)
+                                  </span>
+                                  {kommunPercentage !== undefined && (
+                                    <span className="text-gray-600 text-xs">
+                                      Kommun: {kommunPercentage.toFixed(1)}%
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="space-y-1">
+                                {/* Area bar */}
+                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                  <div
+                                    className={`${color} h-2 rounded-full transition-all`}
+                                    style={{ width: `${percentage}%` }}
+                                  />
+                                </div>
+                                {/* Kommun bar */}
+                                {kommunPercentage !== undefined && (
+                                  <div className="w-full bg-gray-100 rounded-full h-2">
+                                    <div
+                                      className={`${lightColor} h-2 rounded-full transition-all`}
+                                      style={{ width: `${kommunPercentage}%` }}
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
                 {/* Building Age (Byggnadsålder) */}
                 {aggregatedMetrics.metrics.building_age && aggregatedMetrics.metrics.building_age.periods.length > 0 && (
-                  <div>
+                  <div className="bg-white rounded-lg shadow p-4">
                     <h3 className="font-semibold mb-3">
                       Byggnadsålder {aggregatedMetrics.metrics.building_age.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.building_age.year})</span>}
                     </h3>
@@ -1429,16 +1192,312 @@ function App() {
                     </div>
                   </div>
                 )}
+              </div>
+            </section>
+            {/* Utbildning och bakgrund */}
+            <section className="space-y-3">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Utbildning och bakgrund</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Education Breakdown (Utbildningsnivå) */}
+                {aggregatedMetrics.metrics.education && (
+                  <div className="bg-white rounded-lg shadow p-4">
+                    <h3 className="font-semibold mb-3">
+                      Utbildningsnivå {aggregatedMetrics.metrics.education.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.education.year})</span>}
+                    </h3>
+                    <div className="space-y-2">
+                      {[
+                        {
+                          label: 'Förgymnasial',
+                          percentage: aggregatedMetrics.metrics.education.forgymnasial,
+                          color: 'bg-red-600',
+                          description: 'Grundskola eller lägre'
+                        },
+                        {
+                          label: 'Gymnasial',
+                          percentage: aggregatedMetrics.metrics.education.gymnasial,
+                          color: 'bg-yellow-600',
+                          description: 'Gymnasium'
+                        },
+                        {
+                          label: 'Eftergymnasial',
+                          percentage: aggregatedMetrics.metrics.education.eftergymnasial,
+                          color: 'bg-green-600',
+                          description: 'Högskola/Universitet'
+                        }
+                      ].map(({ label, percentage, color, description }) => {
+                        // Calculate absolute count from percentage
+                        const count = Math.round((percentage / 100) * aggregatedMetrics.metrics.population.total);
 
-                {/* Export Buttons */}
+                        return (
+                          <div key={label} className="space-y-1">
+                            <div className="flex justify-between text-sm">
+                              <div>
+                                <span className="text-gray-700 font-medium">{label}</span>
+                                <span className="text-gray-500 text-xs ml-2">({description})</span>
+                              </div>
+                              <span className="font-medium text-gray-900">
+                                {count.toLocaleString('sv-SE')} ({percentage.toFixed(1)}%)
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div
+                                className={`${color} h-2 rounded-full transition-all`}
+                                style={{ width: `${percentage}%` }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Comparison with kommun/riket */}
+                    <div className="mt-3 bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs font-medium text-gray-700 mb-2">Jämförelse eftergymnasial utbildning:</p>
+                      <div className="grid grid-cols-3 gap-2 text-xs">
+                        <div className="text-center">
+                          <p className="text-gray-600">Område</p>
+                          <p className="font-semibold text-gray-900">
+                            {aggregatedMetrics.metrics.education.eftergymnasial.toFixed(1)}%
+                          </p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-gray-600">Kommun</p>
+                          <p className={`font-semibold ${
+                            aggregatedMetrics.metrics.education.eftergymnasial > aggregatedMetrics.metrics.education.kommun_avg.eftergymnasial
+                              ? 'text-green-600' : 'text-red-600'
+                          }`}>
+                            {aggregatedMetrics.metrics.education.kommun_avg.eftergymnasial.toFixed(1)}%
+                          </p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-gray-600">Riket</p>
+                          <p className={`font-semibold ${
+                            aggregatedMetrics.metrics.education.eftergymnasial > aggregatedMetrics.metrics.education.riket_avg.eftergymnasial
+                              ? 'text-green-600' : 'text-red-600'
+                          }`}>
+                            {aggregatedMetrics.metrics.education.riket_avg.eftergymnasial.toFixed(1)}%
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* Origin (Härkomst) */}
+                {aggregatedMetrics.metrics.origin && (
+                  <div className="bg-white rounded-lg shadow p-4">
+                    <h3 className="font-semibold mb-3">
+                      Härkomst {aggregatedMetrics.metrics.origin.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.origin.year})</span>}
+                    </h3>
+                    <div className="space-y-3">
+                      {/* Total overview */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-green-50 rounded-lg p-3 text-center">
+                          <p className="text-xs text-green-700 font-medium mb-1">Svensk bakgrund</p>
+                          <p className="text-lg font-semibold text-green-900">
+                            {aggregatedMetrics.metrics.origin.swedish_background.toLocaleString('sv-SE')}
+                          </p>
+                          <p className="text-xs text-green-600 mt-1">
+                            {((aggregatedMetrics.metrics.origin.swedish_background / (aggregatedMetrics.metrics.origin.swedish_background + aggregatedMetrics.metrics.origin.foreign_background)) * 100).toFixed(1)}%
+                          </p>
+                          {aggregatedMetrics.metrics.origin.kommun_avg && (
+                            <div className="mt-2 text-xs border-t border-green-200 pt-2">
+                              <span className="text-green-700">Kommun: </span>
+                              <span className="font-medium text-green-800">
+                                {((aggregatedMetrics.metrics.origin.kommun_avg.swedish_background / (aggregatedMetrics.metrics.origin.kommun_avg.swedish_background + aggregatedMetrics.metrics.origin.kommun_avg.foreign_background)) * 100).toFixed(1)}%
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="bg-purple-50 rounded-lg p-3 text-center">
+                          <p className="text-xs text-purple-700 font-medium mb-1">Utländsk bakgrund</p>
+                          <p className="text-lg font-semibold text-purple-900">
+                            {aggregatedMetrics.metrics.origin.foreign_background.toLocaleString('sv-SE')}
+                          </p>
+                          <p className="text-xs text-purple-600 mt-1">
+                            {aggregatedMetrics.metrics.origin.percentage_foreign.toFixed(1)}%
+                          </p>
+                          {aggregatedMetrics.metrics.origin.kommun_avg && (
+                            <div className="mt-2 text-xs border-t border-purple-200 pt-2">
+                              <span className="text-purple-700">Kommun: </span>
+                              <span className="font-medium text-purple-800">
+                                {aggregatedMetrics.metrics.origin.kommun_avg.percentage_foreign.toFixed(1)}%
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Visual bar */}
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs text-gray-600">
+                          <span>Svensk</span>
+                          <span>Utländsk</span>
+                        </div>
+                        <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden flex">
+                          <div
+                            className="bg-green-500 h-full transition-all"
+                            style={{ width: `${100 - aggregatedMetrics.metrics.origin.percentage_foreign}%` }}
+                          />
+                          <div
+                            className="bg-purple-500 h-full transition-all"
+                            style={{ width: `${aggregatedMetrics.metrics.origin.percentage_foreign}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+            {/* Övrigt */}
+            <section className="space-y-3">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Övrigt</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Vehicles (Fordon) */}
+                {aggregatedMetrics.metrics.vehicles && (
+                  <div className="bg-white rounded-lg shadow p-4">
+                    <h3 className="font-semibold mb-3">
+                      Fordon {aggregatedMetrics.metrics.vehicles.year && <span className="text-sm text-gray-400 font-normal">({aggregatedMetrics.metrics.vehicles.year})</span>}
+                    </h3>
+                    <div className="space-y-3">
+                      {/* Overview cards */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-blue-50 rounded-lg p-3">
+                          <p className="text-xs text-blue-700 font-medium mb-1">Totalt antal bilar</p>
+                          <p className="text-lg font-semibold text-blue-900">
+                            {aggregatedMetrics.metrics.vehicles.total_vehicles.toLocaleString('sv-SE')}
+                          </p>
+                          {aggregatedMetrics.metrics.vehicles.kommun_avg && (
+                            <div className="mt-2 text-xs">
+                              <span className="text-gray-600">Kommun: </span>
+                              <span className="text-gray-700">
+                                {aggregatedMetrics.metrics.vehicles.kommun_avg.total_vehicles.toLocaleString('sv-SE')}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {aggregatedMetrics.metrics.vehicles.vehicles_per_household && (
+                          <div className="bg-green-50 rounded-lg p-3">
+                            <p className="text-xs text-green-700 font-medium mb-1">Bilar per hushåll</p>
+                            <p className="text-lg font-semibold text-green-900">
+                              {aggregatedMetrics.metrics.vehicles.vehicles_per_household.toFixed(2)}
+                            </p>
+                            {aggregatedMetrics.metrics.vehicles.kommun_avg?.vehicles_per_household && (
+                              <div className="mt-2 text-xs">
+                                <span className="text-gray-600">Kommun: </span>
+                                <span className={aggregatedMetrics.metrics.vehicles.vehicles_per_household > aggregatedMetrics.metrics.vehicles.kommun_avg.vehicles_per_household ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
+                                  {aggregatedMetrics.metrics.vehicles.kommun_avg.vehicles_per_household.toFixed(2)}
+                                  {aggregatedMetrics.metrics.vehicles.vehicles_per_household > aggregatedMetrics.metrics.vehicles.kommun_avg.vehicles_per_household ? ' ↑' : ' ↓'}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Status breakdown */}
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-700">I trafik</span>
+                          <span className="text-sm font-medium">
+                            {aggregatedMetrics.metrics.vehicles.vehicles_in_traffic.toLocaleString('sv-SE')} ({((aggregatedMetrics.metrics.vehicles.vehicles_in_traffic / aggregatedMetrics.metrics.vehicles.total_vehicles) * 100).toFixed(1)}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full transition-all"
+                            style={{ width: `${(aggregatedMetrics.metrics.vehicles.vehicles_in_traffic / aggregatedMetrics.metrics.vehicles.total_vehicles) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Info note */}
+                      <div className="bg-gray-50 rounded-lg p-2">
+                        <p className="text-xs text-gray-600">
+                          Personbilar registrerade på folkbokförda personer per 31 december. Inkluderar bilar från enskild firma och leasade bilar.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          </div>
+        )}
+
+        {/* Bostadsmarknad (Booli): uppladdning, försäljningar och prisanalys */}
+        <section className="mt-8 space-y-3">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Bostadsmarknad (Booli)</h2>
+          <div className="print:hidden">
+            <BooliUpload />
+          </div>
+          {/* Försäljningsstatistik – bara för ett enskilt område (finns inte i aggregerad data) */}
+          {aggregatedMetrics && aggregatedMetrics.area_count === 1 && aggregatedMetrics.metrics.booli && (
+              <div className="bg-white rounded-lg shadow p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold">Bostadsförsäljningar (senaste 2 åren)</h3>
+                  <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Mock data</span>
+                </div>
                 <div className="space-y-2">
-                  {/* Excel export - full width, prominent */}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Totalt antal:</span>
+                    <span className="font-medium">{aggregatedMetrics.metrics.booli.total_sales} st</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Snittpris:</span>
+                    <span className="font-medium">
+                      {aggregatedMetrics.metrics.booli.avg_price.toLocaleString('sv-SE')} kr
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Nyproduktion:</span>
+                    <span className="font-medium">
+                      {aggregatedMetrics.metrics.booli.new_production.count} st ({
+                        ((aggregatedMetrics.metrics.booli.new_production.count / aggregatedMetrics.metrics.booli.total_sales) * 100).toFixed(0)
+                      }%)
+                    </span>
+                  </div>
+                </div>
+              </div>
+          )}
+          <BooliAnalysis />
+        </section>
+
+        {!loading && !error && desoResult && aggregatedMetrics && (
+          <section className="mt-8 space-y-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Export och analys</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+              <div className="bg-white rounded-lg shadow p-4 space-y-2">
+                {/* Excel export - full width, prominent */}
+                <button
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  onClick={async () => {
+                    if (aggregatedMetrics && desoResult) {
+                      const coordinates = propertyPoint?.coordinates || desoResult.centroid;
+                      await exportToExcel(
+                        aggregatedMetrics,
+                        selectedDesoCodes,
+                        desoResult.kommun_name,
+                        booliData,
+                        propertyPoint?.beteckning,
+                        coordinates
+                      );
+                    }
+                  }}
+                  disabled={!aggregatedMetrics || !desoResult}
+                  title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera till Excel med tabeller och diagram'}
+                >
+                  📊 Exportera till Excel
+                </button>
+
+                <div className="grid grid-cols-2 gap-2">
                   <button
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    onClick={async () => {
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed text-sm"
+                    onClick={() => {
                       if (aggregatedMetrics && desoResult) {
                         const coordinates = propertyPoint?.coordinates || desoResult.centroid;
-                        await exportToExcel(
+                        exportToCSV(
                           aggregatedMetrics,
                           selectedDesoCodes,
                           desoResult.kommun_name,
@@ -1449,361 +1508,334 @@ function App() {
                       }
                     }}
                     disabled={!aggregatedMetrics || !desoResult}
-                    title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera till Excel med tabeller och diagram'}
+                    title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera alla data till CSV'}
                   >
-                    📊 Exportera till Excel
+                    📥 CSV
                   </button>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed text-sm"
-                      onClick={() => {
-                        if (aggregatedMetrics && desoResult) {
-                          const coordinates = propertyPoint?.coordinates || desoResult.centroid;
-                          exportToCSV(
-                            aggregatedMetrics,
-                            selectedDesoCodes,
-                            desoResult.kommun_name,
-                            booliData,
-                            propertyPoint?.beteckning,
-                            coordinates
-                          );
-                        }
-                      }}
-                      disabled={!aggregatedMetrics || !desoResult}
-                      title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera alla data till CSV'}
-                    >
-                      📥 CSV
-                    </button>
-
-                    <button
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed text-sm"
-                      onClick={() => {
-                        if (aggregatedMetrics && desoResult) {
-                          const coordinates = propertyPoint?.coordinates || desoResult.centroid;
-                          exportToJSON(
-                            aggregatedMetrics,
-                            selectedDesoCodes,
-                            desoResult.kommun_name,
-                            booliData,
-                            propertyPoint?.beteckning,
-                            coordinates
-                          );
-                        }
-                      }}
-                      disabled={!aggregatedMetrics || !desoResult}
-                      title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera alla data till JSON'}
-                    >
-                      📦 JSON
-                    </button>
-                  </div>
-
                   <button
-                    className="w-full bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed print:hidden"
-                    onClick={() => window.print()}
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed text-sm"
+                    onClick={() => {
+                      if (aggregatedMetrics && desoResult) {
+                        const coordinates = propertyPoint?.coordinates || desoResult.centroid;
+                        exportToJSON(
+                          aggregatedMetrics,
+                          selectedDesoCodes,
+                          desoResult.kommun_name,
+                          booliData,
+                          propertyPoint?.beteckning,
+                          coordinates
+                        );
+                      }
+                    }}
                     disabled={!aggregatedMetrics || !desoResult}
-                    title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Skriv ut eller spara som PDF'}
+                    title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Exportera alla data till JSON'}
                   >
-                    🖨️ Skriv ut / Spara som PDF
-                  </button>
-
-                  {/* Analysis Buttons */}
-                  <div className="border-t pt-3 mt-3">
-                    <p className="text-sm text-gray-700 mb-3 font-semibold">Vidare Analys</p>
-
-                    {/* Nyproduktion file upload */}
-                    <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                      <label className="block text-xs font-medium text-gray-600 mb-2">
-                        Nyproduktionsprojekt (valfritt)
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <label className="flex-1 cursor-pointer">
-                          <input
-                            type="file"
-                            accept=".xlsx,.xls,.csv"
-                            className="hidden"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                setNyproduktionFile(file);
-                                console.log('[Nyproduktion] File selected:', file.name);
-                              }
-                            }}
-                          />
-                          <div className="flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition text-sm">
-                            <span className="text-gray-600">
-                              {nyproduktionFile ? '📄 ' + nyproduktionFile.name : '📎 Välj fil...'}
-                            </span>
-                          </div>
-                        </label>
-                        {nyproduktionFile && (
-                          <button
-                            onClick={() => setNyproduktionFile(null)}
-                            className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition"
-                            title="Ta bort fil"
-                          >
-                            ✕
-                          </button>
-                        )}
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Excel eller CSV med aktuella nyproduktionsprojekt
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-                        onClick={async () => {
-                          if (!aggregatedMetrics || !desoResult) return;
-
-                          setAnalysisLoading(true);
-                          setAnalysisResult(null);
-
-                          try {
-                            // Build input data for analysis
-                            const inputData = {
-                              property_name: propertyPoint?.beteckning,
-                              coordinates: desoResult.centroid ? {
-                                longitude: desoResult.centroid[0],
-                                latitude: desoResult.centroid[1]
-                              } : undefined,
-                              kommun_name: desoResult.kommun_name,
-                              deso_codes: selectedDesoCodes,
-                              export_date: new Date().toISOString(),
-                              metrics: aggregatedMetrics.metrics,
-                              booli_data: booliData
-                            };
-
-                            console.log('[Quick Analysis] Starting with input:', inputData);
-
-                            const result = await runQuickAnalysis(inputData, nyproduktionFile || undefined);
-                            setAnalysisResult(result);
-
-                            console.log('[Quick Analysis] Result:', result);
-                          } catch (err: any) {
-                            console.error('[Quick Analysis] Error:', err);
-                            setAnalysisResult({
-                              success: false,
-                              error: err.message || 'Analysen misslyckades'
-                            });
-                          } finally {
-                            setAnalysisLoading(false);
-                          }
-                        }}
-                        disabled={!aggregatedMetrics || !desoResult || analysisLoading}
-                        title="Snabb analys av områdets potential"
-                      >
-                        {analysisLoading ? '⏳ Analyserar...' : '⚡ Quick Analys'}
-                      </button>
-
-                      <button
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-                        onClick={async () => {
-                          if (!aggregatedMetrics || !desoResult) return;
-
-                          setFullAnalysisLoading(true);
-                          setFullAnalysisResult(null);
-                          setFullAnalysisElapsed(0);
-
-                          try {
-                            const inputData = {
-                              property_name: propertyPoint?.beteckning,
-                              coordinates: desoResult.centroid ? {
-                                longitude: desoResult.centroid[0],
-                                latitude: desoResult.centroid[1]
-                              } : undefined,
-                              kommun_name: desoResult.kommun_name,
-                              deso_codes: selectedDesoCodes,
-                              export_date: new Date().toISOString(),
-                              metrics: aggregatedMetrics.metrics,
-                              booli_data: booliData
-                            };
-
-                            console.log('[Full Analysis] Starting...');
-                            const result = await runFullAnalysis(inputData, nyproduktionFile || undefined, setFullAnalysisElapsed);
-                            setFullAnalysisResult(result);
-                            console.log('[Full Analysis] Result:', result);
-                          } catch (err: any) {
-                            console.error('[Full Analysis] Error:', err);
-                            setFullAnalysisResult({
-                              success: false,
-                              error: err.message || 'Analysen misslyckades'
-                            });
-                          } finally {
-                            setFullAnalysisLoading(false);
-                          }
-                        }}
-                        disabled={!aggregatedMetrics || !desoResult || analysisLoading || fullAnalysisLoading}
-                        title="Fullständig analys med rekommendationer (tar 5-15 minuter)"
-                      >
-                        {fullAnalysisLoading ? '⏳ Analyserar...' : '📊 Full Analys'}
-                      </button>
-                    </div>
-
-                    {/* Full Analysis Loading Indicator */}
-                    {fullAnalysisLoading && (
-                      <div className="mt-3 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
-                        <div className="flex items-center gap-2">
-                          <div className="animate-spin h-4 w-4 border-2 border-indigo-600 border-t-transparent rounded-full"></div>
-                          <p className="text-sm text-indigo-700 font-medium">Full analys pågår...</p>
-                        </div>
-                        <p className="text-xs text-indigo-600 mt-1">
-                          Har pågått {Math.floor(fullAnalysisElapsed / 60)} min {fullAnalysisElapsed % 60} s. Brukar ta 5-15 minuter. Låt fliken vara öppen.
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Quick Analysis Result */}
-                    {analysisResult && (
-                      <div className={`mt-3 p-3 rounded-lg border ${
-                        analysisResult.success
-                          ? analysisResult.recommendation === 'GO'
-                            ? 'bg-green-50 border-green-200'
-                            : analysisResult.recommendation === 'NO-GO'
-                            ? 'bg-red-50 border-red-200'
-                            : 'bg-yellow-50 border-yellow-200'
-                          : 'bg-red-50 border-red-200'
-                      }`}>
-                        {analysisResult.success ? (
-                          <>
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className={`text-2xl ${
-                                analysisResult.recommendation === 'GO' ? 'text-green-600' :
-                                analysisResult.recommendation === 'NO-GO' ? 'text-red-600' :
-                                'text-yellow-600'
-                              }`}>
-                                {analysisResult.recommendation === 'GO' ? '✅' :
-                                 analysisResult.recommendation === 'NO-GO' ? '❌' : '⚠️'}
-                              </span>
-                              <div>
-                                <p className="font-bold text-sm">
-                                  {analysisResult.recommendation === 'GO' ? 'GO - Rekommenderas' :
-                                   analysisResult.recommendation === 'NO-GO' ? 'NO-GO - Avrådes' :
-                                   'VIDARE ANALYS KRÄVS'}
-                                </p>
-                                <p className="text-xs text-gray-600">
-                                  Konfidens: {analysisResult.confidence === 'high' ? 'Hög' :
-                                              analysisResult.confidence === 'medium' ? 'Medel' : 'Låg'}
-                                </p>
-                              </div>
-                            </div>
-                            <p className="text-sm text-gray-700 mb-2">{analysisResult.rationale}</p>
-                            {analysisResult.files?.pdf && (
-                              <a
-                                href={getAnalysisFileUrl(analysisResult.files.pdf, 'rapport.pdf')}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium"
-                              >
-                                📄 Ladda ner rapport (PDF)
-                              </a>
-                            )}
-                          </>
-                        ) : (
-                          <div className="text-red-700">
-                            <p className="font-bold text-sm">Analysen misslyckades</p>
-                            <p className="text-xs">{analysisResult.error}</p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Full Analysis Result */}
-                    {fullAnalysisResult && (
-                      <div className={`mt-3 p-3 rounded-lg border ${
-                        fullAnalysisResult.success
-                          ? fullAnalysisResult.qaDecision === 'APPROVED'
-                            ? 'bg-green-50 border-green-200'
-                            : fullAnalysisResult.qaDecision === 'REJECTED'
-                            ? 'bg-red-50 border-red-200'
-                            : 'bg-yellow-50 border-yellow-200'
-                          : 'bg-red-50 border-red-200'
-                      }`}>
-                        {fullAnalysisResult.success ? (
-                          <>
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className={`text-2xl ${
-                                fullAnalysisResult.qaDecision === 'APPROVED' ? 'text-green-600' :
-                                fullAnalysisResult.qaDecision === 'REJECTED' ? 'text-red-600' :
-                                'text-yellow-600'
-                              }`}>
-                                {fullAnalysisResult.qaDecision === 'APPROVED' ? '✅' :
-                                 fullAnalysisResult.qaDecision === 'REJECTED' ? '❌' : '⚠️'}
-                              </span>
-                              <div>
-                                <p className="font-bold text-sm">
-                                  Full Analys: {fullAnalysisResult.qaDecision === 'APPROVED' ? 'GODKÄND' :
-                                   fullAnalysisResult.qaDecision === 'REJECTED' ? 'EJ GODKÄND' :
-                                   'VILLKORLIGT GODKÄND'}
-                                </p>
-                                <p className="text-xs text-gray-600">
-                                  Konfidens: {fullAnalysisResult.confidence === 'high' ? 'Hög' :
-                                              fullAnalysisResult.confidence === 'medium' ? 'Medel' : 'Låg'}
-                                </p>
-                              </div>
-                            </div>
-                            <p className="text-sm text-gray-700 mb-2">{fullAnalysisResult.rationale}</p>
-
-                            {fullAnalysisResult.keyRecommendations && fullAnalysisResult.keyRecommendations.length > 0 && (
-                              <div className="mb-2">
-                                <p className="text-xs font-semibold text-gray-600 mb-1">Nyckelrekommendationer:</p>
-                                <ul className="text-xs text-gray-700 list-disc list-inside">
-                                  {fullAnalysisResult.keyRecommendations.map((rec, i) => (
-                                    <li key={i}>{rec}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-
-                            <div className="flex flex-wrap gap-2">
-                              {fullAnalysisResult.files?.pdf && (
-                                <a
-                                  href={getAnalysisFileUrl(fullAnalysisResult.files.pdf, 'full_rapport.pdf')}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium"
-                                >
-                                  📄 Full rapport (PDF)
-                                </a>
-                              )}
-                              {fullAnalysisResult.files?.executivePdf && (
-                                <a
-                                  href={getAnalysisFileUrl(fullAnalysisResult.files.executivePdf, 'executive_rapport.pdf')}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-800 font-medium"
-                                >
-                                  📋 Executive rapport
-                                </a>
-                              )}
-                            </div>
-                          </>
-                        ) : (
-                          <div className="text-red-700">
-                            <p className="font-bold text-sm">Full analys misslyckades</p>
-                            <p className="text-xs">{fullAnalysisResult.error}</p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <button
-                    className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition print:hidden"
-                    onClick={handleNewAnalysis}
-                    title="Rensa all data och starta en ny analys från början"
-                  >
-                    🔄 Ny analys
+                    📦 JSON
                   </button>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
 
-        {/* Booli Price Analysis */}
-        <BooliAnalysis />
+                <button
+                  className="w-full bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed print:hidden"
+                  onClick={() => window.print()}
+                  disabled={!aggregatedMetrics || !desoResult}
+                  title={!aggregatedMetrics || !desoResult ? 'Välj ett område först' : 'Skriv ut eller spara som PDF'}
+                >
+                  🖨️ Skriv ut / Spara som PDF
+                </button>
+
+              </div>
+              {/* Analysis Buttons */}
+              <div className="bg-white rounded-lg shadow p-4">
+                <p className="text-sm text-gray-700 mb-3 font-semibold">Vidare Analys</p>
+
+                {/* Nyproduktion file upload */}
+                <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <label className="block text-xs font-medium text-gray-600 mb-2">
+                    Nyproduktionsprojekt (valfritt)
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <label className="flex-1 cursor-pointer">
+                      <input
+                        type="file"
+                        accept=".xlsx,.xls,.csv"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setNyproduktionFile(file);
+                            console.log('[Nyproduktion] File selected:', file.name);
+                          }
+                        }}
+                      />
+                      <div className="flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition text-sm">
+                        <span className="text-gray-600">
+                          {nyproduktionFile ? '📄 ' + nyproduktionFile.name : '📎 Välj fil...'}
+                        </span>
+                      </div>
+                    </label>
+                    {nyproduktionFile && (
+                      <button
+                        onClick={() => setNyproduktionFile(null)}
+                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition"
+                        title="Ta bort fil"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Excel eller CSV med aktuella nyproduktionsprojekt
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    onClick={async () => {
+                      if (!aggregatedMetrics || !desoResult) return;
+
+                      setAnalysisLoading(true);
+                      setAnalysisResult(null);
+
+                      try {
+                        // Build input data for analysis
+                        const inputData = {
+                          property_name: propertyPoint?.beteckning,
+                          coordinates: desoResult.centroid ? {
+                            longitude: desoResult.centroid[0],
+                            latitude: desoResult.centroid[1]
+                          } : undefined,
+                          kommun_name: desoResult.kommun_name,
+                          deso_codes: selectedDesoCodes,
+                          export_date: new Date().toISOString(),
+                          metrics: aggregatedMetrics.metrics,
+                          booli_data: booliData
+                        };
+
+                        console.log('[Quick Analysis] Starting with input:', inputData);
+
+                        const result = await runQuickAnalysis(inputData, nyproduktionFile || undefined);
+                        setAnalysisResult(result);
+
+                        console.log('[Quick Analysis] Result:', result);
+                      } catch (err: any) {
+                        console.error('[Quick Analysis] Error:', err);
+                        setAnalysisResult({
+                          success: false,
+                          error: err.message || 'Analysen misslyckades'
+                        });
+                      } finally {
+                        setAnalysisLoading(false);
+                      }
+                    }}
+                    disabled={!aggregatedMetrics || !desoResult || analysisLoading}
+                    title="Snabb analys av områdets potential"
+                  >
+                    {analysisLoading ? '⏳ Analyserar...' : '⚡ Quick Analys'}
+                  </button>
+
+                  <button
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    onClick={async () => {
+                      if (!aggregatedMetrics || !desoResult) return;
+
+                      setFullAnalysisLoading(true);
+                      setFullAnalysisResult(null);
+                      setFullAnalysisElapsed(0);
+
+                      try {
+                        const inputData = {
+                          property_name: propertyPoint?.beteckning,
+                          coordinates: desoResult.centroid ? {
+                            longitude: desoResult.centroid[0],
+                            latitude: desoResult.centroid[1]
+                          } : undefined,
+                          kommun_name: desoResult.kommun_name,
+                          deso_codes: selectedDesoCodes,
+                          export_date: new Date().toISOString(),
+                          metrics: aggregatedMetrics.metrics,
+                          booli_data: booliData
+                        };
+
+                        console.log('[Full Analysis] Starting...');
+                        const result = await runFullAnalysis(inputData, nyproduktionFile || undefined, setFullAnalysisElapsed);
+                        setFullAnalysisResult(result);
+                        console.log('[Full Analysis] Result:', result);
+                      } catch (err: any) {
+                        console.error('[Full Analysis] Error:', err);
+                        setFullAnalysisResult({
+                          success: false,
+                          error: err.message || 'Analysen misslyckades'
+                        });
+                      } finally {
+                        setFullAnalysisLoading(false);
+                      }
+                    }}
+                    disabled={!aggregatedMetrics || !desoResult || analysisLoading || fullAnalysisLoading}
+                    title="Fullständig analys med rekommendationer (tar 5-15 minuter)"
+                  >
+                    {fullAnalysisLoading ? '⏳ Analyserar...' : '📊 Full Analys'}
+                  </button>
+                </div>
+
+                {/* Full Analysis Loading Indicator */}
+                {fullAnalysisLoading && (
+                  <div className="mt-3 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <div className="animate-spin h-4 w-4 border-2 border-indigo-600 border-t-transparent rounded-full"></div>
+                      <p className="text-sm text-indigo-700 font-medium">Full analys pågår...</p>
+                    </div>
+                    <p className="text-xs text-indigo-600 mt-1">
+                      Har pågått {Math.floor(fullAnalysisElapsed / 60)} min {fullAnalysisElapsed % 60} s. Brukar ta 5-15 minuter. Låt fliken vara öppen.
+                    </p>
+                  </div>
+                )}
+
+                {/* Quick Analysis Result */}
+                {analysisResult && (
+                  <div className={`mt-3 p-3 rounded-lg border ${
+                    analysisResult.success
+                      ? analysisResult.recommendation === 'GO'
+                        ? 'bg-green-50 border-green-200'
+                        : analysisResult.recommendation === 'NO-GO'
+                        ? 'bg-red-50 border-red-200'
+                        : 'bg-yellow-50 border-yellow-200'
+                      : 'bg-red-50 border-red-200'
+                  }`}>
+                    {analysisResult.success ? (
+                      <>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className={`text-2xl ${
+                            analysisResult.recommendation === 'GO' ? 'text-green-600' :
+                            analysisResult.recommendation === 'NO-GO' ? 'text-red-600' :
+                            'text-yellow-600'
+                          }`}>
+                            {analysisResult.recommendation === 'GO' ? '✅' :
+                             analysisResult.recommendation === 'NO-GO' ? '❌' : '⚠️'}
+                          </span>
+                          <div>
+                            <p className="font-bold text-sm">
+                              {analysisResult.recommendation === 'GO' ? 'GO - Rekommenderas' :
+                               analysisResult.recommendation === 'NO-GO' ? 'NO-GO - Avrådes' :
+                               'VIDARE ANALYS KRÄVS'}
+                            </p>
+                            <p className="text-xs text-gray-600">
+                              Konfidens: {analysisResult.confidence === 'high' ? 'Hög' :
+                                          analysisResult.confidence === 'medium' ? 'Medel' : 'Låg'}
+                            </p>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-700 mb-2">{analysisResult.rationale}</p>
+                        {analysisResult.files?.pdf && (
+                          <a
+                            href={getAnalysisFileUrl(analysisResult.files.pdf, 'rapport.pdf')}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium"
+                          >
+                            📄 Ladda ner rapport (PDF)
+                          </a>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-red-700">
+                        <p className="font-bold text-sm">Analysen misslyckades</p>
+                        <p className="text-xs">{analysisResult.error}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Full Analysis Result */}
+                {fullAnalysisResult && (
+                  <div className={`mt-3 p-3 rounded-lg border ${
+                    fullAnalysisResult.success
+                      ? fullAnalysisResult.qaDecision === 'APPROVED'
+                        ? 'bg-green-50 border-green-200'
+                        : fullAnalysisResult.qaDecision === 'REJECTED'
+                        ? 'bg-red-50 border-red-200'
+                        : 'bg-yellow-50 border-yellow-200'
+                      : 'bg-red-50 border-red-200'
+                  }`}>
+                    {fullAnalysisResult.success ? (
+                      <>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className={`text-2xl ${
+                            fullAnalysisResult.qaDecision === 'APPROVED' ? 'text-green-600' :
+                            fullAnalysisResult.qaDecision === 'REJECTED' ? 'text-red-600' :
+                            'text-yellow-600'
+                          }`}>
+                            {fullAnalysisResult.qaDecision === 'APPROVED' ? '✅' :
+                             fullAnalysisResult.qaDecision === 'REJECTED' ? '❌' : '⚠️'}
+                          </span>
+                          <div>
+                            <p className="font-bold text-sm">
+                              Full Analys: {fullAnalysisResult.qaDecision === 'APPROVED' ? 'GODKÄND' :
+                               fullAnalysisResult.qaDecision === 'REJECTED' ? 'EJ GODKÄND' :
+                               'VILLKORLIGT GODKÄND'}
+                            </p>
+                            <p className="text-xs text-gray-600">
+                              Konfidens: {fullAnalysisResult.confidence === 'high' ? 'Hög' :
+                                          fullAnalysisResult.confidence === 'medium' ? 'Medel' : 'Låg'}
+                            </p>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-700 mb-2">{fullAnalysisResult.rationale}</p>
+
+                        {fullAnalysisResult.keyRecommendations && fullAnalysisResult.keyRecommendations.length > 0 && (
+                          <div className="mb-2">
+                            <p className="text-xs font-semibold text-gray-600 mb-1">Nyckelrekommendationer:</p>
+                            <ul className="text-xs text-gray-700 list-disc list-inside">
+                              {fullAnalysisResult.keyRecommendations.map((rec, i) => (
+                                <li key={i}>{rec}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        <div className="flex flex-wrap gap-2">
+                          {fullAnalysisResult.files?.pdf && (
+                            <a
+                              href={getAnalysisFileUrl(fullAnalysisResult.files.pdf, 'full_rapport.pdf')}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium"
+                            >
+                              📄 Full rapport (PDF)
+                            </a>
+                          )}
+                          {fullAnalysisResult.files?.executivePdf && (
+                            <a
+                              href={getAnalysisFileUrl(fullAnalysisResult.files.executivePdf, 'executive_rapport.pdf')}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                            >
+                              📋 Executive rapport
+                            </a>
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-red-700">
+                        <p className="font-bold text-sm">Full analys misslyckades</p>
+                        <p className="text-xs">{fullAnalysisResult.error}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          <button
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition print:hidden"
+            onClick={handleNewAnalysis}
+            title="Rensa all data och starta en ny analys från början"
+          >
+            🔄 Ny analys
+          </button>
+          </section>
+        )}
       </main>
     </div>
   );
