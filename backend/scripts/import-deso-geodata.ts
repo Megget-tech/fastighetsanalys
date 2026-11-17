@@ -1,19 +1,34 @@
 import axios from 'axios';
 import { query, initializeDatabase, checkConnection } from '../src/config/database';
+import kommuner from '../src/data/kommuner.json';
+
+// SCB:s WFS ger bara koder (desokod, kommunkod, lanskod) – kommunnamnen tas ur src/data/kommuner.json
+const KOMMUNNAMN: Record<string, string> = kommuner;
 
 const SCB_WFS_URL = 'https://geodata.scb.se/geoserver/stat/wfs';
 
 interface DeSoFeature {
   type: 'Feature';
+  // SCB:s nuvarande namn är desokod/kommunkod/lanskod; de äldre namnen finns kvar som reserv
   properties: {
-    deso: string;
+    desokod?: string;
+    kommunkod?: string;
+    lanskod?: string;
+    deso?: string;
+    deso_kod?: string;
     deso_name?: string;
-    kommun: string;
+    namn?: string;
+    kommun?: string;
+    kommun_kod?: string;
     kommunnamn?: string;
-    lan: string;
+    kommun_namn?: string;
+    lan?: string;
+    lan_kod?: string;
     lansnamn?: string;
+    lan_namn?: string;
     kategori?: string;
     befolkning?: number;
+    population?: number;
   };
   geometry: {
     type: 'MultiPolygon';
@@ -140,6 +155,8 @@ async function importDeSoGeodata() {
 
       // Get deso_code (try different property names)
       const desoCode = props.deso || props.deso_kod || props.desokod;
+      // Kommunkoden är alltid DeSO-kodens fyra första tecken
+      const kommunCode: string = props.kommunkod || props.kommun || props.kommun_kod || desoCode.slice(0, 4);
 
       // Determine category from DeSO code (5th character, index 4)
       // Format: KKKKAZZZ (K=kommun, A=category A/B/C, Z=area number)
@@ -165,13 +182,16 @@ async function importDeSoGeodata() {
           population,
           geom
         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, ST_GeomFromGeoJSON($9))
-        ON CONFLICT (deso_code) DO NOTHING`,
+        ON CONFLICT (deso_code) DO UPDATE SET
+          kommun_code = EXCLUDED.kommun_code,
+          kommun_name = COALESCE(EXCLUDED.kommun_name, deso_areas.kommun_name),
+          lan_code = EXCLUDED.lan_code`,
         [
           desoCode,
           props.deso_name || props.namn || `DeSO ${desoCode}`,
-          props.kommun || props.kommun_kod,
-          props.kommunnamn || props.kommun_namn || null,
-          props.lan || props.lan_kod,
+          kommunCode,
+          props.kommunnamn || props.kommun_namn || KOMMUNNAMN[kommunCode] || null,
+          props.lanskod || props.lan || props.lan_kod || desoCode.slice(0, 2),
           props.lansnamn || props.lan_namn || null,
           category,
           props.befolkning || props.population || null,
