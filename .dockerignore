@@ -5,7 +5,6 @@
 !**/.env.example
 .git
 .claude
-frontend
 docs
 analyser
 prisexempel

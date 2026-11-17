@@ -1,5 +1,14 @@
-# Backend + analys (fanalys) i en tjänst: Node kör API:t och startar Python-analysen som underprocess.
-# Byggs från repots rot: docker build -t fdata-backend .
+# Hela appen i en tjänst: Node kör API:t, serverar den byggda frontenden och startar Python-analysen
+# som underprocess. Inloggningen (FDATA_ANVANDARE/FDATA_LOSENORD) skyddar därmed allt.
+# Byggs från repots rot: docker build -t fdata .
+
+# --- Bygg frontend (Vite → dist/) ----------------------------------------------------------
+FROM node:20-bookworm-slim AS frontend
+WORKDIR /app/frontend
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+COPY frontend/ ./
+RUN npm run build
 
 # --- Bygg backend (TypeScript → dist/) -----------------------------------------------------
 FROM node:20-bookworm-slim AS build
@@ -28,6 +37,7 @@ WORKDIR /app
 COPY --from=build /app/backend/package.json backend/package.json
 COPY --from=build /app/backend/node_modules backend/node_modules
 COPY --from=build /app/backend/dist backend/dist
+COPY --from=frontend /app/frontend/dist frontend/dist
 # Analysen hamnar på /app/analysis, som backend hittar via ../../analysis från dist/
 COPY analysis/ analysis/
 

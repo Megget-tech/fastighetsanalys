@@ -29,3 +29,7 @@ declare module '@mapbox/mapbox-gl-draw' {
     deleteAll(): void;
   }
 }
+
+interface Window {
+  __FDATA_CONFIG__?: { mapboxToken?: string }
+}

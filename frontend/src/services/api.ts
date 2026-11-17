@@ -6,10 +6,12 @@ import type {
   TimeSeriesData
 } from '../types';
 
-// VITE_API_URL kan vara en full URL (http://localhost:3000/api) eller bara backendens värdnamn,
-// som Render ger via render.yaml (fdata-backend.onrender.com) – då läggs https:// och /api på.
+// I drift serveras frontend av backend på samma adress → '/api'. Lokalt: http://localhost:3000/api.
+// VITE_API_URL kan peka någon annanstans (full URL eller bara värdnamn, då läggs https:// och /api på).
 function normalizeApiUrl(raw: string | undefined): string {
-  let url = (raw || 'http://localhost:3000/api').trim().replace(/\/+$/, '');
+  if (!raw) return import.meta.env.PROD ? '/api' : 'http://localhost:3000/api';
+  let url = raw.trim().replace(/\/+$/, '');
+  if (url.startsWith('/')) return url;
   if (!/^https?:\/\//.test(url)) url = `https://${url}`;
   if (!/\/api$/.test(url)) url = `${url}/api`;
   return url;

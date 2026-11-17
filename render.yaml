@@ -1,4 +1,4 @@
-# Render Blueprint (New → Blueprint): databas, backend med analys och frontend. Se DRIFT.md.
+# Render Blueprint (New → Blueprint): databas + appen i en Docker-tjänst. Se DRIFT.md.
 # Värden med sync: false frågar Render efter när Blueprinten skapas – de hamnar aldrig i repot.
 
 databases:
@@ -10,9 +10,9 @@ databases:
     postgresMajorVersion: "16"  # PostGIS aktiveras av backend vid start (CREATE EXTENSION postgis)
 
 services:
-  # Backend (Express) + analysen (Python, analysis/) i samma Docker-tjänst
+  # Frontend + API + analysen (Python, analysis/) i samma Docker-tjänst, bakom inloggning
   - type: web
-    name: fdata-backend
+    name: fastighetsanalys
     runtime: docker
     plan: starter               # somnar inte; fullanalysen behöver att tjänsten är vaken i upp till 15 min
     region: frankfurt
@@ -25,8 +25,13 @@ services:
         fromDatabase:
           name: fdata-db
           property: connectionString
-      # Frontendens adress, t.ex. https://fdata-frontend.onrender.com (värdnamnet räcker)
-      - key: FRONTEND_URL
+      # Inloggning (HTTP Basic). Utan dessa vägrar tjänsten alla anrop.
+      - key: FDATA_ANVANDARE
+        sync: false
+      - key: FDATA_LOSENORD
+        sync: false
+      # Kartan
+      - key: MAPBOX_TOKEN
         sync: false
       # Analysen
       - key: ANTHROPIC_API_KEY
@@ -47,23 +52,4 @@ services:
       - key: REGBET_CONSUMER_KEY
         sync: false
       - key: REGBET_CONSUMER_SECRET
-        sync: false
-
-  # Frontend (Vite/React) som statisk sida
-  - type: web
-    name: fdata-frontend
-    runtime: static
-    rootDir: frontend
-    buildCommand: npm ci && npm run build
-    staticPublishPath: dist
-    autoDeploy: true
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      # Backendens adress, t.ex. https://fdata-backend.onrender.com (/api läggs på automatiskt)
-      - key: VITE_API_URL
-        sync: false
-      - key: VITE_MAPBOX_TOKEN
         sync: false

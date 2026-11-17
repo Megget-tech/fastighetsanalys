@@ -13,6 +13,9 @@ import booliRoutes from './routes/booli.routes';
 import analysisRoutes from './routes/analysis.routes';
 import { getSCBQueueStats } from './utils/rate-limiter';
 import { getCacheStats } from './services/cache.service';
+import { requireLogin, authStatus } from './middleware/auth';
+import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -52,6 +55,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+// Inloggning (HTTP Basic) för allt utom /health – se middleware/auth.ts
+app.use(requireLogin);
+
 // Health check endpoint
 app.get('/health', async (req: Request, res: Response) => {
   const dbConnected = await checkConnection();
@@ -83,6 +89,23 @@ app.use('/api/properties', propertiesRoutes);
 app.use('/api/booli', booliRoutes);
 app.use('/api/analysis', analysisRoutes);
 
+// Frontend: i drift serverar backend den byggda appen (frontend/dist) på samma adress, så att
+// inloggningen skyddar både sidan och API:t. Lokalt körs frontend som vanligt med Vite.
+const FRONTEND_DIST = process.env.FRONTEND_DIST || path.resolve(__dirname, '../../frontend/dist');
+if (fs.existsSync(path.join(FRONTEND_DIST, 'index.html'))) {
+  // Inställningar som frontend läser vid körning (i stället för att bakas in vid bygget)
+  app.get('/config.js', (req: Request, res: Response) => {
+    const config = { mapboxToken: process.env.MAPBOX_TOKEN || '' };
+    res.type('application/javascript').set('Cache-Control', 'no-store')
+      .send(`window.__FDATA_CONFIG__ = ${JSON.stringify(config)};`);
+  });
+  app.use(express.static(FRONTEND_DIST, { index: false, maxAge: '1h' }));
+  app.get(/^\/(?!api\/).*/, (req: Request, res: Response) => {
+    res.set('Cache-Control', 'no-cache').sendFile(path.join(FRONTEND_DIST, 'index.html'));
+  });
+  console.log(`Frontend serveras från ${FRONTEND_DIST}`);
+}
+
 // 404 handler
 app.use((req: Request, res: Response) => {
   res.status(404).json({
@@ -106,6 +129,11 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 async function startServer() {
   try {
     console.log('🚀 Starting Fastighetsanalys Backend...\n');
+
+    const auth = authStatus();
+    console.log(auth === 'on' ? '🔒 Inloggning krävs (FDATA_ANVANDARE)'
+      : auth === 'missing' ? '⛔ FDATA_ANVANDARE/FDATA_LOSENORD saknas – alla anrop vägras (503)'
+      : '🔓 Ingen inloggning (lokalt)');
 
     // Check database connection
     console.log('1. Checking database connection...');

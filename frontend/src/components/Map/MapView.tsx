@@ -6,7 +6,8 @@ import { getDeSoBoundaries } from '../../services/api';
 import type { GeoJSONPolygon } from '../../types';
 
 // Set Mapbox token
-mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN || '';
+// Token: i drift från backendens /config.js (MAPBOX_TOKEN), lokalt från VITE_MAPBOX_TOKEN i .env
+mapboxgl.accessToken = window.__FDATA_CONFIG__?.mapboxToken || import.meta.env.VITE_MAPBOX_TOKEN || '';
 
 export function MapView() {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -27,8 +28,6 @@ export function MapView() {
     console.log('[MapView] useEffect triggered');
     console.log('[MapView] mapContainer.current:', mapContainer.current);
     console.log('[MapView] map.current:', map.current);
-    console.log('[MapView] mapboxgl.accessToken:', mapboxgl.accessToken);
-    console.log('[MapView] VITE_MAPBOX_TOKEN from env:', import.meta.env.VITE_MAPBOX_TOKEN);
 
     if (!mapContainer.current) {
       console.log('[MapView] No mapContainer.current, returning early');
@@ -42,7 +41,6 @@ export function MapView() {
     // Check if token is set
     if (!mapboxgl.accessToken || mapboxgl.accessToken === 'pk.your_token_here') {
       console.error('[MapView] Mapbox token not set! Update VITE_MAPBOX_TOKEN in .env');
-      console.error('[MapView] Current token value:', mapboxgl.accessToken);
       return;
     }
 
