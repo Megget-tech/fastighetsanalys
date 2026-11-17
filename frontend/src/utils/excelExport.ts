@@ -426,10 +426,23 @@ export async function exportToExcel(
   styleHeaderRow(popHeader, 3);
   currentRow++;
 
-  const popData = [
+  const popData: (string | number)[][] = [
     ['Total befolkning', metrics.metrics.population.total.toLocaleString('sv-SE'), metrics.metrics.population.kommun_avg?.total?.toLocaleString('sv-SE') || '-'],
     ['Tillväxttakt (%)', (metrics.metrics.population.growth_rate || 0).toFixed(2) + '%', '-'],
   ];
+
+  // Add historical population change if available
+  if (metrics.metrics.population.historical_population && metrics.metrics.population.historical_population.length >= 2) {
+    const historicalPop = metrics.metrics.population.historical_population;
+    const startData = historicalPop[0];
+    const endData = historicalPop[historicalPop.length - 1];
+    const change = endData.population - startData.population;
+    const changePercent = (change / startData.population) * 100;
+
+    popData.push([`Befolkning ${startData.year}`, startData.population.toLocaleString('sv-SE'), '-']);
+    popData.push([`Befolkning ${endData.year}`, endData.population.toLocaleString('sv-SE'), '-']);
+    popData.push([`Förändring ${startData.year}-${endData.year}`, `${change >= 0 ? '+' : ''}${change.toLocaleString('sv-SE')} (${change >= 0 ? '+' : ''}${changePercent.toFixed(1)}%)`, '-']);
+  }
 
   popData.forEach((rowData, index) => {
     const row = demoSheet.getRow(currentRow + index);
@@ -474,6 +487,53 @@ export async function exportToExcel(
   });
 
   currentRow += 2;
+
+  // Åldersfördelning - 5-årsförändring (if available)
+  if (metrics.metrics.population.age_distribution_comparison) {
+    const comparison = metrics.metrics.population.age_distribution_comparison;
+    currentRow = addSectionTitle(demoSheet, `Åldersfördelning: ${comparison.start_year} vs ${comparison.end_year}`, currentRow);
+
+    const ageCompHeader = demoSheet.getRow(currentRow);
+    ageCompHeader.values = ['Åldersgrupp', `${comparison.start_year}`, `${comparison.end_year}`, 'Förändring', 'Förändring (pp)'];
+    styleHeaderRow(ageCompHeader, 5);
+    currentRow++;
+
+    const totalStart = (Object.values(comparison.start_distribution) as number[]).reduce((sum, val) => sum + val, 0);
+    const totalEnd = (Object.values(comparison.end_distribution) as number[]).reduce((sum, val) => sum + val, 0);
+
+    Object.entries(comparison.end_distribution).forEach(([ageGroup, countEnd], index) => {
+      const countStart = comparison.start_distribution[ageGroup as keyof typeof comparison.start_distribution] as number || 0;
+      const percentageStart = totalStart > 0 ? (countStart / totalStart) * 100 : 0;
+      const percentageEnd = totalEnd > 0 ? ((countEnd as number) / totalEnd) * 100 : 0;
+      const change = (countEnd as number) - countStart;
+      const percentageChange = percentageEnd - percentageStart;
+
+      const row = demoSheet.getRow(currentRow + index);
+      row.values = [
+        ageGroup + ' år',
+        `${countStart.toLocaleString('sv-SE')} (${percentageStart.toFixed(1)}%)`,
+        `${(countEnd as number).toLocaleString('sv-SE')} (${percentageEnd.toFixed(1)}%)`,
+        `${change >= 0 ? '+' : ''}${change.toLocaleString('sv-SE')}`,
+        `${percentageChange >= 0 ? '+' : ''}${percentageChange.toFixed(1)}pp`
+      ];
+      styleDataRow(row, 5, index % 2 === 0);
+
+      // Color the change column based on positive/negative
+      const changeCell = row.getCell(4);
+      const ppChangeCell = row.getCell(5);
+      if (change >= 0) {
+        changeCell.font = { color: { argb: '059669' } }; // Green
+      } else {
+        changeCell.font = { color: { argb: 'DC2626' } }; // Red
+      }
+      if (percentageChange >= 0) {
+        ppChangeCell.font = { color: { argb: '059669' } };
+      } else {
+        ppChangeCell.font = { color: { argb: 'DC2626' } };
+      }
+    });
+    currentRow += Object.keys(comparison.end_distribution).length + 2;
+  }
 
   // Härkomst section
   currentRow = addSectionTitle(demoSheet, 'Härkomst', currentRow);
